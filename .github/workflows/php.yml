@@ -42,12 +42,20 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-scripts
 
-      - name: Lint
-        run: |
-          export PHP_CS_FIXER_IGNORE_ENV=1 && ./vendor/bin/php-cs-fixer fix --diff --dry-run -v
-
       - name: Check dependencies
         run: |
           wget -q -O local-php-security-checker https://github.com/fabpot/local-php-security-checker/releases/download/v2.0.6/local-php-security-checker_2.0.6_linux_amd64
           chmod +x local-php-security-checker
           ./local-php-security-checker
+
+      - name: Lint
+        run: |
+          export PHP_CS_FIXER_IGNORE_ENV=1 && ./vendor/bin/php-cs-fixer fix --diff --dry-run -v
+
+      - name: Types
+        run: |
+          ./vendor/bin/phpstan
+
+      - name: Tests
+        run: |
+          ./vendor/bin/phpunit
