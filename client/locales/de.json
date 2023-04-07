@@ -1,0 +1,12 @@
+{
+  "service": {
+    "api": {
+      "request_failed": "Serveraufruf fehlgeschlagen"
+    }
+  },
+  "page": {
+    "home": {
+      "title": "POLYAS verification"
+    }
+  }
+}

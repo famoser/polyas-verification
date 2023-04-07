@@ -19,6 +19,3 @@ node_modules
 # Logs
 npm-debug.log*
 var/*.log
-
-# temp
-client

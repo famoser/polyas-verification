@@ -1,0 +1,11 @@
+$border-radius: 0;
+$border-radius-lg: 0;
+$border-radius-sm: 0;
+$modal-backdrop-opacity: 0.3;
+$yiq-contrasted-threshold: 160;
+$custom-control-cursor: pointer;
+$enable-shadows: true;
+
+@use 'bootstrap/scss/bootstrap.scss';
+@use 'noty/src/noty.scss';
+@use 'noty/src/themes/bootstrap-v4.scss';
