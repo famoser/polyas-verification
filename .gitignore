@@ -2,6 +2,7 @@
 .idea
 .code
 .php-cs-fixer.cache
+.phpunit.cache
 
 # deployment
 .build
@@ -18,3 +19,6 @@ node_modules
 # Logs
 npm-debug.log*
 var/*.log
+
+# temp
+client
