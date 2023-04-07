@@ -28,3 +28,8 @@ You need access to the config repository specified in `agnes.yml`. Then:
 
 The server needs to fulfil requirements specified in `composer.json`.
 
+## Specification
+
+1. What is the hexadecimal representation of an RSA public key (e.g. of the RECEIPT-VERIFICATION-KEY)? I will need to convert this to a PEM PUBLIC KEY label (https://www.rfc-editor.org/rfc/rfc7468#section-13), which in turn requires this to be encoded as an ASN.1
+   SubjectPublicKeyInfo (https://www.rfc-editor.org/rfc/rfc5280#section-4.1.2.7). Would be easiest for me to directly have it as PEM; which will also reduce possible mistakes on the verifier side.
+2. 

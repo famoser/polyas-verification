@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "59e159746dc4d8aba6b2f7c10d7a366d",
+    "content-hash": "bea593c70a2c21e0759b5388cd5ab4bb",
     "packages": [
         {
             "name": "fig/http-message-util",
@@ -778,6 +778,60 @@
                 }
             ],
             "time": "2022-11-06T16:33:39+00:00"
+        },
+        {
+            "name": "sop/asn1",
+            "version": "4.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sop/asn1.git",
+                "reference": "074efe8f7c353c54edc809ac3d74efda83edd776"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sop/asn1/zipball/074efe8f7c353c54edc809ac3d74efda83edd776",
+                "reference": "074efe8f7c353c54edc809ac3d74efda83edd776",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gmp": "*",
+                "ext-mbstring": "*",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sop\\ASN1\\": "lib/ASN1/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joni Eskelinen",
+                    "email": "jonieske@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A PHP library for X.690 ASN.1 DER encoding and decoding.",
+            "homepage": "https://github.com/sop/asn1",
+            "keywords": [
+                "DER",
+                "asn.1",
+                "asn1",
+                "x.690",
+                "x690"
+            ],
+            "support": {
+                "issues": "https://github.com/sop/asn1/issues",
+                "source": "https://github.com/sop/asn1/tree/4.1.1"
+            },
+            "time": "2022-02-17T07:08:51+00:00"
         },
         {
             "name": "symfony/dotenv",
@@ -5076,7 +5130,9 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.2"
+        "php": "^8.2",
+        "ext-gmp": "*",
+        "ext-openssl": "*"
     },
     "platform-dev": [],
     "platform-overrides": {
