@@ -13,6 +13,7 @@ namespace Famoser\PolyasVerification;
 
 /**
  * Implements https://www.rfc-editor.org/rfc/rfc7468.
+ * Citations from this RFC are prefix with RFC:.
  */
 class Pem
 {
@@ -25,7 +26,7 @@ class Pem
      */
     public static function extractPayloads(string $pem, array &$payloads, string &$error = null): bool
     {
-        // MUST handle different newline conventions
+        // RFC: MUST handle different newline conventions
         $lines = preg_split('/\R+/', $pem, 0, PREG_SPLIT_NO_EMPTY);
         if (!$lines) {
             return true;
@@ -47,7 +48,7 @@ class Pem
             }
 
             if (str_starts_with($line, self::END_MARKER) && $activeMarker) {
-                // Generators MUST put the same label on the "-----END " line (post-encapsulation boundary) as the corresponding "-----BEGIN " line.
+                // RFC: Generators MUST put the same label on the "-----END " line (post-encapsulation boundary) as the corresponding "-----BEGIN " line.
                 $expectedEnd = self::END_MARKER.$activeMarker;
                 if ($expectedEnd !== $line) {
                     $error = 'line '.$i.': End marker is not exactly '.$expectedEnd;
@@ -71,11 +72,11 @@ class Pem
             }
 
             if ($activeMarker) {
-                // Most extant parsers ignore blanks at the ends of lines.
+                // RFC: Most extant parsers ignore blanks at the ends of lines.
                 $activeSection .= trim($line);
             }
 
-            // Data before the encapsulation boundaries are permitted, and parsers MUST NOT malfunction
+            // RFC: Data before the encapsulation boundaries are permitted, and parsers MUST NOT malfunction
         }
 
         if ($activeMarker) {
