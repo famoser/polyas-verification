@@ -25,7 +25,7 @@
   },
   "autoload": {
     "psr-4": {
-      "DiniTheorie\\Instructor\\": "src/"
+      "Famoser\\PolyasVerification\\": "src/"
     }
   },
   "scripts": {
