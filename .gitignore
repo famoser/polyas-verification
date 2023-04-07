@@ -1,0 +1,20 @@
+# IDE
+.idea
+.code
+.php-cs-fixer.cache
+
+# deployment
+.build
+.agnes
+
+# dependencies
+vendor
+node_modules
+
+# local config
+.npmrc
+*.local
+
+# Logs
+npm-debug.log*
+var/*.log

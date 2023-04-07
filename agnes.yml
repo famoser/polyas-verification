@@ -1,0 +1,34 @@
+agnes:
+  version: 4
+
+config:
+  path: .agnes
+  repository:
+    url: git@gitlab.com:agnes-config/famoser-polyas-verification.git
+
+build:
+  path: .build
+
+github:
+  api_token: '%env(GITHUB_API_TOKEN)%'
+  repository: famoser/polyas-verification
+
+data:
+  files:
+    - path: .env.local
+      required: true
+
+scripts:
+  build:
+    hook: build
+    script:
+      - 'composer install --verbose --prefer-dist --no-interaction --no-dev --optimize-autoloader --no-scripts'
+      - 'npm install'
+      - 'npm run build'
+      - 'rm -rf node_modules'
+
+tasks:
+  deploy_after_release:
+    after: release
+    task: deploy
+    arguments: { target: '*:*:*' }

@@ -1,0 +1,55 @@
+{
+  "type": "project",
+  "name": "famoser/polyas-verification",
+  "description": "verify the internet voting system POLYAS",
+  "license": "MIT",
+  "require": {
+    "php": "^8.2",
+    "monolog/monolog": "^3.3",
+    "slim/psr7": "^1.6",
+    "slim/slim": "^4.11",
+    "symfony/dotenv": "^6.2",
+    "symfony/yaml": "^6.2"
+  },
+  "require-dev": {
+    "brainmaestro/composer-git-hooks": "^2.8",
+    "famoser/agnes": "^4.0",
+    "friendsofphp/php-cs-fixer": "^3"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true,
+    "platform": {
+      "php": "8.2"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "DiniTheorie\\Instructor\\": "src/"
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "vendor/bin/cghooks update"
+    ],
+    "post-update-cmd": [
+      "vendor/bin/cghooks update"
+    ]
+  },
+  "extra": {
+    "hooks": {
+      "pre-commit": [
+        "echo committing as $(git config user.name)",
+        "./vendor/bin/php-cs-fixer fix",
+        "npm run lint",
+        "npm run format",
+        "npm run types:check",
+        "git update-index --again"
+      ],
+      "post-merge": [
+        "composer install",
+        "npm install"
+      ]
+    }
+  }
+}
