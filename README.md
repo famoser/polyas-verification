@@ -30,6 +30,11 @@ The server needs to fulfil requirements specified in `composer.json`.
 
 ## Specification
 
-1. What is the hexadecimal representation of an RSA public key (e.g. of the RECEIPT-VERIFICATION-KEY)? I will need to convert this to a PEM PUBLIC KEY label (https://www.rfc-editor.org/rfc/rfc7468#section-13), which in turn requires this to be encoded as an ASN.1
-   SubjectPublicKeyInfo (https://www.rfc-editor.org/rfc/rfc5280#section-4.1.2.7). Would be easiest for me to directly have it as PEM; which will also reduce possible mistakes on the verifier side.
-2. 
+1. (B.1, page 50) What is the hexadecimal representation of the `RECEIPT-VERIFICATION-KEY` RSA public key? I would propose to use PEM PUBLIC KEY representation, which is also what OpenSSL takes as an argument (see https://www.rfc-editor.org/rfc/rfc7468#section-13, which in turn requires an ASN.1 SubjectPublicKeyInfo encoding https://www.rfc-editor.org/rfc/rfc5280#section-4.1.2.7).
+2. (B.2, page 52) The example represents `proofOfKnowledgeOfEncryptionCoins.[].c`, `proofOfKnowledgeOfEncryptionCoins.[].f` and , `proofOfKnowledgeOfPrivateCredential.c` within 21 bytes (with the first byte being 0); but `proofOfKnowledgeOfPrivateCredential.f` within 20 bytes (with no first zero-byte). Could you please clarify what the logic here is?
+3. (B.2, page 52) The conventions in Section A.1.2 refer to SHA512, while SHA256 is specified to be used.
+
+Suggestions:
+1. As it is designed right now, each ballot has to be hashed to find the one ballot with the correct fingerprint. Why not include the fingerprint in the ballot entry, too? The second device can still verify the fingerprint actually corresponds to the ballot, while it is much faster to discover the correct ballot. 
+2. The different formats (label = UTF-8, ciphertext = byte array, proof of knowledge = long number) all need to be handled separately, which increases the burden of implementation, and makes hard-to-debug bugs more likely. Would it be instead possible to simply everywhere provide hex?
+
