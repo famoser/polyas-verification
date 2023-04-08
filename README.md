@@ -35,6 +35,6 @@ The server needs to fulfil requirements specified in `composer.json`.
 3. (B.2, page 52) The conventions in Section A.1.2 refer to SHA512, while SHA256 is specified to be used.
 
 Suggestions:
-1. As it is designed right now, each ballot has to be hashed to find the one ballot with the correct fingerprint. Why not include the fingerprint in the ballot entry, too? The second device can still verify the fingerprint actually corresponds to the ballot, while it is much faster to discover the correct ballot. 
-2. The different formats (label = UTF-8, ciphertext = byte array, proof of knowledge = long number) all need to be handled separately, which increases the burden of implementation, and makes hard-to-debug bugs more likely. Would it be instead possible to simply everywhere provide hex?
+1. As it is designed right now, each ballot has to be hashed to find the one ballot with the correct fingerprint. How about including the fingerprint in the ballot entry, too? The second device can still verify that the fingerprint actually corresponds to the ballot, while it is much faster to discover the correct ballot. 
+2. The different formats needed for the ballot entry digest (label = UTF-8, ciphertext = byte array, proof of knowledge = long number) increase burden of implementation, and possibly lead to hard-to-debug mistakes. Would it be instead possible to simply everywhere provide hex?
 
