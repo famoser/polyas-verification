@@ -9,38 +9,37 @@
  * file that was distributed with this source code.
  */
 
-namespace Famoser\PolyasVerification;
+namespace Famoser\PolyasVerification\Crypto\PEM;
 
 /**
  * Implements https://www.rfc-editor.org/rfc/rfc7468.
- * Citations from this RFC are prefix with RFC:.
+ * Citations from that RFC are prefix with RFC:.
  */
-class Pem
+class Decoder
 {
     private const ENCAPSULATION_BOUNDARY_MARKER = '-----';
     private const BEGIN_MARKER = self::ENCAPSULATION_BOUNDARY_MARKER.'BEGIN ';
     private const END_MARKER = self::ENCAPSULATION_BOUNDARY_MARKER.'END ';
 
     /**
-     * @param array<array{'label': string, 'payload': string}> $payloads
+     * @return Payload[]
      */
-    public static function extractPayloads(string $pem, array &$payloads, string &$error = null): bool
+    public static function decode(string $pem): array
     {
         // RFC: MUST handle different newline conventions
         $lines = preg_split('/\R+/', $pem, 0, PREG_SPLIT_NO_EMPTY);
         if (!$lines) {
-            return true;
+            return [];
         }
 
+        $payloads = [];
         $activeMarker = null;
         $activeSection = '';
         for ($i = 0; $i < count($lines); ++$i) {
             $line = $lines[$i];
             if (str_starts_with($line, self::BEGIN_MARKER)) {
                 if (!str_ends_with($line, self::ENCAPSULATION_BOUNDARY_MARKER)) {
-                    $error = 'line '.$i.': Start marker does not end with '.self::ENCAPSULATION_BOUNDARY_MARKER;
-
-                    return false;
+                    throw new DecodingException('Start marker does not end with '.self::ENCAPSULATION_BOUNDARY_MARKER, $i);
                 }
 
                 $activeMarker = substr($line, strlen(self::BEGIN_MARKER));
@@ -51,20 +50,16 @@ class Pem
                 // RFC: Generators MUST put the same label on the "-----END " line (post-encapsulation boundary) as the corresponding "-----BEGIN " line.
                 $expectedEnd = self::END_MARKER.$activeMarker;
                 if ($expectedEnd !== $line) {
-                    $error = 'line '.$i.': End marker is not exactly '.$expectedEnd;
-
-                    return false;
+                    throw new DecodingException('End marker is not exactly '.$expectedEnd, $i);
                 }
 
                 $label = substr($activeMarker, 0, strlen($activeMarker) - strlen(self::ENCAPSULATION_BOUNDARY_MARKER));
                 $payload = base64_decode($activeSection);
                 if (!$payload) {
-                    $error = 'Cannot base64 decode the section with label '.$label;
-
-                    return false;
+                    throw new DecodingException('Cannot base64 decode the section with label '.$label);
                 }
 
-                $payloads[] = ['label' => $label, 'payload' => $payload];
+                $payloads[] = new Payload($label, $payload);
 
                 $activeMarker = null;
                 $activeSection = '';
@@ -80,11 +75,9 @@ class Pem
         }
 
         if ($activeMarker) {
-            $error = 'Expected end marker '.self::END_MARKER.$activeMarker.' not found.';
-
-            return false;
+            throw new DecodingException('Expected end marker '.self::END_MARKER.$activeMarker.' not found.');
         }
 
-        return true;
+        return $payloads;
     }
 }
