@@ -4,9 +4,17 @@
       "request_failed": "Serveraufruf fehlgeschlagen"
     }
   },
-  "page": {
-    "home": {
-      "title": "POLYAS verification"
+  "action": {
+    "upload_receipt": {
+      "title": "Rezept hochladen",
+      "privacy_is_safeguarded": "Ihr Stimmgeheimnis bleibt dadurch gewahrt.",
+      "privacy_is_safeguarded_help": "Das Rezept enthält nur die verschlüsselte Stimme, daher erfahren wir die Stimmabgabe nicht. Dennoch können wir validieren, ob das Wahltool Ihre Stimme registriert hat."
+    }
+  },
+  "layout": {
+    "header_jumbotron": {
+      "title": "POLYAS Verifizierung",
+      "description": "Stellen Sie sicher, dass der Server Ihre Stimme empfangen hat."
     }
   }
 }
