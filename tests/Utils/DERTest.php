@@ -16,7 +16,7 @@ use Famoser\PolyasVerification\Crypto\PEM;
 use Famoser\PolyasVerification\Crypto\RSA;
 use PHPUnit\Framework\TestCase;
 
-class DERTestIgnore extends TestCase
+class DERTest extends TestCase
 {
     public function testExtractPayloadsPublicKeyPem(): void
     {
