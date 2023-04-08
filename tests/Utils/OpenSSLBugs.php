@@ -17,7 +17,7 @@ class OpenSSLBugs extends TestCase
 {
     public function testPEMError(): void
     {
-        $data = "some string";
+        $data = 'some string';
 
         $key = openssl_pkey_new();
         $publicKey = openssl_pkey_get_details($key)['key']; // @phpstan-ignore-line
