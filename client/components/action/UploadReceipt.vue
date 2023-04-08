@@ -19,7 +19,7 @@ const uploadReceipt = async (event: Event) => {
   emit('uploadFinished')
 }
 
-const uniqueId = Math.random()
+const uniqueId = String(Math.random())
 
 const { t } = useI18n()
 </script>
