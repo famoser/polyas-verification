@@ -27,7 +27,7 @@ class RequestValidatorExtensions
             throw new HttpBadRequestException($request, 'file upload failed with code '.$file->getError().'.');
         }
 
-        if ($file->getClientFilename() && str_ends_with($file->getClientFilename(), 'pdf')) {
+        if ($file->getClientFilename() && !str_ends_with($file->getClientFilename(), 'pdf')) {
             throw new HttpBadRequestException($request, 'file upload failed; please upload a pdf file.');
         }
     }

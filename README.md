@@ -39,6 +39,7 @@ The server needs to fulfil requirements specified in `composer.json`.
 Suggestions:
 1. As it is designed right now, each ballot has to be hashed to find the one ballot with the correct fingerprint. How about including the fingerprint in the ballot entry, too? The second device can still verify that the fingerprint actually corresponds to the ballot, while it is much faster to discover the correct ballot. 
 2. The different formats needed for the ballot entry digest (label = UTF-8, ciphertext = byte array, proof of knowledge = long number) increase burden of implementation, and possibly lead to hard-to-debug mistakes. Would it be instead possible to simply everywhere provide hex?
+3. The receipt in the PDF file uses two minus `--` as an encapsulation boundary marker. Why not use the PEM encapsulation marker (five `-----`) so the receipt is a valid PEM file? Then a PEM parser can be reused; and I think it changes nothing about PDF validity.In any case, please specifiy the unicode of the markers used, as latex will likely not preserve it during render. 
 
 Organisational questions:
 1. I would like to include the specification document next to my source code, i.e. publish it to GitHub. Is this possible?

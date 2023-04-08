@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */
 
+use Famoser\PolyasVerification\Receipt\RouteFactory;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
@@ -40,7 +41,7 @@ if (str_starts_with($_SERVER['REQUEST_URI'], '/api')) {
     $app->addErrorMiddleware($isDevMode, true, true, $logger);
 
     $app->group('/api', function (RouteCollectorProxy $route) {
-        // TODO
+        RouteFactory::addRoutes($route);
     });
     $app->run();
     exit;

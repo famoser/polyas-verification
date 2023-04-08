@@ -12,6 +12,7 @@
 namespace Famoser\PolyasVerification\Test\Utils;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotEntry;
+use Famoser\PolyasVerification\Crypto\POLYAS\Receipt;
 use PHPUnit\Framework\TestCase;
 
 class POLYASTest extends TestCase
@@ -32,6 +33,16 @@ class POLYASTest extends TestCase
 
         $fingerprint = BallotEntry::createFingerprint($ballotEntry);
         $this->assertEquals($expectedFingerprint, $fingerprint);
+    }
+
+    public function testReceiptValidate(): void
+    {
+        $receiptPath = $this->getReceiptPath();
+
+        $validationResult = Receipt::validate($receiptPath);
+        $this->assertTrue($validationResult[Receipt::RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE]);
+        $this->assertFalse($validationResult[Receipt::SIGNATURE_VALID]);
+        $this->assertFalse($validationResult[Receipt::FINGERPRINT_REGISTERED]);
     }
 
     /**
@@ -61,5 +72,10 @@ class POLYASTest extends TestCase
     private function getBallotEntryFingerprint(): string
     {
         return trim(file_get_contents(__DIR__.'/resources/ballotEntry.json.fingerprint')); // @phpstan-ignore-line
+    }
+
+    private function getReceiptPath(): string
+    {
+        return __DIR__.'/resources/receipt.pdf';
     }
 }
