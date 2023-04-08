@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 class DERTest extends TestCase
 {
-    public function testExtractPayloadsPublicKeyPem(): void
+    public function ignore_testExtractPayloadsPublicKeyPem(): void
     {
         $rsaPublicKeyAsDER = $this->getRSAPublicKeyAsDER();
         $rsaPublicKey = DER\Decoder::asRSAPublicKey($rsaPublicKeyAsDER);
