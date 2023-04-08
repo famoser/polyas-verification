@@ -33,8 +33,16 @@ The server needs to fulfil requirements specified in `composer.json`.
 1. (B.1, page 50) What is the hexadecimal representation of the `RECEIPT-VERIFICATION-KEY` RSA public key? I would propose to use PEM PUBLIC KEY representation, which is also what OpenSSL takes as an argument (see https://www.rfc-editor.org/rfc/rfc7468#section-13, which in turn requires an ASN.1 SubjectPublicKeyInfo encoding https://www.rfc-editor.org/rfc/rfc5280#section-4.1.2.7).
 2. (B.2, page 52) The example represents `proofOfKnowledgeOfEncryptionCoins.[].c`, `proofOfKnowledgeOfEncryptionCoins.[].f` and , `proofOfKnowledgeOfPrivateCredential.c` within 21 bytes (with the first byte being 0); but `proofOfKnowledgeOfPrivateCredential.f` within 20 bytes (with no first zero-byte). Could you please clarify what the logic here is?
 3. (B.2, page 52) The conventions in Section A.1.2 refer to SHA512, while SHA256 is specified to be used.
+4. Could you please provide complete test data; e.g. a full run of the protocol including receipts?
+5. How will the boards be made accessible, and when/how can this be tested?
 
 Suggestions:
 1. As it is designed right now, each ballot has to be hashed to find the one ballot with the correct fingerprint. How about including the fingerprint in the ballot entry, too? The second device can still verify that the fingerprint actually corresponds to the ballot, while it is much faster to discover the correct ballot. 
 2. The different formats needed for the ballot entry digest (label = UTF-8, ciphertext = byte array, proof of knowledge = long number) increase burden of implementation, and possibly lead to hard-to-debug mistakes. Would it be instead possible to simply everywhere provide hex?
 
+Organisational questions:
+1. I would like to include the specification document next to my source code, i.e. publish it to GitHub. Is this possible?
+2. There are a couple of typos in the specification document. I'd prefer to fix them directly and create a PR against the documentation; saves time on both ends. Is this possible? 
+3. Where is the reference implementation for the universal verifiability procedure?
+4. Is there a computational and/or symbolic proof over the presented protocol?
+5. Any particular reason why secp256k1 is chosen, and not ed25519?
