@@ -6,6 +6,32 @@
 
 Allows to verify POLYAS 3.0 (Version 1.3, February 20, 2023). This is a work in progress. 
 
+<table>
+    <tbody>
+        <tr>
+            <td>Start</td>
+            <td>Valid receipt</td>
+        </tr>
+        <tr>
+            <td><img src="assets/01_start_view.png?raw=true" alt="Screenshot Start"></td>
+            <td><img src="assets/02_receipt_valid.png?raw=true" alt="Screenshot Receipt valid"></td>
+        </tr>
+    </tbody>
+</table>
+
+<table>
+    <tbody>
+        <tr>
+            <td>Start with help</td>
+            <td>Invalid receipt</td>
+        </tr>
+        <tr>
+            <td><img src="assets/03_start_view_with_help.png?raw=true" alt="Screenshot Start with expanded help"></td>
+            <td><img src="assets/04_receipt_invalid.png?raw=true" alt="Screenshot Receipt invalid"></td>
+        </tr>
+    </tbody>
+</table>
+
 ## Develop
 
 The backend is built using `php` (using the `slim` framework) and manages dependencies using `composer`. Quick start:
