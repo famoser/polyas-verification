@@ -20,6 +20,8 @@ data:
   files:
     - path: .env.local
       required: true
+    - path: var/config/election.json
+      required: true
 
 scripts:
   build:

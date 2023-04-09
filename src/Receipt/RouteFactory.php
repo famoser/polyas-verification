@@ -26,6 +26,13 @@ class RouteFactory
 {
     public static function addRoutes(RouteCollectorProxy $route): void
     {
+        $route->get('/election', function (Request $request, Response $response, array $args) {
+            $path = PathHelper::ELECTION_JSON_FILE;
+            $content = Storage::readJsonFile($path);
+
+            return SlimExtensions::createJsonResponse($request, $response, $content);
+        });
+
         $route->post('/receipt', function (Request $request, Response $response, array $args) {
             /** @var UploadedFile|false $file */
             $file = current($request->getUploadedFiles());
@@ -33,9 +40,10 @@ class RouteFactory
                 throw new HttpBadRequestException($request, 'No file uploaded');
             }
             RequestValidatorExtensions::checkPdfFileUploadSuccessful($request, $file);
-            $filename = Storage::writeUploadedFile(PathHelper::VAR_TRANSIENT_DIR, $file);
+            $path = Storage::writeUploadedFile(PathHelper::VAR_TRANSIENT_DIR, $file);
 
-            $verificationResult = Receipt::verify(PathHelper::VAR_TRANSIENT_DIR.DIRECTORY_SEPARATOR.$filename);
+            $verificationResult = Receipt::verify($path);
+            Storage::removeFile($path);
 
             return SlimExtensions::createJsonResponse($request, $response, $verificationResult);
         });

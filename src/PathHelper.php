@@ -13,5 +13,7 @@ namespace Famoser\PolyasVerification;
 
 class PathHelper
 {
-    public const VAR_TRANSIENT_DIR = __DIR__.'/../var/transient';
+    public const VAR_DIR = __DIR__.'/../var';
+    public const VAR_TRANSIENT_DIR = self::VAR_DIR.'/transient';
+    public const ELECTION_JSON_FILE = self::VAR_DIR.'/config/election.json';
 }

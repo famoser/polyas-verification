@@ -22,8 +22,30 @@ class Storage
         }
 
         $filename = uniqid().'.pdf';
-        $file->moveTo($dir.'/'.$filename);
+        $path = $dir.DIRECTORY_SEPARATOR.$filename;
 
-        return $filename;
+        $file->moveTo($path);
+
+        return $path;
+    }
+
+    /**
+     * @return string[]
+     *
+     * @throws \Exception
+     */
+    public static function readJsonFile(string $path): array
+    {
+        $content = file_get_contents($path);
+        if (!$content) {
+            throw new \Exception('File not found');
+        }
+
+        return json_decode($content, true);
+    }
+
+    public static function removeFile(string $path): void
+    {
+        unlink($path);
     }
 }

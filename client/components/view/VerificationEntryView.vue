@@ -44,8 +44,3 @@ const showBody = computed(() => expanded.value || !props.success)
     </div>
   </div>
 </template>
-
-<style scoped>
-.card {
-}
-</style>

@@ -9,13 +9,25 @@
       "title": "Rezept hochladen",
       "processing": "Rezept wird verarbeitet...",
       "privacy_is_safeguarded": "Ihr Stimmgeheimnis bleibt dadurch gewahrt.",
-      "privacy_is_safeguarded_help": "Das Rezept enthält nur die verschlüsselte Stimme, daher erfahren wir die Stimmabgabe nicht. Dennoch können wir validieren, ob das Wahltool Ihre Stimme registriert hat."
+      "privacy_is_safeguarded_help": "Das Rezept enthält nur die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob der POLYAS Server diese verschlüsselte Stimme registriert hat."
     }
   },
   "layout": {
     "header_jumbotron": {
       "title": "POLYAS Verifizierung",
-      "description": "Stellen Sie sicher, dass der Server Ihre Stimme empfangen hat."
+      "description": "Hat der POLYAS Server Ihre Stimme wirklich registriert?"
+    },
+    "faq": {
+      "verification_target": {
+        "question": "Was wird durch die Verifizierung hier erreicht?",
+        "verifies_received_at_server": "Die Verifizierung stellt sicher, dass Ihre verschlüsselte Stimme auf dem POLYAS Server registriert ist. Damit sind die Voraussetzungen gegeben, dass Ihre verschlüsselte Stimme im Wahlresultat auch wirklich berücksichtigt wird.",
+        "must_trust_device": "Die Verifizierung hier kann jedoch nicht feststellen, ob Ihre verschlüsselte Stimme wirklich Ihrem Wunsch entspricht. Dazu müssen Sie dem Wahlgerät (dem Browser oder Smartphone, mit dem Sie gewählt haben) vertrauen.",
+        "must_trust_servers": "Die Verifizierung hier kann auch nicht festellen, ob Ihre verschlüsselte Stimme auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem POLYAS Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten."
+      },
+      "verification_fails": {
+        "question": "Was tun, wenn die Verifizierung hier fehlschlägt?",
+        "try_again_or_complain": "Stellen Sie sicher, dass Sie das Rezept der oben eingeblendeten Wahl verwenden, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an das Wahlkomitee."
+      }
     }
   },
   "view": {
@@ -34,16 +46,16 @@
       },
       "SIGNATURE_VALID": {
         "title": "Verschlüsselte Stimme valid signiert",
-        "description": "Überprüft ob die gefundene Signatur korrekt über die verschlüsselte Stimme erstellt wurde.",
-        "success": "Signatur der verschlüsselten Stimme ist valid.",
-        "failed": "Signatur der verschlüsselten Stimme ist invalid.",
-        "failed_hint": "Bitte stellen Sie sicher, dass das Rezept für die oben erwähnte Wahl ausgestellt wurde."
+        "description": "Überprüft, ob die gefundene Signatur korrekt über die verschlüsselte Stimme erstellt wurde.",
+        "success": "Die Signatur der verschlüsselten Stimme ist valid.",
+        "failed": "Die Signatur der verschlüsselten Stimme ist invalid.",
+        "failed_hint": "Bitte stellen Sie sicher, dass das Rezept für die oben eingeblendete Wahl ausgestellt wurde."
       },
       "FINGERPRINT_REGISTERED": {
         "title": "Verschlüsselte Stimme in POLYAS registriert",
-        "description": "Stellt sicher dss die verschlüsselte Stimme exakt so auf den POLYAS Servern gespeichert ist.",
-        "success": "POLYAS Server speichern diese Stimme.",
-        "failed": "POLYAS Server haben keinen Eintrag für die verschlüsselte Stimme.",
+        "description": "Stellt sicher, dass die verschlüsselte Stimme exakt so auf den POLYAS Servern registriert ist.",
+        "success": "Der POLYAS Server kennt diese verschlüsselte Stimme.",
+        "failed": "Der POLYAS Server hat keinen Eintrag für diese verschlüsselte Stimme.",
         "failed_hint": "Bitte versuchen Sie es ein wenig später noch einmal."
       }
     }

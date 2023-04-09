@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { displayError } from './notifiers'
 import type { VerificationResult } from '@/components/domain/VerificationResult'
+import type { Election } from '@/components/domain/Election'
 
 let baseUrl = ''
 if (window.location.hostname === 'localhost') {
@@ -31,7 +32,11 @@ const api = {
       }
     )
   },
-  postReceipt: async function (receipt: File): Promise<VerificationResult> {
+  getElection: async function () {
+    const response = await axios.get('/api/election')
+    return response.data as Election
+  },
+  postReceipt: async function (receipt: File) {
     const data = new FormData()
     data.append('receipt', receipt)
     const response = await axios.post('/api/receipt', data)
