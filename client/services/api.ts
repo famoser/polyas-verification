@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { displayError } from './notifiers'
+import type { VerificationResult } from '@/components/domain/VerificationResult'
 
 let baseUrl = ''
 if (window.location.hostname === 'localhost') {
@@ -30,10 +31,11 @@ const api = {
       }
     )
   },
-  postReceipt: function (receipt: File) {
+  postReceipt: async function (receipt: File): Promise<VerificationResult> {
     const data = new FormData()
     data.append('receipt', receipt)
-    return axios.post('/api/receipt', data)
+    const response = await axios.post('/api/receipt', data)
+    return response.data as VerificationResult
   }
 }
 

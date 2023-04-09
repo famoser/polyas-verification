@@ -35,9 +35,9 @@ class RouteFactory
             RequestValidatorExtensions::checkPdfFileUploadSuccessful($request, $file);
             $filename = Storage::writeUploadedFile(PathHelper::VAR_TRANSIENT_DIR, $file);
 
-            $validationResult = Receipt::validate(PathHelper::VAR_TRANSIENT_DIR.DIRECTORY_SEPARATOR.$filename);
+            $verificationResult = Receipt::verify(PathHelper::VAR_TRANSIENT_DIR.DIRECTORY_SEPARATOR.$filename);
 
-            return SlimExtensions::createJsonResponse($request, $response, $validationResult);
+            return SlimExtensions::createJsonResponse($request, $response, $verificationResult);
         });
     }
 }

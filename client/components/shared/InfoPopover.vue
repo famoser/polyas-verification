@@ -6,7 +6,7 @@ defineProps<{
 }>()
 
 const iconHovered = ref(false)
-const popoverHovered = ref(true)
+const popoverHovered = ref(false)
 </script>
 
 <template>

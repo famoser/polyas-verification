@@ -7,6 +7,7 @@
   "action": {
     "upload_receipt": {
       "title": "Rezept hochladen",
+      "processing": "Rezept wird verarbeitet...",
       "privacy_is_safeguarded": "Ihr Stimmgeheimnis bleibt dadurch gewahrt.",
       "privacy_is_safeguarded_help": "Das Rezept enthält nur die verschlüsselte Stimme, daher erfahren wir die Stimmabgabe nicht. Dennoch können wir validieren, ob das Wahltool Ihre Stimme registriert hat."
     }
@@ -15,6 +16,36 @@
     "header_jumbotron": {
       "title": "POLYAS Verifizierung",
       "description": "Stellen Sie sicher, dass der Server Ihre Stimme empfangen hat."
+    }
+  },
+  "view": {
+    "verification_result_view": {
+      "reset": "Ansicht zurücksetzen"
+    }
+  },
+  "domain": {
+    "verification_result": {
+      "RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE": {
+        "title": "Rezept enthält die verschlüsselte Stimme",
+        "description": "Durchsucht das Rezept (die .pdf Datei) nach der verschlüsselten Stimme und einer Signatur davon.",
+        "success": "Verschlüsselte Stimme und Signatur im Rezept gefunden.",
+        "failed": "Verschlüsselte Stimme oder Signatur nicht im Rezept gefunden.",
+        "failed_hint": "Bitte stellen Sie sicher, dass Sie die richtige Datei ausgewählt haben."
+      },
+      "SIGNATURE_VALID": {
+        "title": "Verschlüsselte Stimme valid signiert",
+        "description": "Überprüft ob die gefundene Signatur korrekt über die verschlüsselte Stimme erstellt wurde.",
+        "success": "Signatur der verschlüsselten Stimme ist valid.",
+        "failed": "Signatur der verschlüsselten Stimme ist invalid.",
+        "failed_hint": "Bitte stellen Sie sicher, dass das Rezept für die oben erwähnte Wahl ausgestellt wurde."
+      },
+      "FINGERPRINT_REGISTERED": {
+        "title": "Verschlüsselte Stimme in POLYAS registriert",
+        "description": "Stellt sicher dss die verschlüsselte Stimme exakt so auf den POLYAS Servern gespeichert ist.",
+        "success": "POLYAS Server speichern diese Stimme.",
+        "failed": "POLYAS Server haben keinen Eintrag für die verschlüsselte Stimme.",
+        "failed_hint": "Bitte versuchen Sie es ein wenig später noch einmal."
+      }
     }
   }
 }

@@ -22,24 +22,24 @@ class Receipt
     /**
      * @return bool[]
      */
-    public static function validate(string $path): array
+    public static function verify(string $path): array
     {
-        $validationResult = [
+        $verificationResult = [
             self::RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE => false,
             self::SIGNATURE_VALID => false,
             self::FINGERPRINT_REGISTERED => false,
         ];
 
         if (!self::getFingerprintAndSignature($path, $fingerprint, $signature)) {
-            return $validationResult;
+            return $verificationResult;
         }
-        $validationResult[self::RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE] = true;
+        $verificationResult[self::RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE] = true;
 
         // TODO check signature valid
 
         // TODO check fingerprint registered at POLYAS
 
-        return $validationResult;
+        return $verificationResult;
     }
 
     private static function getFingerprintAndSignature(string $path, ?string &$fingerprint, ?string &$signature): bool

@@ -6,3 +6,7 @@ $enable-shadows: true;
 @import 'bootstrap/scss/bootstrap.scss';
 @import 'noty/src/noty.scss';
 @import 'noty/src/themes/bootstrap-v4.scss';
+
+.bg-body-tertiary {
+  background: #f5f5f5;
+}

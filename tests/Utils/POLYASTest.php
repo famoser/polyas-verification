@@ -35,11 +35,11 @@ class POLYASTest extends TestCase
         $this->assertEquals($expectedFingerprint, $fingerprint);
     }
 
-    public function testReceiptValidate(): void
+    public function testReceiptVerify(): void
     {
         $receiptPath = $this->getReceiptPath();
 
-        $validationResult = Receipt::validate($receiptPath);
+        $validationResult = Receipt::verify($receiptPath);
         $this->assertTrue($validationResult[Receipt::RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE]);
         $this->assertFalse($validationResult[Receipt::SIGNATURE_VALID]);
         $this->assertFalse($validationResult[Receipt::FINGERPRINT_REGISTERED]);
