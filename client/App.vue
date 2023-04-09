@@ -26,7 +26,7 @@ api.getElection().then((result) => (election.value = result))
       <HeaderJumbotron />
       <ElectionView class="my-5" v-if="election" :election="election" />
       <UploadReceipt v-if="!verificationResult" @verification-completed="verificationResult = $event" />
-      <VerificationResultView v-else :result="verificationResult" @reset="verificationResult = null" />
+      <VerificationResultView v-else :result="verificationResult" @reset="verificationResult = undefined" />
       <div class="my-5">&nbsp;</div>
       <VerificationExplanation />
     </div>
