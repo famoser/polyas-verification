@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
+    "dev-server": "vite",
     "build": "vite build",
     "lint": "eslint client --ext .vue,.js --fix",
     "lint:check": "eslint client --ext .vue,.js",
