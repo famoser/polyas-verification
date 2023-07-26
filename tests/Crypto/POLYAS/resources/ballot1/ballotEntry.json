@@ -1,7 +1,7 @@
 {
   "publicLabel": "A",
   "publicCredential": "0205bf2e14496f68c0f86f6b313f210a9393edb083821dcc4f9914cab9c51c9f2e",
-  "voterId": "voter8",
+  "voterId": "0205bf2e14496f68c0f86f6b313f210a9393edb083821dcc4f9914cab9c51c9f2e",
   "ballot": {
     "encryptedChoice": {
       "ciphertexts": [

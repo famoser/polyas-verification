@@ -17,7 +17,7 @@ class BallotEntry
      * @param array{
      *     'publicLabel': string,
      *     'publicCredential': string,
-     *     'voterID': string,
+     *     'voterId': string,
      *     'ballot': array{
      *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
      *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
@@ -40,7 +40,7 @@ class BallotEntry
      * @param array{
      *     'publicLabel': string,
      *     'publicCredential': string,
-     *     'voterID': string,
+     *     'voterId': string,
      *     'ballot': array{
      *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
      *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
@@ -52,11 +52,11 @@ class BallotEntry
     {
         $publicLabel = $ballotEntry['publicLabel'];
         $publicCredential = $ballotEntry['publicCredential'];
-        $voterID = $ballotEntry['voterId'];
+        $voterId = $ballotEntry['voterId'];
 
-        $content = self::getStringHexLength4Bytes($publicLabel).bin2hex($publicLabel);
+        $content = self::getStringHexWithLength($publicLabel);
         $content .= self::getBytesHexLength4Bytes($publicCredential).$publicCredential;
-        $content .= self::getStringHexLength4Bytes($voterID).bin2hex($voterID);
+        $content .= self::getStringHexWithLength($voterId);
 
         $ballot = $ballotEntry['ballot'];
         $ciphertexts = $ballot['encryptedChoice']['ciphertexts'];
@@ -69,15 +69,15 @@ class BallotEntry
         $proofOfKnowledgeOfEncryptionCoins = $ballot['proofOfKnowledgeOfEncryptionCoins'];
         $content .= self::getCollectionHexLength4Bytes($proofOfKnowledgeOfEncryptionCoins);
         foreach ($proofOfKnowledgeOfEncryptionCoins as $proofOfKnowledgeOfEncryptionCoin) {
-            $cBytes = '00'.self::bcdechex($proofOfKnowledgeOfEncryptionCoin['c']);
-            $fBytes = '00'.self::bcdechex($proofOfKnowledgeOfEncryptionCoin['f']);
+            $cBytes = self::bcdechex($proofOfKnowledgeOfEncryptionCoin['c']);
+            $fBytes = self::bcdechex($proofOfKnowledgeOfEncryptionCoin['f']);
 
             $content .= self::getBytesHexLength4Bytes($cBytes).$cBytes;
             $content .= self::getBytesHexLength4Bytes($fBytes).$fBytes;
         }
 
         $proofOfKnowledgeOfPrivateCredential = $ballot['proofOfKnowledgeOfPrivateCredential'];
-        $cBytes = '00'.self::bcdechex($proofOfKnowledgeOfPrivateCredential['c']);
+        $cBytes = self::bcdechex($proofOfKnowledgeOfPrivateCredential['c']);
         $fBytes = self::bcdechex($proofOfKnowledgeOfPrivateCredential['f']);
 
         $content .= self::getBytesHexLength4Bytes($cBytes).$cBytes;
@@ -91,9 +91,11 @@ class BallotEntry
         return self::getHexLength4Bytes((int) (strlen($content) / 2));
     }
 
-    private static function getStringHexLength4Bytes(string $content): string
+    private static function getStringHexWithLength(string $content): string
     {
-        return self::getHexLength4Bytes(mb_strlen($content));
+        $content = bin2hex($content);
+
+        return self::getHexLength4Bytes((int) (strlen($content) / 2)).$content;
     }
 
     /**
@@ -112,6 +114,15 @@ class BallotEntry
             $hex = dechex($last).$hex;
             $dec = bcdiv(bcsub($dec, (string) $last), '16');
         } while ($dec > 0);
+
+        if (1 === strlen($hex) % 2) {
+            $hex = '0'.$hex;
+        }
+
+        // TODO verify this is actually what happens
+        if ($hex[0] > '7') {
+            $hex = '00'.$hex;
+        }
 
         return $hex;
     }
