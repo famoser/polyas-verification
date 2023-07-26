@@ -105,6 +105,6 @@ class BallotEntryTest extends TestCase
 
     private function getBallotEntryFingerprint(string $ballot): string
     {
-        return trim(file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json.fingerprint')); // @phpstan-ignore-line
+        return trim(file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json.deviceParameters.json.fingerprint')); // @phpstan-ignore-line
     }
 }
