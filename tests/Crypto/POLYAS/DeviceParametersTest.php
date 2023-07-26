@@ -57,6 +57,7 @@ class DeviceParametersTest extends TestCase
         $publicKeyPem = PEM\Encoder::encode('PUBLIC KEY', $verificationKeyBin);
         $publicKey = openssl_get_publickey($publicKeyPem);
         $this->assertNotEquals(false, $publicKey);
+        openssl_error_string(); // need this to empty the openssl error queue due to #11054
     }
 
     /**

@@ -11,7 +11,6 @@
 
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
-use Famoser\PolyasVerification\Crypto\DER\Decoder;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotEntry;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -117,7 +116,7 @@ class BallotEntryTest extends TestCase
 
     private function getBallotEntryFingerprint(string $ballot): string
     {
-        return trim(file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json.deviceParameters.json.fingerprint')); // @phpstan-ignore-line
+        return trim(file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json.fingerprint')); // @phpstan-ignore-line
     }
 
     /**
@@ -127,7 +126,7 @@ class BallotEntryTest extends TestCase
      */
     private function getTraceSecondDeviceInitialMsg(string $ballot): array
     {
-        $json = file_get_contents(__DIR__ . '/resources/'.$ballot.'/trace/secondDeviceInitialMsg.json');
+        $json = file_get_contents(__DIR__.'/resources/'.$ballot.'/trace/secondDeviceInitialMsg.json');
 
         return json_decode($json, true); // @phpstan-ignore-line
     }
@@ -141,7 +140,7 @@ class BallotEntryTest extends TestCase
      */
     private function getDeviceParameters(string $ballot): array
     {
-        $json = file_get_contents(__DIR__ . '/resources/'.$ballot.'/deviceParameters/deviceParameters.json');
+        $json = file_get_contents(__DIR__.'/resources/'.$ballot.'/deviceParameters/deviceParameters.json');
 
         return json_decode($json, true); // @phpstan-ignore-line
     }
