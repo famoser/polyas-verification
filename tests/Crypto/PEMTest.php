@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Famoser\PolyasVerification\Test\Utils;
+namespace Famoser\PolyasVerification\Test\Crypto;
 
 use Famoser\PolyasVerification\Crypto\PEM;
 use Famoser\PolyasVerification\Crypto\RSA;
