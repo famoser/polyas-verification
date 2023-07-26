@@ -68,7 +68,7 @@ class DeviceParametersTest extends TestCase
      */
     private function getDeviceParameters(): array
     {
-        $ballotEntryJson = file_get_contents(__DIR__.'/resources/deviceParameters/deviceParameters.json');
+        $ballotEntryJson = file_get_contents(__DIR__ . '/resources/ballot1/deviceParameters/deviceParameters.json');
 
         return json_decode($ballotEntryJson, true); // @phpstan-ignore-line
     }
@@ -80,7 +80,7 @@ class DeviceParametersTest extends TestCase
      */
     private function getTraceSecondDeviceInitialMsg(): array
     {
-        $ballotEntryJson = file_get_contents(__DIR__.'/resources/trace/secondDeviceInitialMsg.json');
+        $ballotEntryJson = file_get_contents(__DIR__ . '/resources/ballot1/trace/secondDeviceInitialMsg.json');
 
         return json_decode($ballotEntryJson, true); // @phpstan-ignore-line
     }
@@ -88,7 +88,7 @@ class DeviceParametersTest extends TestCase
     private function getDeviceParametersFingerprint(): string
     {
         /** @var string $fileContent */
-        $fileContent = file_get_contents(__DIR__.'/resources/deviceParameters/deviceParameters.json.fingerprint');
+        $fileContent = file_get_contents(__DIR__.'/resources/ballot1/deviceParameters/deviceParameters.json.fingerprint');
 
         return trim($fileContent);
     }
