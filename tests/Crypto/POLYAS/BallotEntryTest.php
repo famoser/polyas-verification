@@ -11,6 +11,7 @@
 
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
+use Famoser\PolyasVerification\Crypto\DER\Decoder;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotEntry;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -75,6 +76,16 @@ class BallotEntryTest extends TestCase
         $this->assertEquals($expectedFingerprint, $fingerprint);
     }
 
+    public function testBallotEntrySignature(): void
+    {
+        $ballotEntry = $this->getBallotEntry('ballot1');
+        $signatureHex = $this->getTraceSecondDeviceInitialMsg()['signatureHex'];
+        $verificationKey = $this->getDeviceParameters()['verificationKey'];
+
+        $this->expectNotToPerformAssertions();
+        BallotEntry::verifySignature($ballotEntry, $signatureHex, $verificationKey);
+    }
+
     /**
      * @return array{
      *     'publicLabel': string,
@@ -106,5 +117,31 @@ class BallotEntryTest extends TestCase
     private function getBallotEntryFingerprint(string $ballot): string
     {
         return trim(file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json.deviceParameters.json.fingerprint')); // @phpstan-ignore-line
+    }
+
+    /**
+     * @return array{
+     *     'signatureHex': string,
+     * }
+     */
+    private function getTraceSecondDeviceInitialMsg(): array
+    {
+        $json = file_get_contents(__DIR__.'/resources/trace/secondDeviceInitialMsg.json');
+
+        return json_decode($json, true); // @phpstan-ignore-line
+    }
+
+    /**
+     * @return array{
+     *     'publicKey': string,
+     *     'verificationKey': string,
+     *     'ballots': mixed
+     * }
+     */
+    private function getDeviceParameters(): array
+    {
+        $json = file_get_contents(__DIR__.'/resources/deviceParameters/deviceParameters.json');
+
+        return json_decode($json, true); // @phpstan-ignore-line
     }
 }

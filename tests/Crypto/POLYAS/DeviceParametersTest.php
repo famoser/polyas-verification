@@ -11,6 +11,8 @@
 
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
+use Famoser\PolyasVerification\Crypto\DER;
+use Famoser\PolyasVerification\Crypto\PEM;
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
 use PHPUnit\Framework\TestCase;
 
@@ -18,7 +20,7 @@ class DeviceParametersTest extends TestCase
 {
     public function testFingerprint(): void
     {
-        $deviceParametersPayload = $this->getExamplePayload();
+        $deviceParametersPayload = $this->getTraceSecondDeviceInitialMsg();
         $expectedFingerprint = $this->getDeviceParametersFingerprint();
 
         $fingerprint = DeviceParameters::createJsonFingerprint($deviceParametersPayload['secondDeviceParametersJson']);
@@ -33,7 +35,28 @@ class DeviceParametersTest extends TestCase
         $expectedJson = $deviceParametersPayload['secondDeviceParametersJson'];
         $actualJson = json_encode($this->getDeviceParameters());
         $this->assertNotEquals($expectedJson, $actualJson);
-        $this->assertEquals($expectedJson, str_replace('"value":[]', '"value":{}', $actualJson));
+
+        $correctedJson = str_replace('"value":[]', '"value":{}', $actualJson); // @phpstan-ignore-line
+        $this->assertEquals($expectedJson, $correctedJson);
+    }
+
+    public function testVerificationKeyEncoding(): void
+    {
+        $verificationKey = $this->getDeviceParameters()['verificationKey'];
+
+        /** @var string $verificationKeyBin */
+        $verificationKeyBin = hex2bin($verificationKey);
+        $publicKey = DER\Decoder::asRSAPublicKey($verificationKeyBin);
+
+        $nBitLength = strlen(gmp_strval($publicKey->getN(), 2));
+        $this->assertEquals(2048, $nBitLength);
+
+        $eBitLength = strlen(gmp_strval($publicKey->getE(), 2));
+        $this->assertEquals(17, $eBitLength);
+
+        $publicKeyPem = PEM\Encoder::encode('PUBLIC KEY', $verificationKeyBin);
+        $publicKey = openssl_get_publickey($publicKeyPem);
+        $this->assertNotEquals(false, $publicKey);
     }
 
     /**
@@ -55,9 +78,9 @@ class DeviceParametersTest extends TestCase
      *     'secondDeviceParametersJson': string,
      * }
      */
-    private function getExamplePayload(): array
+    private function getTraceSecondDeviceInitialMsg(): array
     {
-        $ballotEntryJson = file_get_contents(__DIR__.'/resources/deviceParameters/examplePayload.json');
+        $ballotEntryJson = file_get_contents(__DIR__.'/resources/trace/secondDeviceInitialMsg.json');
 
         return json_decode($ballotEntryJson, true); // @phpstan-ignore-line
     }

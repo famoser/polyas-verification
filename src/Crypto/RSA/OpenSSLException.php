@@ -23,31 +23,32 @@ class OpenSSLException extends \RuntimeException
 
     public static function throwIfErrors(string ...$whitelist): void
     {
-        $errors = self::readErrors();
-        $remainingErrors = array_diff($errors, $whitelist);
-        if (count($remainingErrors) > 0) {
-            throw new self($remainingErrors);
+        $errors = self::readErrors($whitelist);
+        if (count($errors) > 0) {
+            throw new self($errors);
         }
     }
 
-    public static function createWithErrors(string $message): OpenSSLException
+    public static function createWithErrors(string $message, string ...$whitelist): OpenSSLException
     {
-        $errors = self::readErrors();
+        $errors = self::readErrors($whitelist);
         $errors[] = $message;
 
         return new self($errors);
     }
 
     /**
+     * @param string[] $whitelist
+     *
      * @return string[]
      */
-    private static function readErrors(): array
+    private static function readErrors(array $whitelist): array
     {
         $errors = [];
         while ($error = openssl_error_string()) {
             $errors[] = $error;
         }
 
-        return $errors;
+        return array_diff($errors, $whitelist);
     }
 }
