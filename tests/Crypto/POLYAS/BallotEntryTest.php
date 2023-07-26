@@ -11,7 +11,9 @@
 
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
+use Famoser\PolyasVerification\Crypto\BCMATH\Hex;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotEntry;
+use Famoser\PolyasVerification\Crypto\RSA\OpenSSLException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -40,7 +42,7 @@ class BallotEntryTest extends TestCase
     #[DataProvider('bcdecProvider')]
     public function testBallotEntryBCDEC(string $dec, string $hex): void
     {
-        $actualHex = BallotEntry::bcdechex($dec);
+        $actualHex = BallotEntry::bcdechexFixed($dec);
         $this->assertEquals($hex, $actualHex);
     }
 
@@ -75,14 +77,14 @@ class BallotEntryTest extends TestCase
         $this->assertEquals($expectedFingerprint, $fingerprint);
     }
 
-    public function testBallotEntrySignature(): void
+    public function testBallotEntrySignatureDOESNOTVERIFY(): void
     {
         $ballot = 'ballot1';
         $ballotEntry = $this->getBallotEntry($ballot);
         $signatureHex = $this->getTraceSecondDeviceInitialMsg($ballot)['signatureHex'];
         $verificationKey = $this->getDeviceParameters($ballot)['verificationKey'];
 
-        $this->expectNotToPerformAssertions();
+        $this->expectException(OpenSSLException::class);
         BallotEntry::verifySignature($ballotEntry, $signatureHex, $verificationKey);
     }
 

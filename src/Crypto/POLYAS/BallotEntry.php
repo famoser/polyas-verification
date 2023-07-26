@@ -11,6 +11,7 @@
 
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
+use Famoser\PolyasVerification\Crypto\BCMATH\Hex;
 use Famoser\PolyasVerification\Crypto\PEM;
 use Famoser\PolyasVerification\Crypto\RSA\Signature;
 
@@ -37,8 +38,6 @@ class BallotEntry
         $publicKeyPem = PEM\Encoder::encode('PUBLIC KEY', $verificationKeyBin);
 
         $signature = hex2bin($signatureHex);
-        var_dump(strlen($signature));
-
         Signature::verifySHA256($data, $signature, $publicKeyPem);
     }
 
@@ -117,21 +116,37 @@ class BallotEntry
         $proofOfKnowledgeOfEncryptionCoins = $ballot['proofOfKnowledgeOfEncryptionCoins'];
         $content .= self::getCollectionHexLength4Bytes($proofOfKnowledgeOfEncryptionCoins);
         foreach ($proofOfKnowledgeOfEncryptionCoins as $proofOfKnowledgeOfEncryptionCoin) {
-            $cBytes = self::bcdechex($proofOfKnowledgeOfEncryptionCoin['c']);
-            $fBytes = self::bcdechex($proofOfKnowledgeOfEncryptionCoin['f']);
+            $cBytes = self::bcdechexFixed($proofOfKnowledgeOfEncryptionCoin['c']);
+            $fBytes = self::bcdechexFixed($proofOfKnowledgeOfEncryptionCoin['f']);
 
             $content .= self::getBytesHexLength4Bytes($cBytes).$cBytes;
             $content .= self::getBytesHexLength4Bytes($fBytes).$fBytes;
         }
 
         $proofOfKnowledgeOfPrivateCredential = $ballot['proofOfKnowledgeOfPrivateCredential'];
-        $cBytes = self::bcdechex($proofOfKnowledgeOfPrivateCredential['c']);
-        $fBytes = self::bcdechex($proofOfKnowledgeOfPrivateCredential['f']);
+        $cBytes = self::bcdechexFixed($proofOfKnowledgeOfPrivateCredential['c']);
+        $fBytes = self::bcdechexFixed($proofOfKnowledgeOfPrivateCredential['f']);
 
         $content .= self::getBytesHexLength4Bytes($cBytes).$cBytes;
         $content .= self::getBytesHexLength4Bytes($fBytes).$fBytes;
 
         return $content;
+    }
+
+    public static function bcdechexFixed(string $dec): string
+    {
+        $hex = Hex::bcdechex($dec);
+
+        if (1 === strlen($hex) % 2) {
+            $hex = '0'.$hex;
+        }
+
+        // TODO verify this is actually what happens
+        if ($hex[0] > '7') {
+            $hex = '00'.$hex;
+        }
+
+        return $hex;
     }
 
     private static function getBytesHexLength4Bytes(string $content): string
@@ -152,27 +167,6 @@ class BallotEntry
     private static function getCollectionHexLength4Bytes(array $collection): string
     {
         return self::getHexLength4Bytes(count($collection));
-    }
-
-    public static function bcdechex(string $dec): string
-    {
-        $hex = '';
-        do {
-            $last = (int) bcmod($dec, '16');
-            $hex = dechex($last).$hex;
-            $dec = bcdiv(bcsub($dec, (string) $last), '16');
-        } while ($dec > 0);
-
-        if (1 === strlen($hex) % 2) {
-            $hex = '0'.$hex;
-        }
-
-        // TODO verify this is actually what happens
-        if ($hex[0] > '7') {
-            $hex = '00'.$hex;
-        }
-
-        return $hex;
     }
 
     private static function getHexLength4Bytes(int $length): string
