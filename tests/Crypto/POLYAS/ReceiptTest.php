@@ -29,6 +29,6 @@ class ReceiptTest extends TestCase
 
     private function getReceiptPath(): string
     {
-        return __DIR__.'/resources/receipt.pdf';
+        return __DIR__ . '/resources/ballot0/receipt.pdf';
     }
 }

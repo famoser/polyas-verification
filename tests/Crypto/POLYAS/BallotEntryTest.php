@@ -78,9 +78,10 @@ class BallotEntryTest extends TestCase
 
     public function testBallotEntrySignature(): void
     {
-        $ballotEntry = $this->getBallotEntry('ballot1');
-        $signatureHex = $this->getTraceSecondDeviceInitialMsg()['signatureHex'];
-        $verificationKey = $this->getDeviceParameters()['verificationKey'];
+        $ballot = 'ballot1';
+        $ballotEntry = $this->getBallotEntry($ballot);
+        $signatureHex = $this->getTraceSecondDeviceInitialMsg($ballot)['signatureHex'];
+        $verificationKey = $this->getDeviceParameters($ballot)['verificationKey'];
 
         $this->expectNotToPerformAssertions();
         BallotEntry::verifySignature($ballotEntry, $signatureHex, $verificationKey);
@@ -124,9 +125,9 @@ class BallotEntryTest extends TestCase
      *     'signatureHex': string,
      * }
      */
-    private function getTraceSecondDeviceInitialMsg(): array
+    private function getTraceSecondDeviceInitialMsg(string $ballot): array
     {
-        $json = file_get_contents(__DIR__.'/resources/trace/secondDeviceInitialMsg.json');
+        $json = file_get_contents(__DIR__ . '/resources/'.$ballot.'/trace/secondDeviceInitialMsg.json');
 
         return json_decode($json, true); // @phpstan-ignore-line
     }
@@ -138,9 +139,9 @@ class BallotEntryTest extends TestCase
      *     'ballots': mixed
      * }
      */
-    private function getDeviceParameters(): array
+    private function getDeviceParameters(string $ballot): array
     {
-        $json = file_get_contents(__DIR__.'/resources/deviceParameters/deviceParameters.json');
+        $json = file_get_contents(__DIR__ . '/resources/'.$ballot.'/deviceParameters/deviceParameters.json');
 
         return json_decode($json, true); // @phpstan-ignore-line
     }
