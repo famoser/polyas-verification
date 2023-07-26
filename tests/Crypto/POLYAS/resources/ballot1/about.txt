@@ -1,0 +1,4 @@
+Example taken from:
+Polyas-Core3 Second Device Protocol
+Version 0.9
+April 19, 2023

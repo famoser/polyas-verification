@@ -52,7 +52,7 @@ class BallotEntry
     {
         $publicLabel = $ballotEntry['publicLabel'];
         $publicCredential = $ballotEntry['publicCredential'];
-        $voterID = $ballotEntry['voterID'];
+        $voterID = $ballotEntry['voterId'];
 
         $content = self::getStringHexLength4Bytes($publicLabel).bin2hex($publicLabel);
         $content .= self::getBytesHexLength4Bytes($publicCredential).$publicCredential;
@@ -66,7 +66,6 @@ class BallotEntry
             $content .= self::getBytesHexLength4Bytes($ciphertext['y']).$ciphertext['y'];
         }
 
-        // ends with 02cdfc6febebcd1d175859a6ea84018fe47c345f5e44fffddf97a492112f
         $proofOfKnowledgeOfEncryptionCoins = $ballot['proofOfKnowledgeOfEncryptionCoins'];
         $content .= self::getCollectionHexLength4Bytes($proofOfKnowledgeOfEncryptionCoins);
         foreach ($proofOfKnowledgeOfEncryptionCoins as $proofOfKnowledgeOfEncryptionCoin) {
