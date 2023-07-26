@@ -26,6 +26,15 @@ class PEMTest extends TestCase
         $this->assertEquals('PUBLIC KEY', $payloads[0]->getLabel());
     }
 
+    public function testEncoderReversesDecoding(): void
+    {
+        $publicKeyPem = $this->getRSAPublicKeyAsPEM();
+        $payloads = PEM\Decoder::decode($publicKeyPem);
+
+        $publicKeyPem2 = PEM\Encoder::encode($payloads[0]->getLabel(), $payloads[0]->getPayload());
+        $this->assertEquals($publicKeyPem, $publicKeyPem2);
+    }
+
     private function getRSAPublicKeyAsPEM(): string
     {
         $key = RSA\Key::generateRSAKey(RSATest::TEST_RSA_KEY_BITS);

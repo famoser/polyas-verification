@@ -11,6 +11,9 @@
 
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
+use Famoser\PolyasVerification\Crypto\PEM;
+use Famoser\PolyasVerification\Crypto\RSA\Signature;
+
 class BallotEntry
 {
     /**
@@ -25,7 +28,52 @@ class BallotEntry
      *      }
      *     } $ballotEntry
      */
+    public static function verifySignature(array $ballotEntry, string $signatureHex, string $verificationKeyHexX509): void
+    {
+        $data = self::createDigestBin($ballotEntry);
+
+        /** @var string $verificationKeyBin */
+        $verificationKeyBin = hex2bin($verificationKeyHexX509);
+        $publicKeyPem = PEM\Encoder::encode('PUBLIC KEY', $verificationKeyBin);
+
+        $signature = hex2bin($signatureHex);
+        var_dump(strlen($signature));
+
+        Signature::verifySHA256($data, $signature, $publicKeyPem);
+    }
+
+    /**
+     * @param array{
+     *     'publicLabel': string,
+     *     'publicCredential': string,
+     *     'voterId': string,
+     *     'ballot': array{
+     *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
+     *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
+     *          'proofOfKnowledgeOfPrivateCredential': array{'c': string, 'f': string},
+     *      }
+     *     } $ballotEntry
+     */
     public static function createFingerprint(array $ballotEntry): string
+    {
+        $digest = self::createDigestBin($ballotEntry);
+
+        return hash('sha256', $digest);
+    }
+
+    /**
+     * @param array{
+     *     'publicLabel': string,
+     *     'publicCredential': string,
+     *     'voterId': string,
+     *     'ballot': array{
+     *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
+     *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
+     *          'proofOfKnowledgeOfPrivateCredential': array{'c': string, 'f': string},
+     *      }
+     *     } $ballotEntry
+     */
+    public static function createDigestBin(array $ballotEntry): string
     {
         $digestHex = self::createDigestHex($ballotEntry);
         $digest = hex2bin($digestHex);
@@ -33,7 +81,7 @@ class BallotEntry
             throw new \RuntimeException('Cannot transform digest hex to binary');
         }
 
-        return hash('sha256', $digest);
+        return $digest;
     }
 
     /**

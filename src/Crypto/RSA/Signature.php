@@ -13,12 +13,18 @@ namespace Famoser\PolyasVerification\Crypto\RSA;
 
 class Signature
 {
+    /*
+     * Error is OK; fix will be released with next 8.3 version of php
+     * https://github.com/php/php-src/issues/11054
+     */
+    private const ERROR_PEM_PARSING = 'error:0480006C:PEM routines::no start line';
+
     public static function verifySHA256(string $data, string $signature, string $publicKey): void
     {
         if (!@openssl_verify($data, $signature, $publicKey, 'sha256WithRSAEncryption')) {
-            throw OpenSSLException::createWithErrors('signature invalid');
+            throw OpenSSLException::createWithErrors('signature invalid', self::ERROR_PEM_PARSING);
         }
-        OpenSSLException::throwIfErrors('error:0480006C:PEM routines::no start line');
+        OpenSSLException::throwIfErrors(self::ERROR_PEM_PARSING);
     }
 
     public static function signSHA256(string $data, \OpenSSLAsymmetricKey $key): string
