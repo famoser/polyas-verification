@@ -28,6 +28,12 @@ class DeviceParametersTest extends TestCase
         $deviceParametersFromPayload = json_decode($deviceParametersPayload['secondDeviceParametersJson'], true);
         $deviceParameters = $this->getDeviceParameters();
         $this->assertEquals($deviceParametersFromPayload, $deviceParameters);
+
+        // sanity check json serialization
+        $expectedJson = $deviceParametersPayload['secondDeviceParametersJson'];
+        $actualJson = json_encode($this->getDeviceParameters());
+        $this->assertNotEquals($expectedJson, $actualJson);
+        $this->assertEquals($expectedJson, str_replace('"value":[]', '"value":{}', $actualJson));
     }
 
     /**
