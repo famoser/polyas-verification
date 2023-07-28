@@ -43,4 +43,9 @@ class DeviceParameters
     {
         return $this->deviceParameters['verificationKey'];
     }
+
+    public function getPublicKey(): string
+    {
+        return $this->deviceParameters['publicKey'];
+    }
 }
