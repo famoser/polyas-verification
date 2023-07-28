@@ -13,7 +13,7 @@ namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
 use Famoser\PolyasVerification\Crypto\AES;
 
-class QRCodeDecryption
+readonly class QRCodeDecryption
 {
     public function __construct(private QRCode $QRCode, private BallotDigest $ballotDigest, private string $comSeedHex)
     {
