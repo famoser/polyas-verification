@@ -11,12 +11,12 @@
 
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
-use Famoser\PolyasVerification\Crypto\POLYAS\BallotEntry;
+use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigest;
 use Famoser\PolyasVerification\Crypto\POLYAS\Utils\Serialization;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class BallotEntryTest extends TestCase
+class BallotDigestTest extends TestCase
 {
     /**
      * @return string[][]
@@ -76,7 +76,7 @@ class BallotEntryTest extends TestCase
         $this->assertEquals($expectedFingerprint, $fingerprint);
     }
 
-    private function getBallotEntry(string $ballot): BallotEntry
+    private function getBallotEntry(string $ballot): BallotDigest
     {
         $ballotEntryJson = file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json');
 
@@ -92,7 +92,7 @@ class BallotEntryTest extends TestCase
          *     } $ballotEntryContent
          */
         $ballotEntryContent = json_decode($ballotEntryJson, true); // @phpstan-ignore-line
-        return new BallotEntry($ballotEntryContent);
+        return new BallotDigest($ballotEntryContent);
     }
 
     private function getBallotEntryDigest(string $ballot): string

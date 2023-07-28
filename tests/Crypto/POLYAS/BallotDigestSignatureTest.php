@@ -13,13 +13,13 @@ namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
 use Famoser\PolyasVerification\Crypto\DER;
 use Famoser\PolyasVerification\Crypto\PEM;
-use Famoser\PolyasVerification\Crypto\POLYAS\BallotEntry;
-use Famoser\PolyasVerification\Crypto\POLYAS\BallotEntrySignature;
+use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigest;
+use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigestSignature;
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
 use Famoser\PolyasVerification\Crypto\RSA\OpenSSLException;
 use PHPUnit\Framework\TestCase;
 
-class BallotEntrySignatureTest extends TestCase
+class BallotDigestSignatureTest extends TestCase
 {
     public function testBallotEntrySignatureDOESNOTVERIFY(): void
     {
@@ -50,16 +50,16 @@ class BallotEntrySignatureTest extends TestCase
         openssl_error_string(); // need this to empty the openssl error queue due to #11054
     }
 
-    private function getBallotEntrySignature(): BallotEntrySignature
+    private function getBallotEntrySignature(): BallotDigestSignature
     {
         $ballotEntry = $this->getBallotEntry();
         $signatureHex = $this->getTraceSecondDeviceInitialMsg()['signatureHex'];
         $verificationKey = $this->getDeviceParameters()->getVerificationKey();
 
-        return new BallotEntrySignature($ballotEntry, $signatureHex, $verificationKey);
+        return new BallotDigestSignature($ballotEntry, $signatureHex, $verificationKey);
     }
 
-    private function getBallotEntry(): BallotEntry
+    private function getBallotEntry(): BallotDigest
     {
         $ballotEntryJson = file_get_contents(__DIR__.'/resources/ballot1/ballotEntry.json');
 
@@ -76,7 +76,7 @@ class BallotEntrySignatureTest extends TestCase
          */
         $ballotEntryContent = json_decode($ballotEntryJson, true); // @phpstan-ignore-line
 
-        return new BallotEntry($ballotEntryContent);
+        return new BallotDigest($ballotEntryContent);
     }
 
     private function getDeviceParameters(): DeviceParameters

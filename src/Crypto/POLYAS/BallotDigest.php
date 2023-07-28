@@ -11,7 +11,7 @@
 
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
-readonly class BallotEntry
+readonly class BallotDigest
 {
     /**
      * @param array{
