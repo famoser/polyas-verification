@@ -13,14 +13,16 @@ namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
 readonly class KeyDerivation
 {
-    public function __construct(private int $length, private string $keyDerivationKey, private string $label, private string $context)
+    private const SHA512_LENGTH_IN_BYTES = 64;
+
+    public function __construct(private string $keyDerivationKey, private int $length, private string $label, private string $context)
     {
     }
 
     public function derive(): string
     {
         $result = '';
-        $iterations = ceil($this->length / 64); // length in bytes
+        $iterations = ceil($this->length / self::SHA512_LENGTH_IN_BYTES);
         for ($i = 0; $i < $iterations; ++$i) {
             $result .= $this->iterate($i);
         }
@@ -28,7 +30,7 @@ readonly class KeyDerivation
         return substr($result, 0, $this->length);
     }
 
-    public function iterate(int $iteration): string
+    private function iterate(int $iteration): string
     {
         $data = pack('N', $iteration);
         $data .= $this->label;

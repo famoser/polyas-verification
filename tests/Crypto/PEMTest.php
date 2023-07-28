@@ -37,8 +37,8 @@ class PEMTest extends TestCase
 
     private function getRSAPublicKeyAsPEM(): string
     {
-        $key = RSA\Key::generateRSAKey(RSATest::TEST_RSA_KEY_BITS);
+        $key = RSA\KeyFactory::generateRSAKey(RSATest::TEST_RSA_KEY_BITS);
 
-        return RSA\Key::getPublicKeyPem($key);
+        return RSA\KeyFactory::getPublicKeyPem($key);
     }
 }

@@ -24,9 +24,8 @@ class QRCode
     {
     }
 
-    public function decrypt(BallotDigest $ballotEntry, string $comSeed)
+    public function getCBase64(): string
     {
-        $hashBallot = $ballotEntry->createFingerprint();
-        $keyDerivationKey = $comSeed.$hashBallot;
+        return $this->content['c'];
     }
 }

@@ -61,9 +61,9 @@ class DeviceParametersTest extends TestCase
      */
     private function getTraceSecondDeviceInitialMsg(): array
     {
-        $ballotEntryJson = file_get_contents(__DIR__.'/resources/ballot1/trace/2_LoginResponse_initialMessage.json');
+        $ballotDigestJson = file_get_contents(__DIR__.'/resources/ballot1/trace/2_LoginResponse_initialMessage.json');
 
-        return json_decode($ballotEntryJson, true); // @phpstan-ignore-line
+        return json_decode($ballotDigestJson, true); // @phpstan-ignore-line
     }
 
     private function getDeviceParametersFingerprint(): string

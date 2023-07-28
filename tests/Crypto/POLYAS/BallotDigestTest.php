@@ -39,7 +39,7 @@ class BallotDigestTest extends TestCase
     }
 
     #[DataProvider('bcdecProvider')]
-    public function testBallotEntryBCDEC(string $dec, string $hex): void
+    public function testBallotDigestBCDEC(string $dec, string $hex): void
     {
         $actualHex = Serialization::bcdechexFixed($dec);
         $this->assertEquals($hex, $actualHex);
@@ -57,28 +57,30 @@ class BallotDigestTest extends TestCase
     }
 
     #[DataProvider('ballotProvider')]
-    public function testBallotEntryDigestedBytes(string $ballot): void
+    public function testBallotDigestDigestedBytes(string $ballot): void
     {
-        $ballotEntry = $this->getBallotEntry($ballot);
-        $expectedDigest = $this->getBallotEntryDigest($ballot);
+        $ballotDigest = $this->getBallotDigest($ballot);
+        $expectedDigest = $this->getBallotDigestDigest($ballot);
 
-        $digest = $ballotEntry->createDigestHex();
+        $digest = $ballotDigest->createDigestHex();
         $this->assertEquals($expectedDigest, $digest);
     }
 
     #[DataProvider('ballotProvider')]
-    public function testBallotEntryFingerprint(string $ballot): void
+    public function testBallotDigestFingerprint(string $ballot): void
     {
-        $ballotEntry = $this->getBallotEntry($ballot);
-        $expectedFingerprint = $this->getBallotEntryFingerprint($ballot);
+        $ballotDigest = $this->getBallotDigest($ballot);
+        $expectedFingerprint = $this->getBallotDigestFingerprint($ballot);
 
-        $fingerprint = $ballotEntry->createFingerprint();
-        $this->assertEquals($expectedFingerprint, $fingerprint);
+        $fingerprint = $ballotDigest->createFingerprint();
+
+        $fingerprintHex = bin2hex($fingerprint);
+        $this->assertEquals($expectedFingerprint, $fingerprintHex);
     }
 
-    private function getBallotEntry(string $ballot): BallotDigest
+    private function getBallotDigest(string $ballot): BallotDigest
     {
-        $ballotEntryJson = file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json');
+        $ballotDigestJson = file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json');
 
         /** @var array{
          *     'publicLabel': string,
@@ -89,13 +91,13 @@ class BallotDigestTest extends TestCase
          *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
          *          'proofOfKnowledgeOfPrivateCredential': array{'c': string, 'f': string},
          *      }
-         *     } $ballotEntryContent
+         *     } $ballotDigestContent
          */
-        $ballotEntryContent = json_decode($ballotEntryJson, true); // @phpstan-ignore-line
-        return new BallotDigest($ballotEntryContent);
+        $ballotDigestContent = json_decode($ballotDigestJson, true); // @phpstan-ignore-line
+        return new BallotDigest($ballotDigestContent);
     }
 
-    private function getBallotEntryDigest(string $ballot): string
+    private function getBallotDigestDigest(string $ballot): string
     {
         /** @var string $fileContent */
         $fileContent = file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json.bytesDigest');
@@ -104,7 +106,7 @@ class BallotDigestTest extends TestCase
         return trim($singleLine);
     }
 
-    private function getBallotEntryFingerprint(string $ballot): string
+    private function getBallotDigestFingerprint(string $ballot): string
     {
         return trim(file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json.fingerprint')); // @phpstan-ignore-line
     }

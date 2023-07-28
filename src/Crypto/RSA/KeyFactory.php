@@ -11,7 +11,7 @@
 
 namespace Famoser\PolyasVerification\Crypto\RSA;
 
-class Key
+class KeyFactory
 {
     public static function generateRSAKey(int $keyBits): \OpenSSLAsymmetricKey
     {
