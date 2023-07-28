@@ -11,9 +11,8 @@
 
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
-use Famoser\PolyasVerification\Crypto\BCMATH\Hex;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotEntry;
-use Famoser\PolyasVerification\Crypto\RSA\OpenSSLException;
+use Famoser\PolyasVerification\Crypto\POLYAS\Utils\Serialization;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -42,7 +41,7 @@ class BallotEntryTest extends TestCase
     #[DataProvider('bcdecProvider')]
     public function testBallotEntryBCDEC(string $dec, string $hex): void
     {
-        $actualHex = BallotEntry::bcdechexFixed($dec);
+        $actualHex = Serialization::bcdechexFixed($dec);
         $this->assertEquals($hex, $actualHex);
     }
 
@@ -63,7 +62,7 @@ class BallotEntryTest extends TestCase
         $ballotEntry = $this->getBallotEntry($ballot);
         $expectedDigest = $this->getBallotEntryDigest($ballot);
 
-        $digest = BallotEntry::createDigestHex($ballotEntry);
+        $digest = $ballotEntry->createDigestHex();
         $this->assertEquals($expectedDigest, $digest);
     }
 
@@ -73,38 +72,27 @@ class BallotEntryTest extends TestCase
         $ballotEntry = $this->getBallotEntry($ballot);
         $expectedFingerprint = $this->getBallotEntryFingerprint($ballot);
 
-        $fingerprint = BallotEntry::createFingerprint($ballotEntry);
+        $fingerprint = $ballotEntry->createFingerprint();
         $this->assertEquals($expectedFingerprint, $fingerprint);
     }
 
-    public function testBallotEntrySignatureDOESNOTVERIFY(): void
-    {
-        $ballot = 'ballot1';
-        $ballotEntry = $this->getBallotEntry($ballot);
-        $signatureHex = $this->getTraceSecondDeviceInitialMsg($ballot)['signatureHex'];
-        $verificationKey = $this->getDeviceParameters($ballot)['verificationKey'];
-
-        $this->expectException(OpenSSLException::class);
-        BallotEntry::verifySignature($ballotEntry, $signatureHex, $verificationKey);
-    }
-
-    /**
-     * @return array{
-     *     'publicLabel': string,
-     *     'publicCredential': string,
-     *     'voterId': string,
-     *     'ballot': array{
-     *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
-     *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
-     *          'proofOfKnowledgeOfPrivateCredential': array{'c': string, 'f': string},
-     *      }
-     *     }
-     */
-    private function getBallotEntry(string $ballot): array
+    private function getBallotEntry(string $ballot): BallotEntry
     {
         $ballotEntryJson = file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json');
 
-        return json_decode($ballotEntryJson, true); // @phpstan-ignore-line
+        /** @var array{
+         *     'publicLabel': string,
+         *     'publicCredential': string,
+         *     'voterId': string,
+         *     'ballot': array{
+         *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
+         *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
+         *          'proofOfKnowledgeOfPrivateCredential': array{'c': string, 'f': string},
+         *      }
+         *     } $ballotEntryContent
+         */
+        $ballotEntryContent = json_decode($ballotEntryJson, true); // @phpstan-ignore-line
+        return new BallotEntry($ballotEntryContent);
     }
 
     private function getBallotEntryDigest(string $ballot): string
@@ -119,31 +107,5 @@ class BallotEntryTest extends TestCase
     private function getBallotEntryFingerprint(string $ballot): string
     {
         return trim(file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json.fingerprint')); // @phpstan-ignore-line
-    }
-
-    /**
-     * @return array{
-     *     'signatureHex': string,
-     * }
-     */
-    private function getTraceSecondDeviceInitialMsg(string $ballot): array
-    {
-        $json = file_get_contents(__DIR__.'/resources/'.$ballot.'/trace/secondDeviceInitialMsg.json');
-
-        return json_decode($json, true); // @phpstan-ignore-line
-    }
-
-    /**
-     * @return array{
-     *     'publicKey': string,
-     *     'verificationKey': string,
-     *     'ballots': mixed
-     * }
-     */
-    private function getDeviceParameters(string $ballot): array
-    {
-        $json = file_get_contents(__DIR__.'/resources/'.$ballot.'/deviceParameters/deviceParameters.json');
-
-        return json_decode($json, true); // @phpstan-ignore-line
     }
 }

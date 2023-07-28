@@ -25,14 +25,15 @@ class Hex
         return $hex;
     }
 
-    public static function bchexdec(string $hex)
+    public static function bchexdec(string $hex): string
     {
         $number = '0';
+        $sixteen = '16';
 
         while (strlen($hex) > 0) {
-            $number = bcmul(16, $number);
+            $number = bcmul($sixteen, $number);
             $first = substr($hex, 0, 1);
-            $number = bcadd($number, hexdec($first));
+            $number = bcadd($number, (string) hexdec($first));
             $hex = substr($hex, 1);
         }
 

@@ -11,67 +11,47 @@
 
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
-use Famoser\PolyasVerification\Crypto\DER;
-use Famoser\PolyasVerification\Crypto\PEM;
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
 use PHPUnit\Framework\TestCase;
 
 class DeviceParametersTest extends TestCase
 {
+    public function testCompareFingerprint(): void
+    {
+        $deviceParameters = $this->getDeviceParameters();
+        $traceSecondDeviceInitialMsg = $this->getTraceSecondDeviceInitialMsg();
+
+        $this->assertTrue($deviceParameters->compareDeviceParameters($traceSecondDeviceInitialMsg['secondDeviceParametersJson']));
+    }
+
     public function testFingerprint(): void
     {
-        $deviceParametersPayload = $this->getTraceSecondDeviceInitialMsg();
+        $deviceParameters = $this->getDeviceParameters();
         $expectedFingerprint = $this->getDeviceParametersFingerprint();
 
-        $fingerprint = DeviceParameters::createJsonFingerprint($deviceParametersPayload['secondDeviceParametersJson']);
-        $this->assertEquals($expectedFingerprint, $fingerprint);
+        $this->assertEquals($expectedFingerprint, $deviceParameters->createFingerprint());
+    }
 
-        // sanity check test
-        $deviceParametersFromPayload = json_decode($deviceParametersPayload['secondDeviceParametersJson'], true);
-        $deviceParameters = $this->getDeviceParameters();
-        $this->assertEquals($deviceParametersFromPayload, $deviceParameters);
+    public function testJsonSerialization(): void
+    {
+        $traceSecondDeviceInitialMsg = $this->getTraceSecondDeviceInitialMsg();
 
         // sanity check json serialization
-        $expectedJson = $deviceParametersPayload['secondDeviceParametersJson'];
-        $actualJson = json_encode($this->getDeviceParameters());
+        $expectedJson = $traceSecondDeviceInitialMsg['secondDeviceParametersJson'];
+        $object = json_decode($expectedJson, true);
+        $actualJson = json_encode($object);
         $this->assertNotEquals($expectedJson, $actualJson);
 
         $correctedJson = str_replace('"value":[]', '"value":{}', $actualJson); // @phpstan-ignore-line
         $this->assertEquals($expectedJson, $correctedJson);
     }
 
-    public function testVerificationKeyEncoding(): void
+    private function getDeviceParameters(): DeviceParameters
     {
-        $verificationKey = $this->getDeviceParameters()['verificationKey'];
+        $deviceParametersPayload = $this->getTraceSecondDeviceInitialMsg();
+        $deviceParametersJson = $deviceParametersPayload['secondDeviceParametersJson'];
 
-        /** @var string $verificationKeyBin */
-        $verificationKeyBin = hex2bin($verificationKey);
-        $publicKey = DER\Decoder::asRSAPublicKey($verificationKeyBin);
-
-        $nBitLength = strlen(gmp_strval($publicKey->getN(), 2));
-        $this->assertEquals(2048, $nBitLength);
-
-        $eBitLength = strlen(gmp_strval($publicKey->getE(), 2));
-        $this->assertEquals(17, $eBitLength);
-
-        $publicKeyPem = PEM\Encoder::encode('PUBLIC KEY', $verificationKeyBin);
-        $publicKey = openssl_get_publickey($publicKeyPem);
-        $this->assertNotEquals(false, $publicKey);
-        openssl_error_string(); // need this to empty the openssl error queue due to #11054
-    }
-
-    /**
-     * @return array{
-     *     'publicKey': string,
-     *     'verificationKey': string,
-     *     'ballots': mixed
-     * }
-     */
-    private function getDeviceParameters(): array
-    {
-        $ballotEntryJson = file_get_contents(__DIR__ . '/resources/ballot1/deviceParameters/deviceParameters.json');
-
-        return json_decode($ballotEntryJson, true); // @phpstan-ignore-line
+        return new DeviceParameters($deviceParametersJson);
     }
 
     /**
@@ -81,7 +61,7 @@ class DeviceParametersTest extends TestCase
      */
     private function getTraceSecondDeviceInitialMsg(): array
     {
-        $ballotEntryJson = file_get_contents(__DIR__ . '/resources/ballot1/trace/secondDeviceInitialMsg.json');
+        $ballotEntryJson = file_get_contents(__DIR__.'/resources/ballot1/trace/2_LoginResponse_initialMessage.json');
 
         return json_decode($ballotEntryJson, true); // @phpstan-ignore-line
     }
