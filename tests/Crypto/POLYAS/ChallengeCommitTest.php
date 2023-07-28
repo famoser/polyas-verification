@@ -12,11 +12,13 @@
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
+use Mdanter\Ecc\EccFactory;
+use Mdanter\Ecc\Random\RandomGeneratorFactory;
 use PHPUnit\Framework\TestCase;
 
 class ChallengeCommitTest extends TestCase
 {
-    public function testValidate(): void
+    public function testValidateFromSampleData(): void
     {
         $challengeCommitment = $this->getTraceLoginRequest()['challengeCommitment'];
         $challengeCommit = $this->getChallengeCommit();
@@ -24,6 +26,19 @@ class ChallengeCommitTest extends TestCase
         $commit = $challengeCommit->commit();
 
         $this->assertEquals($challengeCommitment, $commit);
+    }
+
+    public function testValidateWithFreshRandomness(): void
+    {
+        $generatorG = EccFactory::getSecgCurves()->generator256k1();
+        $random = RandomGeneratorFactory::getRandomGenerator();
+        $randomE = $random->generate($generatorG->getOrder());
+        $randomR = $random->generate($generatorG->getOrder());
+        $challengeCommit = new ChallengeCommit($randomE, $randomR);
+
+        $commit = $challengeCommit->commit();
+
+        $this->assertTrue($challengeCommit->verify($commit));
     }
 
     private function getChallengeCommit(): ChallengeCommit
