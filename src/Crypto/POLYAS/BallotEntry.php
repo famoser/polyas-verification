@@ -11,11 +11,7 @@
 
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
-use Famoser\PolyasVerification\Crypto\BCMATH\Hex;
-use Famoser\PolyasVerification\Crypto\PEM;
-use Famoser\PolyasVerification\Crypto\RSA\Signature;
-
-class BallotEntry
+readonly class BallotEntry
 {
     /**
      * @param array{
@@ -27,54 +23,22 @@ class BallotEntry
      *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
      *          'proofOfKnowledgeOfPrivateCredential': array{'c': string, 'f': string},
      *      }
-     *     } $ballotEntry
+     *     } $content
      */
-    public static function verifySignature(array $ballotEntry, string $signatureHex, string $verificationKeyHexX509): void
+    public function __construct(private array $content)
     {
-        $data = self::createDigestBin($ballotEntry);
-
-        /** @var string $verificationKeyBin */
-        $verificationKeyBin = hex2bin($verificationKeyHexX509);
-        $publicKeyPem = PEM\Encoder::encode('PUBLIC KEY', $verificationKeyBin);
-
-        $signature = hex2bin($signatureHex);
-        Signature::verifySHA256($data, $signature, $publicKeyPem);
     }
 
-    /**
-     * @param array{
-     *     'publicLabel': string,
-     *     'publicCredential': string,
-     *     'voterId': string,
-     *     'ballot': array{
-     *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
-     *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
-     *          'proofOfKnowledgeOfPrivateCredential': array{'c': string, 'f': string},
-     *      }
-     *     } $ballotEntry
-     */
-    public static function createFingerprint(array $ballotEntry): string
+    public function createFingerprint(): string
     {
-        $digest = self::createDigestBin($ballotEntry);
+        $digest = self::createDigestBin();
 
         return hash('sha256', $digest);
     }
 
-    /**
-     * @param array{
-     *     'publicLabel': string,
-     *     'publicCredential': string,
-     *     'voterId': string,
-     *     'ballot': array{
-     *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
-     *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
-     *          'proofOfKnowledgeOfPrivateCredential': array{'c': string, 'f': string},
-     *      }
-     *     } $ballotEntry
-     */
-    public static function createDigestBin(array $ballotEntry): string
+    public function createDigestBin(): string
     {
-        $digestHex = self::createDigestHex($ballotEntry);
+        $digestHex = self::createDigestHex();
         $digest = hex2bin($digestHex);
         if (!$digest) {
             throw new \RuntimeException('Cannot transform digest hex to binary');
@@ -83,96 +47,41 @@ class BallotEntry
         return $digest;
     }
 
-    /**
-     * @param array{
-     *     'publicLabel': string,
-     *     'publicCredential': string,
-     *     'voterId': string,
-     *     'ballot': array{
-     *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
-     *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
-     *          'proofOfKnowledgeOfPrivateCredential': array{'c': string, 'f': string},
-     *      }
-     *     } $ballotEntry
-     */
-    public static function createDigestHex(array $ballotEntry): string
+    public function createDigestHex(): string
     {
-        $publicLabel = $ballotEntry['publicLabel'];
-        $publicCredential = $ballotEntry['publicCredential'];
-        $voterId = $ballotEntry['voterId'];
+        $publicLabel = $this->content['publicLabel'];
+        $publicCredential = $this->content['publicCredential'];
+        $voterId = $this->content['voterId'];
 
-        $content = self::getStringHexWithLength($publicLabel);
-        $content .= self::getBytesHexLength4Bytes($publicCredential).$publicCredential;
-        $content .= self::getStringHexWithLength($voterId);
+        $content = Utils\Serialization::getStringHexWithLength($publicLabel);
+        $content .= Utils\Serialization::getBytesHexLength4Bytes($publicCredential).$publicCredential;
+        $content .= Utils\Serialization::getStringHexWithLength($voterId);
 
-        $ballot = $ballotEntry['ballot'];
+        $ballot = $this->content['ballot'];
         $ciphertexts = $ballot['encryptedChoice']['ciphertexts'];
-        $content .= self::getCollectionHexLength4Bytes($ciphertexts);
+        $content .= Utils\Serialization::getCollectionHexLength4Bytes($ciphertexts);
         foreach ($ciphertexts as $ciphertext) {
-            $content .= self::getBytesHexLength4Bytes($ciphertext['x']).$ciphertext['x'];
-            $content .= self::getBytesHexLength4Bytes($ciphertext['y']).$ciphertext['y'];
+            $content .= Utils\Serialization::getBytesHexLength4Bytes($ciphertext['x']).$ciphertext['x'];
+            $content .= Utils\Serialization::getBytesHexLength4Bytes($ciphertext['y']).$ciphertext['y'];
         }
 
         $proofOfKnowledgeOfEncryptionCoins = $ballot['proofOfKnowledgeOfEncryptionCoins'];
-        $content .= self::getCollectionHexLength4Bytes($proofOfKnowledgeOfEncryptionCoins);
+        $content .= Utils\Serialization::getCollectionHexLength4Bytes($proofOfKnowledgeOfEncryptionCoins);
         foreach ($proofOfKnowledgeOfEncryptionCoins as $proofOfKnowledgeOfEncryptionCoin) {
-            $cBytes = self::bcdechexFixed($proofOfKnowledgeOfEncryptionCoin['c']);
-            $fBytes = self::bcdechexFixed($proofOfKnowledgeOfEncryptionCoin['f']);
+            $cBytes = Utils\Serialization::bcdechexFixed($proofOfKnowledgeOfEncryptionCoin['c']);
+            $fBytes = Utils\Serialization::bcdechexFixed($proofOfKnowledgeOfEncryptionCoin['f']);
 
-            $content .= self::getBytesHexLength4Bytes($cBytes).$cBytes;
-            $content .= self::getBytesHexLength4Bytes($fBytes).$fBytes;
+            $content .= Utils\Serialization::getBytesHexLength4Bytes($cBytes).$cBytes;
+            $content .= Utils\Serialization::getBytesHexLength4Bytes($fBytes).$fBytes;
         }
 
         $proofOfKnowledgeOfPrivateCredential = $ballot['proofOfKnowledgeOfPrivateCredential'];
-        $cBytes = self::bcdechexFixed($proofOfKnowledgeOfPrivateCredential['c']);
-        $fBytes = self::bcdechexFixed($proofOfKnowledgeOfPrivateCredential['f']);
+        $cBytes = Utils\Serialization::bcdechexFixed($proofOfKnowledgeOfPrivateCredential['c']);
+        $fBytes = Utils\Serialization::bcdechexFixed($proofOfKnowledgeOfPrivateCredential['f']);
 
-        $content .= self::getBytesHexLength4Bytes($cBytes).$cBytes;
-        $content .= self::getBytesHexLength4Bytes($fBytes).$fBytes;
+        $content .= Utils\Serialization::getBytesHexLength4Bytes($cBytes).$cBytes;
+        $content .= Utils\Serialization::getBytesHexLength4Bytes($fBytes).$fBytes;
 
         return $content;
-    }
-
-    public static function bcdechexFixed(string $dec): string
-    {
-        $hex = Hex::bcdechex($dec);
-
-        if (1 === strlen($hex) % 2) {
-            $hex = '0'.$hex;
-        }
-
-        // TODO verify this is actually what happens
-        if ($hex[0] > '7') {
-            $hex = '00'.$hex;
-        }
-
-        return $hex;
-    }
-
-    private static function getBytesHexLength4Bytes(string $content): string
-    {
-        return self::getHexLength4Bytes((int) (strlen($content) / 2));
-    }
-
-    private static function getStringHexWithLength(string $content): string
-    {
-        $content = bin2hex($content);
-
-        return self::getHexLength4Bytes((int) (strlen($content) / 2)).$content;
-    }
-
-    /**
-     * @param mixed[] $collection
-     */
-    private static function getCollectionHexLength4Bytes(array $collection): string
-    {
-        return self::getHexLength4Bytes(count($collection));
-    }
-
-    private static function getHexLength4Bytes(int $length): string
-    {
-        $hexLength = dechex($length);
-
-        return str_pad($hexLength, 8, '0', STR_PAD_LEFT);
     }
 }

@@ -11,7 +11,7 @@
 
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
-class GlobalParameters
+readonly class GlobalParameters
 {
     public static function getPOLYASCommitmentGeneratorH(): string
     {

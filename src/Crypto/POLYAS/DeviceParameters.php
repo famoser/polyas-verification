@@ -13,15 +13,34 @@ namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
 class DeviceParameters
 {
-    public static function createJsonFingerprint(string $deviceParametersJson): string
+    /** @var array{
+     *     'publicKey': string,
+     *     'verificationKey': string,
+     *     'ballots': mixed
+     * }
+     */
+    private array $deviceParameters;
+
+    public function __construct(private string $deviceParametersJson)
     {
-        return hash('sha512', $deviceParametersJson);
+        $this->deviceParameters = json_decode($this->deviceParametersJson, true);
     }
 
-    public static function createFingerprint(array $deviceParameters): string
+    public function compareDeviceParameters(string $deviceParametersJson): bool
     {
-        $json = json_encode($deviceParameters);
+        // spec specifies to compare the sha512 hash; however not necessary to hash first
+        // note how JSON representation is not unique; hence this is why we must directly compare on the json value
+        // concretely, the interfacing system is running java, which serialized empty objects as {}, but php uses []
+        return $deviceParametersJson === $this->deviceParametersJson;
+    }
 
-        return hash('sha512', $json);
+    public function createFingerprint(): string
+    {
+        return hash('sha512', $this->deviceParametersJson);
+    }
+
+    public function getVerificationKey(): string
+    {
+        return $this->deviceParameters['verificationKey'];
     }
 }
