@@ -11,7 +11,7 @@
 
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
-class DeviceParameters
+readonly class DeviceParameters
 {
     /** @var array{
      *     'publicKey': string,

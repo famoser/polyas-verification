@@ -11,7 +11,7 @@
 
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
-class QRCode
+readonly class QRCode
 {
     /**
      * @param array{

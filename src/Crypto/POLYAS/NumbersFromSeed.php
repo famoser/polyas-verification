@@ -46,8 +46,8 @@ readonly class NumbersFromSeed
         return gmp_import($positiveKey);
     }
 
-    public function iterate(): NumbersFromSeed
+    public function iterate(): self
     {
-        return new NumbersFromSeed($this->seed, $this->bitLength, $this->iteration + 1);
+        return new self($this->seed, $this->bitLength, $this->iteration + 1);
     }
 }
