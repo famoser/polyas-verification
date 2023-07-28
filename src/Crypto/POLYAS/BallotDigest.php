@@ -31,12 +31,12 @@ readonly class BallotDigest
 
     public function createFingerprint(): string
     {
-        $digest = self::createDigestBin();
+        $digest = self::createDigest();
 
-        return hash('sha256', $digest);
+        return hash('sha256', $digest, true);
     }
 
-    public function createDigestBin(): string
+    public function createDigest(): string
     {
         $digestHex = self::createDigestHex();
         $digest = hex2bin($digestHex);

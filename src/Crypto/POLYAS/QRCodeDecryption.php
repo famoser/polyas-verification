@@ -11,15 +11,31 @@
 
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
+use Famoser\PolyasVerification\Crypto\AES;
+
 class QRCodeDecryption
 {
-    public function __construct(private $QRCode, private BallotDigest $ballotEntry, private string $comSeed)
+    public function __construct(private QRCode $QRCode, private BallotDigest $ballotDigest, private string $comSeedHex)
     {
     }
 
-    public function getComKey()
+    public function createComKey(): string
     {
-        $hashBallot = $this->ballotEntry->createFingerprint();
-        $keyDerivationKey = $this->comSeed.$hashBallot;
+        $hashBallot = $this->ballotDigest->createFingerprint();
+        /** @var string $comSeed */
+        $comSeed = hex2bin($this->comSeedHex);
+
+        $keyDerivationKey = $comSeed.$hashBallot;
+        $keyDerivation = new KeyDerivation($keyDerivationKey, 32, '', '');
+
+        return $keyDerivation->derive();
+    }
+
+    public function decrypt(): string
+    {
+        $data = base64_decode($this->QRCode->getCBase64());
+        $comKey = $this->createComKey();
+
+        return AES\Encryption::decryptECB($data, $comKey);
     }
 }

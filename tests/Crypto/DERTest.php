@@ -32,8 +32,8 @@ class DERTest extends TestCase
 
     private function getRSAPublicKeyAsDER(): string
     {
-        $key = RSA\Key::generateRSAKey(RSATest::TEST_RSA_KEY_BITS);
-        $publicKey = RSA\Key::getPublicKeyPem($key);
+        $key = RSA\KeyFactory::generateRSAKey(RSATest::TEST_RSA_KEY_BITS);
+        $publicKey = RSA\KeyFactory::getPublicKeyPem($key);
         $payloads = PEM\Decoder::decode($publicKey);
 
         return $payloads[0]->getPayload();

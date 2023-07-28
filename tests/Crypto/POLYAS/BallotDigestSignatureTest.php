@@ -21,13 +21,13 @@ use PHPUnit\Framework\TestCase;
 
 class BallotDigestSignatureTest extends TestCase
 {
-    public function testBallotEntrySignatureDOESNOTVERIFY(): void
+    public function testBallotDigestSignatureDOESNOTVERIFY(): void
     {
         $ballot = 'ballot1';
-        $ballotEntrySignature = $this->getBallotEntrySignature();
+        $ballotDigestSignature = $this->getBallotDigestSignature();
 
         $this->expectException(OpenSSLException::class);
-        $ballotEntrySignature->verify();
+        $ballotDigestSignature->verify();
     }
 
     public function testVerificationKeyEncoding(): void
@@ -50,18 +50,18 @@ class BallotDigestSignatureTest extends TestCase
         openssl_error_string(); // need this to empty the openssl error queue due to #11054
     }
 
-    private function getBallotEntrySignature(): BallotDigestSignature
+    private function getBallotDigestSignature(): BallotDigestSignature
     {
-        $ballotEntry = $this->getBallotEntry();
+        $ballotDigest = $this->getBallotDigest();
         $signatureHex = $this->getTraceSecondDeviceInitialMsg()['signatureHex'];
         $verificationKey = $this->getDeviceParameters()->getVerificationKey();
 
-        return new BallotDigestSignature($ballotEntry, $signatureHex, $verificationKey);
+        return new BallotDigestSignature($ballotDigest, $signatureHex, $verificationKey);
     }
 
-    private function getBallotEntry(): BallotDigest
+    private function getBallotDigest(): BallotDigest
     {
-        $ballotEntryJson = file_get_contents(__DIR__.'/resources/ballot1/ballotEntry.json');
+        $ballotDigestJson = file_get_contents(__DIR__.'/resources/ballot1/ballotEntry.json');
 
         /** @var array{
          *     'publicLabel': string,
@@ -72,11 +72,11 @@ class BallotDigestSignatureTest extends TestCase
          *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
          *          'proofOfKnowledgeOfPrivateCredential': array{'c': string, 'f': string},
          *      }
-         *     } $ballotEntryContent
+         *     } $ballotDigestContent
          */
-        $ballotEntryContent = json_decode($ballotEntryJson, true); // @phpstan-ignore-line
+        $ballotDigestContent = json_decode($ballotDigestJson, true); // @phpstan-ignore-line
 
-        return new BallotDigest($ballotEntryContent);
+        return new BallotDigest($ballotDigestContent);
     }
 
     private function getDeviceParameters(): DeviceParameters

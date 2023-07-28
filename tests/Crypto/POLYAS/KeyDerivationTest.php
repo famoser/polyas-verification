@@ -11,7 +11,7 @@ class KeyDerivationTest extends TestCase
     {
         $keyDerivationResultHex = $this->getKeyDerivationResultHex();
 
-        $keyDerivation = new KeyDerivation(65, 'kdk', 'label', 'context');
+        $keyDerivation = new KeyDerivation('kdk', 65, 'label', 'context');
         $derivedKey = $keyDerivation->derive();
 
         $derivedKeyHex = bin2hex($derivedKey);
@@ -23,6 +23,8 @@ class KeyDerivationTest extends TestCase
         /** @var string $fileContent */
         $fileContent = file_get_contents(__DIR__.'/resources/keyDerivationResult.hex');
 
-        return strtolower(preg_replace('/\s+/', '', $fileContent));
+        /** @var string $noWhitespace */
+        $noWhitespace = preg_replace('/\s+/', '', $fileContent);
+        return strtolower($noWhitespace);
     }
 }
