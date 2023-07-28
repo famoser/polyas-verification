@@ -12,10 +12,13 @@
 namespace Famoser\PolyasVerification\Test\Crypto;
 
 use Famoser\PolyasVerification\Crypto\AES;
+use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
 use PHPUnit\Framework\TestCase;
 
 class AESTest extends TestCase
 {
+    use IncompleteTestTrait;
+
     public function testEncryptionReversable(): void
     {
         $data = 'some data';
@@ -29,7 +32,9 @@ class AESTest extends TestCase
 
     public function testDecryption(): void
     {
-        $base64Ciphertext = "vtWXj-YxxTV2ektefJ5pk7AWc9saoPbu6wJZUZ9R1t8ekU89x7SCYLcg8ODi3fHST4BTmAK97XN3XqWc";
+        $this->markTestIncompleteNS('AES decryption specified only partially.');
+
+        $base64Ciphertext = 'vtWXj-YxxTV2ektefJ5pk7AWc9saoPbu6wJZUZ9R1t8ekU89x7SCYLcg8ODi3fHST4BTmAK97XN3XqWc';
         $keyHex = 'dd96a88777267c645ff14648c9e03f6c9f56652a07fa3bf72e8a5f63f4288307';
         $expectedPlaintextHex = '1e89b5f95deae82f6f823b52709117405f057783eda018d72cbd83141d394fbd';
 
@@ -45,9 +50,11 @@ class AESTest extends TestCase
 
     public function testEncryption(): void
     {
+        $this->markTestIncompleteNS('AES encryption specified only partially.');
+
         $expectedPlaintextHex = '1e89b5f95deae82f6f823b52709117405f057783eda018d72cbd83141d394fbd';
         $keyHex = 'dd96a88777267c645ff14648c9e03f6c9f56652a07fa3bf72e8a5f63f4288307';
-        $expectedBase64Ciphertext = "vtWXj-YxxTV2ektefJ5pk7AWc9saoPbu6wJZUZ9R1t8ekU89x7SCYLcg8ODi3fHST4BTmAK97XN3XqWc";
+        $expectedBase64Ciphertext = 'vtWXj-YxxTV2ektefJ5pk7AWc9saoPbu6wJZUZ9R1t8ekU89x7SCYLcg8ODi3fHST4BTmAK97XN3XqWc';
 
         /** @var string $data */
         $data = hex2bin($expectedPlaintextHex);

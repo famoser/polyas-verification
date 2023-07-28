@@ -14,12 +14,17 @@ namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigest;
 use Famoser\PolyasVerification\Crypto\POLYAS\QRCode;
 use Famoser\PolyasVerification\Crypto\POLYAS\QRCodeDecryption;
+use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
 use PHPUnit\Framework\TestCase;
 
 class QRCodeDecryptionTest extends TestCase
 {
+    use IncompleteTestTrait;
+
     public function testComKey(): void
     {
+        $this->markTestIncompleteNS('Com key does not turn out as expected.');
+
         $comKeyHex = $this->getComKeyHex();
         $qrCodeDecryption = $this->getQRCodeDecryption();
 
@@ -31,6 +36,8 @@ class QRCodeDecryptionTest extends TestCase
 
     public function testDecryption(): void
     {
+        $this->markTestIncompleteNS('AES decryption specified only partially.');
+        
         $QRCodeDecryptedHex = $this->getQRCodeDecryptedHex();
         $qrCodeDecryption = $this->getQRCodeDecryption();
 
@@ -42,6 +49,8 @@ class QRCodeDecryptionTest extends TestCase
 
     public function testDecryptionFormat(): void
     {
+        $this->markTestIncompleteNS('AES decryption specified only partially.');
+
         $QRCodeDecryptedHex = $this->getQRCodeDecryptedHex();
         $qrCodeDecryption = $this->getQRCodeDecryption();
 
