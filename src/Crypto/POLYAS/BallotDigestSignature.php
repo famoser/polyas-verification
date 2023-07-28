@@ -14,9 +14,9 @@ namespace Famoser\PolyasVerification\Crypto\POLYAS;
 use Famoser\PolyasVerification\Crypto\PEM;
 use Famoser\PolyasVerification\Crypto\RSA;
 
-readonly class BallotEntrySignature
+readonly class BallotDigestSignature
 {
-    public function __construct(private BallotEntry $ballotEntry, private string $signatureHex, private string $verificationKeyX509Hex)
+    public function __construct(private BallotDigest $ballotEntry, private string $signatureHex, private string $verificationKeyX509Hex)
     {
     }
 

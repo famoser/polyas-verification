@@ -11,7 +11,6 @@
 
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
-use Famoser\PolyasVerification\Crypto\POLYAS\BallotEntry;
 use Famoser\PolyasVerification\Crypto\POLYAS\Receipt;
 use PHPUnit\Framework\TestCase;
 
