@@ -24,7 +24,7 @@ readonly class QRCode
     {
     }
 
-    public function getCBase64(): string
+    public function getCBase64UrlSafe(): string
     {
         return $this->content['c'];
     }

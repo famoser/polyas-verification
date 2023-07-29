@@ -21,7 +21,7 @@ class QRCodeDecryptionTest extends TestCase
 {
     use IncompleteTestTrait;
 
-    public function testComKey(): void
+    public function testCreateComKey(): void
     {
         $this->markTestIncompleteNS('Com key does not turn out as expected.');
 
@@ -34,27 +34,27 @@ class QRCodeDecryptionTest extends TestCase
         $this->assertEquals($comKeyHex, $actualComKeyHex);
     }
 
-    public function testDecryption(): void
+    public function testGetContent(): void
     {
-        $this->markTestIncompleteNS('AES decryption specified only partially.');
+        $this->markTestIncompleteNS('COM key derivation fails.');
         
         $QRCodeDecryptedHex = $this->getQRCodeDecryptedHex();
         $qrCodeDecryption = $this->getQRCodeDecryption();
 
-        $actualQRCodeDecrypted = $qrCodeDecryption->decrypt();
+        $actualQRCodeDecrypted = $qrCodeDecryption->getContent();
 
         $actualQRCodeDecryptedHex = bin2hex($actualQRCodeDecrypted);
         $this->assertEquals($QRCodeDecryptedHex, $actualQRCodeDecryptedHex);
     }
 
-    public function testDecryptionFormat(): void
+    public function testDecrypt(): void
     {
-        $this->markTestIncompleteNS('AES decryption specified only partially.');
+        $comKey = hex2bin($this->getComKeyHex());
 
         $QRCodeDecryptedHex = $this->getQRCodeDecryptedHex();
         $qrCodeDecryption = $this->getQRCodeDecryption();
 
-        $actualQRCodeDecrypted = $qrCodeDecryption->decrypt();
+        $actualQRCodeDecrypted = $qrCodeDecryption->decrypt($comKey);
 
         $actualQRCodeDecryptedHex = bin2hex($actualQRCodeDecrypted);
         $this->assertEquals($QRCodeDecryptedHex, $actualQRCodeDecryptedHex);
