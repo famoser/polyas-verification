@@ -137,6 +137,8 @@ class ZKPProofValidationTest extends TestCase
 
     private function getRandomCoinSeed(): string
     {
-        return hex2bin('1e89b5f95deae82f6f823b52709117405f057783eda018d72cbd83141d394fbd');
+        /** @var string $randomCoinSeed */
+        $randomCoinSeed = hex2bin('1e89b5f95deae82f6f823b52709117405f057783eda018d72cbd83141d394fbd');
+        return $randomCoinSeed;
     }
 }

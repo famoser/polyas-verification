@@ -17,6 +17,9 @@ use PHPUnit\Framework\TestCase;
 
 class Base64UrlEncodingTest extends TestCase
 {
+    /**
+     * @return string[][]
+     */
     public static function base64Provider(): array
     {
         return [

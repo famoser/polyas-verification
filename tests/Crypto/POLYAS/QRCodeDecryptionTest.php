@@ -49,7 +49,9 @@ class QRCodeDecryptionTest extends TestCase
 
     public function testDecrypt(): void
     {
-        $comKey = hex2bin($this->getComKeyHex());
+        $comKeyHex = $this->getComKeyHex();
+        /** @var string $comKey */
+        $comKey = hex2bin($comKeyHex);
 
         $QRCodeDecryptedHex = $this->getQRCodeDecryptedHex();
         $qrCodeDecryption = $this->getQRCodeDecryption();
