@@ -13,6 +13,7 @@ namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
 use Famoser\PolyasVerification\Crypto\SECP256K1;
 use Mdanter\Ecc\EccFactory;
+use Mdanter\Ecc\Primitives\PointInterface;
 
 class BallotDecode
 {
@@ -45,7 +46,7 @@ class BallotDecode
         return PlaintextEncoder::decodeMultiPlaintext($order, $decodedGroupElements);
     }
 
-    public function getGroupElement(string $w, string $Y, \GMP $r)
+    public function getGroupElement(string $w, string $Y, \GMP $r): PointInterface
     {
         $g = EccFactory::getSecgCurves()->generator256k1();
         $h = SECP256K1\Encoder::parseCompressedPoint($this->publicKey);
