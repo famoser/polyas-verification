@@ -11,7 +11,7 @@
 
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
-use Famoser\PolyasVerification\Crypto\POLYAS\NumbersFromSeed;
+use Famoser\PolyasVerification\Crypto\POLYAS\NumberFromSeed;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -42,7 +42,7 @@ class NumberFromSeedTest extends TestCase
     #[DataProvider('numbersFromSeedProvider')]
     public function testNumber(string $seed, int $bitLength, array $results): void
     {
-        $numbersFromSeed = new NumbersFromSeed($seed, $bitLength);
+        $numbersFromSeed = new NumberFromSeed($seed, $bitLength);
 
         foreach ($results as $result) {
             $number = $numbersFromSeed->number();

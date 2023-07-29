@@ -12,8 +12,10 @@
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
+use Famoser\PolyasVerification\Crypto\POLYAS\NumbersFromSeedInRange;
 use Famoser\PolyasVerification\Crypto\POLYAS\ZKPProofValidation;
 use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
+use Mdanter\Ecc\EccFactory;
 use PHPUnit\Framework\TestCase;
 
 class ZKPProofValidationTest extends TestCase
@@ -29,14 +31,53 @@ class ZKPProofValidationTest extends TestCase
         $this->assertTrue($ZKPProofValidation->validate());
     }
 
+    public function testCheckExpectedCiphertextLengths(): void
+    {
+        $ZKPProofValidation = $this->getZKPProofValidation();
+        $payload = $this->getTraceSecondDeviceInitialMsg();
+        $ciphertextCount = count($payload['ballot']['encryptedChoice']['ciphertexts']);
+
+        $this->assertTrue($ZKPProofValidation->checkExpectedCiphertextLengths($ciphertextCount));
+    }
+
+    public function testCheckSamePlaintext(): void
+    {
+        $this->markTestIncompleteNS('One of the two points does not pass.');
+
+        $ZKPProofValidation = $this->getZKPProofValidation();
+        $payload = $this->getTraceSecondDeviceInitialMsg();
+        $zResponse = $this->getTraceChallengeResponseValue();
+
+        $checkReEncryption = $ZKPProofValidation->checkSamePlaintext($payload['factorA'][0], $payload['factorB'][0], $payload['factorX'][0], $payload['factorY'][0], $zResponse['z'][0]);
+        $this->assertTrue($checkReEncryption);
+    }
+
+    public function testCheckReEncryption(): void
+    {
+        $ZKPProofValidation = $this->getZKPProofValidation();
+        $payload = $this->getTraceSecondDeviceInitialMsg();
+        $ciphertexts = $payload['ballot']['encryptedChoice']['ciphertexts'];
+        $factorX = $payload['factorX'];
+
+        $randomCoinSeed = $this->getRandomCoinSeed();
+        $order = EccFactory::getSecgCurves()->generator256k1()->getOrder();
+        $randomCoinGenerator = new NumbersFromSeedInRange(count($ciphertexts), $randomCoinSeed, $order);
+        $randomCoins = $randomCoinGenerator->numbers();
+        $this->assertEquals('115383914388283582501768653457363159558776433376562817712059811925202949510311', gmp_strval($randomCoins[0]));
+
+        $checkReEncryption = $ZKPProofValidation->checkReEncryption($ciphertexts[0]['x'], $factorX[0], $randomCoins[0]);
+        $this->assertTrue($checkReEncryption);
+    }
+
     private function getZKPProofValidation(): ZKPProofValidation
     {
-        $deviceParameters = $this->getDeviceParameters();
         $payload = $this->getTraceSecondDeviceInitialMsg();
         $request = $this->getTraceChallengeRequest();
         $response = $this->getTraceChallengeResponseValue();
+        $deviceParameters = $this->getDeviceParameters();
+        $randomCoinSeed = $this->getRandomCoinSeed();
 
-        return new ZKPProofValidation($payload, $response['z'], $request['challenge'], $deviceParameters->getPublicKey());
+        return new ZKPProofValidation($payload, $request['challenge'], $response['z'], $deviceParameters->getPublicKey(), $randomCoinSeed);
     }
 
     private function getDeviceParameters(): DeviceParameters
@@ -92,5 +133,10 @@ class ZKPProofValidationTest extends TestCase
         $json = file_get_contents(__DIR__.'/resources/ballot1/trace/4_ChallengeResponse_value.json');
 
         return json_decode($json, true);
+    }
+
+    private function getRandomCoinSeed(): string
+    {
+        return hex2bin('1e89b5f95deae82f6f823b52709117405f057783eda018d72cbd83141d394fbd');
     }
 }

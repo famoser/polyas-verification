@@ -11,7 +11,7 @@
 
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
-readonly class NumbersFromSeed
+readonly class NumberFromSeed
 {
     public function __construct(private string $seed, private int $bitLength, private int $iteration = 1)
     {
