@@ -19,6 +19,13 @@ readonly class QRCodeDecryption
     {
     }
 
+    public function getContent(): string
+    {
+        $comKey = $this->createComKey();
+
+        return $this->decrypt($comKey);
+    }
+
     public function createComKey(): string
     {
         $hashBallot = $this->ballotDigest->createFingerprint();
@@ -31,11 +38,14 @@ readonly class QRCodeDecryption
         return $keyDerivation->derive();
     }
 
-    public function decrypt(): string
+    public function decrypt(string $comKey): string
     {
-        $data = base64_decode($this->QRCode->getCBase64());
-        $comKey = $this->createComKey();
+        $base64 = Base64UrlEncoding::decode($this->QRCode->getCBase64UrlSafe());
+        $data = base64_decode($base64);
+        $iv = substr($data, 0, 12);
+        $tag = substr($data, 12, 16);
+        $ciphertext = substr($data, 28);
 
-        return AES\Encryption::decryptECB($data, $comKey);
+        return AES\Encryption::decryptGCM($ciphertext, $comKey, $iv, $tag);
     }
 }

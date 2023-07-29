@@ -15,9 +15,9 @@ use Famoser\PolyasVerification\Crypto\RSA\OpenSSLException;
 
 class Encryption
 {
-    public static function encryptECB(string $data, string $key): string
+    public static function encryptGCM(string $data, string $key, string $iv, string &$tag): string
     {
-        $output = openssl_encrypt($data, 'aes-256-ecb', $key, OPENSSL_RAW_DATA);
+        $output = openssl_encrypt($data, 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag);
         if (false === $output) {
             throw OpenSSLException::createWithErrors('Encryption failed');
         }
@@ -27,9 +27,9 @@ class Encryption
         return $output;
     }
 
-    public static function decryptECB(string $data, string $key): string
+    public static function decryptGCM(string $data, string $key, string $iv, string $tag): string
     {
-        $output = openssl_decrypt($data, 'aes-256-ecb', $key, OPENSSL_RAW_DATA);
+        $output = openssl_decrypt($data, 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag);
         if (false === $output) {
             throw OpenSSLException::createWithErrors('Decryption failed');
         }
