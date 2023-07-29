@@ -54,7 +54,7 @@ class PlaintextEncoderTest extends TestCase
         $decodedMessage = PlaintextEncoder::decodeMultiPlaintext($q, $encodedNumbers);
 
         $bytesRequired = strlen($message) + 2;
-        $this->assertCount(ceil($bytesRequired / 2.0), $encodedNumbers);
+        $this->assertCount((int) ceil($bytesRequired / 2.0), $encodedNumbers);
         $this->assertEquals($message, $decodedMessage);
     }
 

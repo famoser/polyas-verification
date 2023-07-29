@@ -76,6 +76,7 @@ class BallotDecodeTest extends TestCase
 
     /**
      * @return array{
+     *     'secondDeviceParametersJson': string,
      *     'factorY': string[],
      *     'ballot': array{
      *          'encryptedChoice': array{'ciphertexts': array{array{'y': string}}}
