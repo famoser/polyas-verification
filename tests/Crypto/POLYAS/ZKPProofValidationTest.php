@@ -11,11 +11,10 @@
 
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
+use Famoser\PolyasVerification\Crypto\POLYAS\BallotDecode;
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
-use Famoser\PolyasVerification\Crypto\POLYAS\NumbersFromSeedInRange;
 use Famoser\PolyasVerification\Crypto\POLYAS\ZKPProofValidation;
 use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
-use Mdanter\Ecc\EccFactory;
 use PHPUnit\Framework\TestCase;
 
 class ZKPProofValidationTest extends TestCase
@@ -58,12 +57,8 @@ class ZKPProofValidationTest extends TestCase
         $payload = $this->getTraceSecondDeviceInitialMsg();
         $ciphertexts = $payload['ballot']['encryptedChoice']['ciphertexts'];
         $factorX = $payload['factorX'];
-
-        $randomCoinSeed = $this->getRandomCoinSeed();
-        $order = EccFactory::getSecgCurves()->generator256k1()->getOrder();
-        $randomCoinGenerator = new NumbersFromSeedInRange(count($ciphertexts), $randomCoinSeed, $order);
-        $randomCoins = $randomCoinGenerator->numbers();
-        $this->assertEquals('115383914388283582501768653457363159558776433376562817712059811925202949510311', gmp_strval($randomCoins[0]));
+        $ballotDecode = $this->getBallotDecode();
+        $randomCoins = $ballotDecode->getDecodeRandomCoins();
 
         $checkReEncryption = $ZKPProofValidation->checkReEncryption($ciphertexts[0]['x'], $factorX[0], $randomCoins[0]);
         $this->assertTrue($checkReEncryption);
@@ -78,6 +73,15 @@ class ZKPProofValidationTest extends TestCase
         $randomCoinSeed = $this->getRandomCoinSeed();
 
         return new ZKPProofValidation($payload, $request['challenge'], $response['z'], $deviceParameters->getPublicKey(), $randomCoinSeed);
+    }
+
+    private function getBallotDecode(): BallotDecode
+    {
+        $payload = $this->getTraceSecondDeviceInitialMsg();
+        $deviceParameters = $this->getDeviceParameters();
+        $randomCoinSeed = $this->getRandomCoinSeed();
+
+        return new BallotDecode($payload, $deviceParameters->getPublicKey(), $randomCoinSeed);
     }
 
     private function getDeviceParameters(): DeviceParameters
@@ -139,6 +143,7 @@ class ZKPProofValidationTest extends TestCase
     {
         /** @var string $randomCoinSeed */
         $randomCoinSeed = hex2bin('1e89b5f95deae82f6f823b52709117405f057783eda018d72cbd83141d394fbd');
+
         return $randomCoinSeed;
     }
 }

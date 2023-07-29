@@ -24,22 +24,25 @@ class BallotDecode
      *      }
      *     } $payload
      */
-    public function __construct(private array $payload, private string $challenge, private array $zPayload, private string $publicKey, private string $randomCoinSeed)
+    public function __construct(private array $payload, private string $publicKey, private string $randomCoinSeed)
     {
     }
 
-    public function decode(): bool
+    public function decode(): string
     {
         $ciphertextCount = count($this->payload['ballot']['encryptedChoice']['ciphertexts']);
         $order = EccFactory::getSecgCurves()->generator256k1()->getOrder();
         $randomCoinGenerator = new NumbersFromSeedInRange($ciphertextCount, $this->randomCoinSeed, $order);
         $randomCoins = $randomCoinGenerator->numbers();
+
+        /** @var \GMP[] $decodedGroupElements */
+        $decodedGroupElements = [];
         for ($i = 0; $i < $ciphertextCount; ++$i) {
             $groupElement = $this->getGroupElement($this->payload['ballot']['encryptedChoice']['ciphertexts'][$i]['y'], $this->payload['factorY'][$i], $randomCoins[$i]);
-            $decodedGroupElement = PlaintextEncoder::decode($groupElement);
+            $decodedGroupElements[] = PlaintextEncoder::decode($groupElement);
         }
 
-        return true;
+        return PlaintextEncoder::decodeMultiPlaintext($order, $decodedGroupElements);
     }
 
     public function getGroupElement(string $w, string $Y, \GMP $r)
@@ -52,8 +55,19 @@ class BallotDecode
 
         $point1 = $wPoint->add($YPoint);
         $hPowerR = $h->mul($r);
-        // todo calculate inverse of $r
 
         return $point1->add($hPowerR);
+    }
+
+    /**
+     * @return \GMP[]
+     */
+    public function getDecodeRandomCoins(): array
+    {
+        $ciphertextCount = count($this->payload['ballot']['encryptedChoice']['ciphertexts']);
+        $order = EccFactory::getSecgCurves()->generator256k1()->getOrder();
+        $randomCoinGenerator = new NumbersFromSeedInRange($ciphertextCount, $this->randomCoinSeed, $order);
+
+        return $randomCoinGenerator->numbers();
     }
 }
