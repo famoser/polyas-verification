@@ -23,7 +23,7 @@ class QRCodeDecryptionTest extends TestCase
 
     public function testCreateComKey(): void
     {
-        $this->markTestIncompleteNS('Com key does not turn out as expected.');
+        $this->markTestIncompleteNS('Different COM key derived as expected.');
 
         $comKeyHex = $this->getComKeyHex();
         $qrCodeDecryption = $this->getQRCodeDecryption();
@@ -36,7 +36,7 @@ class QRCodeDecryptionTest extends TestCase
 
     public function testGetContent(): void
     {
-        $this->markTestIncompleteNS('COM key derivation fails.');
+        $this->markTestIncompleteNS('Different COM key derived as expected.');
         
         $QRCodeDecryptedHex = $this->getQRCodeDecryptedHex();
         $qrCodeDecryption = $this->getQRCodeDecryption();

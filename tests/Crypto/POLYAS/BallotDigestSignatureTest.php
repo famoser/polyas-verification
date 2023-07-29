@@ -16,18 +16,20 @@ use Famoser\PolyasVerification\Crypto\PEM;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigest;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigestSignature;
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
-use Famoser\PolyasVerification\Crypto\RSA\OpenSSLException;
+use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
 use PHPUnit\Framework\TestCase;
 
 class BallotDigestSignatureTest extends TestCase
 {
-    public function testBallotDigestSignatureDOESNOTVERIFY(): void
+    use IncompleteTestTrait;
+
+    public function testBallotDigestSignature(): void
     {
-        $ballot = 'ballot1';
+        $this->markTestIncompleteNS('Signature is invalid.');
+
         $ballotDigestSignature = $this->getBallotDigestSignature();
 
-        $this->expectException(OpenSSLException::class);
-        $ballotDigestSignature->verify();
+        $this->assertTrue($ballotDigestSignature->verify());
     }
 
     public function testVerificationKeyEncoding(): void

@@ -57,6 +57,7 @@ class BallotDecode
         $point1 = $wPoint->add($YPoint);
         $hPowerR = $h->mul($r);
 
+        // TODO: Should be division
         return $point1->add($hPowerR);
     }
 
