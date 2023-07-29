@@ -20,7 +20,7 @@ readonly class BallotDigestSignature
     {
     }
 
-    public function verify(): void
+    public function verify(): bool
     {
         $data = $this->ballotEntry->createDigest();
 
@@ -30,6 +30,7 @@ readonly class BallotDigestSignature
 
         /** @var string $signature */
         $signature = hex2bin($this->signatureHex);
-        RSA\Signature::verifySHA256($data, $signature, $publicKeyPem);
+
+        return RSA\Signature::verifySHA256($data, $signature, $publicKeyPem);
     }
 }

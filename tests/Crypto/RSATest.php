@@ -36,8 +36,7 @@ class RSATest extends TestCase
         $data = 'some data';
         [$publicKey, $signature] = $this->createValidSignature($data);
 
-        $this->expectNotToPerformAssertions();
-        RSA\Signature::verifySHA256($data, $signature, $publicKey);
+        $this->assertTrue(RSA\Signature::verifySHA256($data, $signature, $publicKey));
     }
 
     public function testVerifySHA256InvalidSignatureThrows(): void
