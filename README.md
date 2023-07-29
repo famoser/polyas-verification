@@ -4,7 +4,19 @@
 [![PHP Composer](https://github.com/famoser/polyas-verification/actions/workflows/php.yml/badge.svg)](https://github.com/famoser/polyas-verification/actions/workflows/php.yml)
 [![Node.js Encore](https://github.com/famoser/polyas-verification/actions/workflows/node.js.yml/badge.svg)](https://github.com/famoser/polyas-verification/actions/workflows/node.js.yml)
 
-Allows to verify POLYAS 3.0 (Version 1.3, February 20, 2023). This is a work in progress. 
+Allows to verify POLYAS 3.0 (Version 1.3, February 20, 2023), following the second device spec (Version 1.0, July 28, 2023). 
+
+## Second device UI
+
+After voting, the voter is presented with a QR code, to be able to enter a second device application.to check how the vote was encrypted 
+The second device application allows the user to verify their plain vote again, to check that the voting procedure finished with the expected vote.
+
+The UI will be built as soon as the cryptography works.
+
+## Receipt verifier UI
+
+The second device application outputs a receipt, which contains the fingerprint of the ballot, and a signature over said fingerprint. 
+This UI allows to verify that signature, and checks whether a ballot with the corresponding fingerprint is known to the voting server.
 
 <table>
     <tbody>
@@ -53,31 +65,3 @@ You need access to the config repository specified in `agnes.yml`. Then:
 - deploy release to `prod` environment with `./vendor/bin/agnes deploy *:*:prod v1.0`
 
 The server needs to fulfil requirements specified in `composer.json`.
-
-## Questions
-
-Specification:
-1. (B.1, page 50) What is the hexadecimal representation of the `RECEIPT-VERIFICATION-KEY` RSA public key? I would propose to use PEM PUBLIC KEY representation, which is also what OpenSSL takes as an argument (see https://www.rfc-editor.org/rfc/rfc7468#section-13, which in turn requires an ASN.1 SubjectPublicKeyInfo encoding https://www.rfc-editor.org/rfc/rfc5280#section-4.1.2.7).
-2. (B.2, page 52) The example represents `proofOfKnowledgeOfEncryptionCoins.[].c`, `proofOfKnowledgeOfEncryptionCoins.[].f` and , `proofOfKnowledgeOfPrivateCredential.c` within 21 bytes (with the first byte being 0); but `proofOfKnowledgeOfPrivateCredential.f` within 20 bytes (with no first zero-byte). Could you please clarify what the logic here is?
-3. (B.2, page 52) The conventions in Section A.1.2 refer to SHA512, while SHA256 is specified to be used.
-
-Improvement suggestions:
-1. As it is designed right now, each ballot has to be hashed to find the one ballot with the correct fingerprint. How about including the fingerprint in the ballot entry, too? The second device can still verify that the fingerprint actually corresponds to the ballot, while it is much faster to discover the correct ballot. 
-2. The different formats needed for the ballot entry digest (label = UTF-8, ciphertext = byte array, proof of knowledge = long number) increase burden of implementation, and possibly lead to hard-to-debug mistakes. Would it be instead possible to simply everywhere provide hex?
-3. The receipt in the PDF file uses two minus `--` as an encapsulation boundary marker. Why not use the PEM encapsulation marker (five `-----`) so the receipt is a valid PEM file? Then a PEM parser can be reused; and I think it changes nothing about PDF validity. In any case, please specify the unicode of the markers used, as latex will likely not preserve it during render. 
-
-Towards continuing the implementation:
-1. Could you please provide complete test data; e.g. a full run of the protocol including receipts?
-2. How will the boards be made accessible, and when/how can this be tested?
-3. Where is the reference implementation for the universal verifiability procedure (as mentioned in the spec)?
-
-Organisational questions:
-1. I would like to include the specification document next to my source code, i.e. publish it to GitHub. Is this possible?
-2. There are a couple of typos in the specification document. I'd prefer to fix them directly and create a PR against the documentation; saves time on both ends. Is this possible? 
-
-Security questions:
-1. Is there a computational and/or symbolic proof over the presented protocol?
-2. Any particular reason why `secp256k1` is chosen, and not `ed25519`?
-3. Is the receipt generated on the client, or on the server?
-4. Can the client verify the code it executes, and is this code public?
-
