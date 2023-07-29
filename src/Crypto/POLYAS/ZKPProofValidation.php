@@ -45,9 +45,8 @@ readonly class ZKPProofValidation
             }
         }
 
-        $order = EccFactory::getSecgCurves()->generator256k1()->getOrder();
-        $randomCoinGenerator = new NumbersFromSeedInRange($ciphertextCount, $this->randomCoinSeed, $order);
-        $randomCoins = $randomCoinGenerator->numbers();
+        $ballotDecode = new BallotDecode($this->payload, $this->publicKey, $this->randomCoinSeed);
+        $randomCoins = $ballotDecode->getDecodeRandomCoins();
         for ($i = 0; $i < $ciphertextCount; ++$i) {
             if (!$this->checkReEncryption($this->payload['ballot']['encryptedChoice']['ciphertexts'][$i]['x'], $this->payload['factorX'][$i], $randomCoins[$i])) {
                 return false;
