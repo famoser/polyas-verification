@@ -33,6 +33,43 @@ class PlaintextEncoderTest extends TestCase
         $this->assertTrue($point->equals($encoded));
     }
 
+    public function testEncodeMultiPlaintext(): void
+    {
+        $message = 'hi mom';
+        $q = gmp_init(257);
+
+        $encodedNumbers = PlaintextEncoder::encodeMultiPlaintext($q, $message);
+        $decodedMessage = PlaintextEncoder::decodeMultiPlaintext($q, $encodedNumbers);
+
+        $this->assertCount(strlen($message) + 2, $encodedNumbers);
+        $this->assertEquals($message, $decodedMessage);
+    }
+
+    public function testEncodeMultiPlaintextMultiBlock(): void
+    {
+        $message = 'hi mom!';
+        $q = gmp_init(65537);
+
+        $encodedNumbers = PlaintextEncoder::encodeMultiPlaintext($q, $message);
+        $decodedMessage = PlaintextEncoder::decodeMultiPlaintext($q, $encodedNumbers);
+
+        $bytesRequired = strlen($message) + 2;
+        $this->assertCount(ceil($bytesRequired / 2.0), $encodedNumbers);
+        $this->assertEquals($message, $decodedMessage);
+    }
+
+    public function testEncodeMultiPlaintextRealisticBlockSize(): void
+    {
+        $message = 'hi mom! how is it going? this is a really long text to surpass the block limit.';
+        $q = EccFactory::getSecgCurves()->generator256k1()->getOrder();
+
+        $encodedNumbers = PlaintextEncoder::encodeMultiPlaintext($q, $message);
+        $decodedMessage = PlaintextEncoder::decodeMultiPlaintext($q, $encodedNumbers);
+
+        $this->assertCount(3, $encodedNumbers);
+        $this->assertEquals($message, $decodedMessage);
+    }
+
     public function testEncodingReversal(): void
     {
         $value = $this->getValue();
