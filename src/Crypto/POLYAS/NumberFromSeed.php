@@ -33,7 +33,7 @@ readonly class NumberFromSeed
         // cut off top bits if necessary
         if ($this->bitLength % 8 > 0) {
             $firstByte = substr($positiveKey, 0, 2);
-            $firstNumber = unpack('n', $firstByte)[1]; // @phpstan-ignore-line
+            $firstNumber = (int) unpack('n', $firstByte)[1]; // @phpstan-ignore-line
 
             $keepBits = $this->bitLength % 8;
             $bitsToClear = $firstNumber >> $keepBits;
