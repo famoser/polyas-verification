@@ -28,18 +28,28 @@ readonly class ZKPProofValidation
      *     } $payload
      * @param string[] $zPayload
      */
-    public function __construct(private array $payload, private array $zPayload, private string $challenge, private string $publicKey)
+    public function __construct(private array $payload, private string $challenge, private array $zPayload, private string $publicKey, private string $randomCoinSeed)
     {
     }
 
     public function validate(): bool
     {
-        if (!$this->checkExpectedCiphertextLengths()) {
+        $ciphertextCount = count($this->payload['ballot']['encryptedChoice']['ciphertexts']);
+        if (!$this->checkExpectedCiphertextLengths($ciphertextCount)) {
             return false;
         }
 
-        for ($i = 0; $i < count($this->payload['ballot']['encryptedChoice']); ++$i) {
-            if (!$this->checkYKPValid($this->payload['factorA'][$i], $this->payload['factorB'][$i], $this->payload['factorX'][$i], $this->payload['factorY'][$i], $this->zPayload[$i])) {
+        for ($i = 0; $i < $ciphertextCount; ++$i) {
+            if (!$this->checkSamePlaintext($this->payload['factorA'][$i], $this->payload['factorB'][$i], $this->payload['factorX'][$i], $this->payload['factorY'][$i], $this->zPayload[$i])) {
+                return false;
+            }
+        }
+
+        $order = EccFactory::getSecgCurves()->generator256k1()->getOrder();
+        $randomCoinGenerator = new NumbersFromSeedInRange($ciphertextCount, $this->randomCoinSeed, $order);
+        $randomCoins = $randomCoinGenerator->numbers();
+        for ($i = 0; $i < $ciphertextCount; ++$i) {
+            if (!$this->checkReEncryption($this->payload['ballot']['encryptedChoice']['ciphertexts'][$i]['x'], $this->payload['factorX'][$i], $randomCoins[$i])) {
                 return false;
             }
         }
@@ -47,19 +57,18 @@ readonly class ZKPProofValidation
         return true;
     }
 
-    private function checkExpectedCiphertextLengths(): bool
+    public function checkExpectedCiphertextLengths(int $ciphertextCount): bool
     {
-        $expectedLength = count($this->payload['ballot']['encryptedChoice']);
         $factorALength = count($this->payload['factorA']);
         $factorBLength = count($this->payload['factorB']);
         $factorXLength = count($this->payload['factorX']);
         $factorYLength = count($this->payload['factorY']);
         $zLength = count($this->zPayload);
 
-        return $expectedLength === $factorALength && $expectedLength === $factorBLength && $expectedLength === $factorXLength && $expectedLength === $factorYLength && $expectedLength === $zLength;
+        return $ciphertextCount === $factorALength && $ciphertextCount === $factorBLength && $ciphertextCount === $factorXLength && $ciphertextCount === $factorYLength && $ciphertextCount === $zLength;
     }
 
-    private function checkYKPValid(string $A, string $B, string $X, string $Y, string $zString): bool
+    public function checkSamePlaintext(string $A, string $B, string $X, string $Y, string $zString): bool
     {
         $g = EccFactory::getSecgCurves()->generator256k1();
         $h = SECP256K1\Encoder::parseCompressedPoint($this->publicKey);
@@ -76,5 +85,18 @@ readonly class ZKPProofValidation
         $BYValid = $bPoint->add($yPoint->mul($e))->equals($h->mul($z));
 
         return $AXValid && $BYValid;
+    }
+
+    public function checkReEncryption(string $u, string $X, \GMP $r): bool
+    {
+        $g = EccFactory::getSecgCurves()->generator256k1();
+
+        $uPoint = SECP256K1\Encoder::parseCompressedPoint($u);
+        $xPoint = SECP256K1\Encoder::parseCompressedPoint($X);
+
+        $right = $g->mul($r);
+        $left = $uPoint->add($xPoint);
+
+        return $left->equals($right);
     }
 }

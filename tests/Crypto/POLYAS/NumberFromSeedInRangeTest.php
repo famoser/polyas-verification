@@ -37,13 +37,13 @@ class NumberFromSeedInRangeTest extends TestCase
     public function testNumber(string $seed, string $maxNumber, array $results): void
     {
         $maxNumberGmp = gmp_init($maxNumber);
-        $numbersFromSeedInRange = new NumbersFromSeedInRange($seed, $maxNumberGmp);
+        $numbersFromSeedInRange = new NumbersFromSeedInRange(count($results), $seed, $maxNumberGmp);
+        $numbers = $numbersFromSeedInRange->numbers();
 
-        foreach ($results as $result) {
-            $number = $numbersFromSeedInRange->number();
-            $numberStr = gmp_strval($number);
+        for ($i = 0; $i < count($results); ++$i) {
+            $result = $results[$i];
+            $numberStr = gmp_strval($numbers[$i]);
             $this->assertEquals($result, $numberStr);
-            $numbersFromSeedInRange = $numbersFromSeedInRange->iterate();
         }
     }
 }

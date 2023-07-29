@@ -11,32 +11,31 @@
 
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
-class NumbersFromSeedInRange
+readonly class NumbersFromSeedInRange
 {
-    private int $iterationsSkipped = 0;
-
-    public function __construct(private readonly string $seed, private readonly \GMP $maxNumber, private readonly int $startIteration = 1)
+    public function __construct(private int $size, private string $seed, private \GMP $maxNumber, private int $startIteration = 1)
     {
     }
 
-    public function number(): \GMP
+    /**
+     * @return \GMP[]
+     */
+    public function numbers(): array
     {
         $bitLength = strlen(gmp_strval($this->maxNumber, 2));
-        $numbersFromSeed = new NumbersFromSeed($this->seed, $bitLength, $this->startIteration);
+        $numbersFromSeed = new NumberFromSeed($this->seed, $bitLength, $this->startIteration);
+        /** @var \GMP[] $result */
+        $result = [];
 
-        while (true) {
+        while (count($result) < $this->size) {
             $number = $numbersFromSeed->number();
             if ($number < $this->maxNumber) {
-                return $number;
+                $result[] = $number;
             }
 
             $numbersFromSeed = $numbersFromSeed->iterate();
-            ++$this->iterationsSkipped;
         }
-    }
 
-    public function iterate(): self
-    {
-        return new self($this->seed, $this->maxNumber, $this->startIteration + $this->iterationsSkipped + 1);
+        return $result;
     }
 }
