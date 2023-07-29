@@ -22,9 +22,9 @@ The questions in this chapter block the implementation of the verifier.
 
 > Directly use the property `secondDeviceParametersJson` of the `loginResponse["initialMessage"]`; without deserializing it first. 
 
-3. ⏳ (`2ndDevice`, Checking the acknowledgement) The signature of the given testvector does not verify. Can you please clarify the wording over what data is the signature (the whole `BTBS`, or only over `ballotAsNormalizedBytestring`)? Can you provide a complete testvector (including private keys) to align implementations?
+4. ⏳ (`2ndDevice`, Checking the acknowledgement) The signature of the given testvector does not verify. Can you please clarify the wording over what data is the signature (the whole `BTBS`, or only over `ballotAsNormalizedBytestring`)? Can you provide a complete testvector (including private keys) to align implementations?
 
-
+5. ⏳ (`2ndDevice`, Decrypting the QR-code) The `comKey` is different than the provided example. The API call in `2ndDevice` requests `256` bits, but `spec` specifies algorithm 1 to have `length` specified in bytes. Can you please align the API call / definition, and provide the `key_derivation_key` in use there?
 
 ## Organisational questions
 
@@ -49,13 +49,6 @@ Questions to understand the design principles behind the protocol.
 
 ## Improvement suggestions
 
-### Protocol
-
-1. To check whether a receipt of a ballot fingerprint corresponds to a ballot registered at the voting server, every registered ballot has to be hashed to find the one ballot with the correct fingerprint. How about including the fingerprint in the ballot entry, too? The second device can still verify that the fingerprint actually corresponds to the ballot, while it is much faster to discover the correct ballot.
-2. The different formats needed for the ballot entry digest (label = UTF-8, ciphertext = byte array, proof of knowledge = long number) increase burden of implementation, and possibly lead to hard-to-debug mistakes. How about everywhere using HEX?
-3. The receipt in the PDF file uses two minus `--` as an encapsulation boundary marker. Why not use the PEM encapsulation marker (five `-----`) so the receipt is a valid PEM file? Then a PEM parser can be reused; and I think it changes nothing about PDF validity.
-4. After opening the QR code on the second device, the voter additionally has to enter a short nonce (changes every 30 seconds). This nonce could instead directly be embedded into the QR code, simplifying both UI as well as UX. 
-
 ### Specification
 
 1. (`spec`, B.2, page 52) The conventions in Section A.1.2 refer to SHA512, while SHA256 is specified to be used.
@@ -73,3 +66,10 @@ Publishing the following information public would make implementation easier / m
 - Proofs (both computational as well as symbolic)
 - OpenAPI spec of the API
 - Code of the Verifier and/or whole of POLYAS
+
+### Protocol
+
+1. To check whether a receipt of a ballot fingerprint corresponds to a ballot registered at the voting server, every registered ballot has to be hashed to find the one ballot with the correct fingerprint. How about including the fingerprint in the ballot entry, too? The second device can still verify that the fingerprint actually corresponds to the ballot, while it is much faster to discover the correct ballot.
+2. The different formats needed for the ballot entry digest (label = UTF-8, ciphertext = byte array, proof of knowledge = long number) increase burden of implementation, and possibly lead to hard-to-debug mistakes. How about everywhere using HEX?
+3. The receipt in the PDF file uses two minus `--` as an encapsulation boundary marker. Why not use the PEM encapsulation marker (five `-----`) so the receipt is a valid PEM file? Then a PEM parser can be reused; and I think it changes nothing about PDF validity.
+4. After opening the QR code on the second device, the voter additionally has to enter a short nonce (changes every 30 seconds). This nonce could instead directly be embedded into the QR code, simplifying both UI as well as UX. 
