@@ -19,12 +19,15 @@ class Serialization
     {
         $hex = Hex::bcdechex($dec);
 
+        // align to byte length
         if (1 === strlen($hex) % 2) {
             $hex = '0'.$hex;
         }
 
-        // TODO verify this is actually what happens
-        if ($hex[0] > '7') {
+        // align byte length to java implementation of BigInt.toByteArray()
+        $bitLength = strlen(gmp_strval($dec, 2));
+        $expectedByteLength = $bitLength / 8 + 1;
+        if (strlen($hex) / 2 === $expectedByteLength - 1) {
             $hex = '00'.$hex;
         }
 
