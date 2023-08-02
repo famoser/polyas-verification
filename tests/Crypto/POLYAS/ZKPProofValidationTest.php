@@ -51,7 +51,6 @@ class ZKPProofValidationTest extends TestCase
         $this->assertTrue($actualResult->equals($phpResult));
         $this->assertFalse($actualResult->equals($javaScriptResult));
         $this->assertFalse($phpResult->equals($javaScriptResult));
-        // actual php result
     }
 
     public function testCheckSamePlaintext(): void
