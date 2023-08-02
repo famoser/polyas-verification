@@ -24,7 +24,7 @@ class Serialization
             $hex = '0'.$hex;
         }
 
-        // align byte length to java implementation of BigInt.toByteArray()
+        // align byte length to java implementation of BigInteger.toByteArray()
         $bitLength = strlen(gmp_strval($dec, 2));
         $expectedByteLength = $bitLength / 8 + 1;
         if (strlen($hex) / 2 === $expectedByteLength - 1) {
