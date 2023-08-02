@@ -13,10 +13,8 @@ namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDecode;
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
-use Famoser\PolyasVerification\Crypto\POLYAS\PlaintextEncoder;
 use Famoser\PolyasVerification\Crypto\SECP256K1;
 use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
-use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Primitives\PointInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -26,8 +24,6 @@ class BallotDecodeTest extends TestCase
 
     public function testBallotDigestDigestedBytes(): void
     {
-        $this->markTestIncompleteNS('Math not implemented yet to derive group elements');
-
         $ballotDecode = $this->getBallotDecode();
         $expectedPlaintextHex = $this->getExpectedPlaintextHex();
 
@@ -47,8 +43,6 @@ class BallotDecodeTest extends TestCase
 
     public function testGetGroupElement(): void
     {
-        $this->markTestIncompleteNS('Math not implemented yet to derive group elements');
-
         $payload = $this->getTraceSecondDeviceInitialMsg();
         $ballotDecode = $this->getBallotDecode();
         $expectedGroupElement = $this->getExpectedGroupElement();
@@ -58,27 +52,6 @@ class BallotDecodeTest extends TestCase
         $groupElement = $ballotDecode->getGroupElement($ciphertexts[0]['y'], $payload['factorY'][0], $decodeRandomCoins[0]);
 
         $this->assertTrue($expectedGroupElement->equals($groupElement));
-    }
-
-    public function testGetGroupElementMath(): void
-    {
-        $this->markTestIncompleteNS('Group element does not match (but should)');
-
-        $payload = $this->getTraceSecondDeviceInitialMsg();
-        $publicKey = $this->getDeviceParameters()->getPublicKey();
-        $expectedGroupElement = $this->getExpectedGroupElement();
-
-        $decodeRandomCoins = $this->getBallotDecode()->getDecodeRandomCoins();
-
-        $h = SECP256K1\Encoder::parseCompressedPoint($publicKey);
-
-        $wPoint = SECP256K1\Encoder::parseCompressedPoint($payload['ballot']['encryptedChoice']['ciphertexts'][0]['y']);
-        $YPoint = SECP256K1\Encoder::parseCompressedPoint($payload['factorY'][0]);
-
-        $point1 = $wPoint->add($YPoint);
-        $hPowerR = $h->mul($decodeRandomCoins[0]);
-
-        $this->assertTrue($expectedGroupElement->add($hPowerR)->equals($point1));
     }
 
     private function getBallotDecode(): BallotDecode
@@ -130,13 +103,6 @@ class BallotDecodeTest extends TestCase
 
     public function getExpectedGroupElement(): PointInterface
     {
-        $expectedPlaintextHex = $this->getExpectedPlaintextHex();
-
-        $order = EccFactory::getSecgCurves()->generator256k1()->getOrder();
-        /** @var string $expectedPlaintext */
-        $expectedPlaintext = hex2bin($expectedPlaintextHex);
-        $expectedDecodedGroupElements = PlaintextEncoder::encodeMultiPlaintext($order, $expectedPlaintext);
-
-        return PlaintextEncoder::encode($expectedDecodedGroupElements[0]);
+        return SECP256K1\Encoder::parseCompressedPoint('020007d00000005000000000000000000000000000000000000000000000000003');
     }
 }

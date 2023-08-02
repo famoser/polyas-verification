@@ -41,8 +41,6 @@ class ZKPProofValidationTest extends TestCase
 
     public function testCheckSamePlaintext(): void
     {
-        $this->markTestIncompleteNS('One of the two points does not pass.');
-
         $ZKPProofValidation = $this->getZKPProofValidation();
         $payload = $this->getTraceSecondDeviceInitialMsg();
         $zResponse = $this->getTraceChallengeResponseValue();
