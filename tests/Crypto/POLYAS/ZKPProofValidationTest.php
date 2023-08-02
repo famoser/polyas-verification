@@ -14,6 +14,7 @@ namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDecode;
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
 use Famoser\PolyasVerification\Crypto\POLYAS\ZKPProofValidation;
+use Famoser\PolyasVerification\Crypto\SECP256K1;
 use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -37,6 +38,20 @@ class ZKPProofValidationTest extends TestCase
         $ciphertextCount = count($payload['ballot']['encryptedChoice']['ciphertexts']);
 
         $this->assertTrue($ZKPProofValidation->checkExpectedCiphertextLengths($ciphertextCount));
+    }
+
+    public function testCheckExponentiation(): void
+    {
+        $publicKey = SECP256K1\Encoder::parseCompressedPoint('030588c6c80497da9e50bf56a4853c9fd3dd945a5e2ed741ccf783c5538611da26');
+        $k = gmp_init('3633826251616834446657553661530373736489206587264246793596555854504147120873052400272122845815239659486740186516083053240689380948861192914781931033170662');
+        $phpResult = SECP256K1\Encoder::parseCompressedPoint('02328037239284409b2e2a554c41c1cbfb02155111175fcefd4c6a3ca062377c77');
+        $javaScriptResult = SECP256K1\Encoder::parseCompressedPoint('03705a21c0722b5ce27e92d6ba9ece486242153afa57865fda4249c997b7b87ddc');
+
+        $actualResult = $publicKey->mul($k);
+        $this->assertTrue($actualResult->equals($phpResult));
+        $this->assertFalse($actualResult->equals($javaScriptResult));
+        $this->assertFalse($phpResult->equals($javaScriptResult));
+        // actual php result
     }
 
     public function testCheckSamePlaintext(): void
