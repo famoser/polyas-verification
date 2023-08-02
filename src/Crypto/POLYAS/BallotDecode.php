@@ -49,16 +49,19 @@ class BallotDecode
     public function getGroupElement(string $w, string $Y, \GMP $r): PointInterface
     {
         $g = EccFactory::getSecgCurves()->generator256k1();
+        $curve = EccFactory::getSecgCurves()->curve256k1();
         $h = SECP256K1\Encoder::parseCompressedPoint($this->publicKey);
 
         $wPoint = SECP256K1\Encoder::parseCompressedPoint($w);
         $YPoint = SECP256K1\Encoder::parseCompressedPoint($Y);
 
-        $point1 = $wPoint->add($YPoint);
         $hPowerR = $h->mul($r);
+        $invertedY = EccFactory::getAdapter()->sub($curve->getPrime(), $hPowerR->getY());
+        $negatedHPowerR = $curve->getPoint($hPowerR->getX(), $invertedY);
 
-        // TODO: Should be division
-        return $point1->add($hPowerR);
+        $point1 = $wPoint->add($YPoint);
+
+        return $point1->add($negatedHPowerR);
     }
 
     /**
