@@ -31,20 +31,13 @@ readonly class BallotDigest
 
     public function createFingerprint(): string
     {
-        $digest = self::createDigest();
-
-        return hash('sha256', $digest, true);
-    }
-
-    public function createDigest(): string
-    {
-        $digestHex = self::createDigestHex();
-        $digest = hex2bin($digestHex);
+        $digestHex = BallotDigest::createDigestHex();
+        $digest = \hex2bin($digestHex);
         if (!$digest) {
             throw new \RuntimeException('Cannot transform digest hex to binary');
         }
 
-        return $digest;
+        return hash('sha256', $digest, true);
     }
 
     public function createDigestHex(): string
@@ -57,9 +50,27 @@ readonly class BallotDigest
         $content .= Utils\Serialization::getBytesHexLength4Bytes($publicCredential).$publicCredential;
         $content .= Utils\Serialization::getStringHexWithLength($voterId);
 
+        $content .= $this->createNormalizedHex();
+
+        return $content;
+    }
+
+    public function createNorm(): string
+    {
+        $normalizedHex = self::createNormalizedHex();
+        $digest = \hex2bin($normalizedHex);
+        if (!$digest) {
+            throw new \RuntimeException('Cannot transform digest hex to binary');
+        }
+
+        return hash('sha256', $digest, true);
+    }
+
+    private function createNormalizedHex(): string
+    {
         $ballot = $this->content['ballot'];
         $ciphertexts = $ballot['encryptedChoice']['ciphertexts'];
-        $content .= Utils\Serialization::getCollectionHexLength4Bytes($ciphertexts);
+        $content = Utils\Serialization::getCollectionHexLength4Bytes($ciphertexts);
         foreach ($ciphertexts as $ciphertext) {
             $content .= Utils\Serialization::getBytesHexLength4Bytes($ciphertext['x']).$ciphertext['x'];
             $content .= Utils\Serialization::getBytesHexLength4Bytes($ciphertext['y']).$ciphertext['y'];
