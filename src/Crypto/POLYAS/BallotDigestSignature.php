@@ -22,7 +22,7 @@ readonly class BallotDigestSignature
 
     public function verify(): bool
     {
-        $data = $this->ballotEntry->createDigest();
+        $data = $this->ballotEntry->createFingerprint();
 
         /** @var string $verificationKeyBin */
         $verificationKeyBin = hex2bin($this->verificationKeyX509Hex);

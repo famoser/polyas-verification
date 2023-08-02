@@ -15,7 +15,7 @@ use Famoser\PolyasVerification\Crypto\AES;
 
 readonly class QRCodeDecryption
 {
-    public function __construct(private QRCode $QRCode, private BallotDigest $ballotDigest, private string $comSeedHex)
+    public function __construct(private QRCode $QRCode, private BallotDigest $ballotDigest, private string $comSeed)
     {
     }
 
@@ -28,9 +28,8 @@ readonly class QRCodeDecryption
 
     public function createComKey(): string
     {
-        $hashBallot = $this->ballotDigest->createFingerprint();
-        /** @var string $comSeed */
-        $comSeed = hex2bin($this->comSeedHex);
+        $hashBallot = $this->ballotDigest->createNorm();
+        $comSeed = $this->comSeed;
 
         $keyDerivationKey = $comSeed.$hashBallot;
         $keyDerivation = new KeyDerivation($keyDerivationKey, 32, '', '');

@@ -25,8 +25,6 @@ class BallotDigestSignatureTest extends TestCase
 
     public function testBallotDigestSignature(): void
     {
-        $this->markTestIncompleteNS('Signature is invalid.');
-
         $ballotDigestSignature = $this->getBallotDigestSignature();
 
         $this->assertTrue($ballotDigestSignature->verify());
