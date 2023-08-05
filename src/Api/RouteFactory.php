@@ -11,6 +11,7 @@
 
 namespace Famoser\PolyasVerification\Api;
 
+use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
 use Famoser\PolyasVerification\PathHelper;
 use Famoser\PolyasVerification\Storage;
 use Famoser\PolyasVerification\Workflow\ApiClient;
@@ -63,7 +64,8 @@ class RouteFactory
 
             $apiClient = new ApiClient();
             $verification = new Verification($deviceParametersJson, $apiClient);
-            $verificationResult = $verification->verify($payload, $failedCheck);
+            $challengeCommit = ChallengeCommit::createWithRandom();
+            $verificationResult = $verification->verify($payload, $challengeCommit, $failedCheck);
 
             return SlimExtensions::createJsonResponse($request, $response, $verificationResult);
         });
