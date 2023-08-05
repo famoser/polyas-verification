@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Famoser\PolyasVerification\Receipt;
+namespace Famoser\PolyasVerification\Api;
 
-use Famoser\PolyasVerification\Crypto\POLYAS\Receipt;
 use Famoser\PolyasVerification\PathHelper;
 use Famoser\PolyasVerification\Storage;
-use Famoser\PolyasVerification\Utils\RequestValidatorExtensions;
-use Famoser\PolyasVerification\Utils\SlimExtensions;
+use Famoser\PolyasVerification\Workflow\ApiClient;
+use Famoser\PolyasVerification\Workflow\Receipt;
+use Famoser\PolyasVerification\Workflow\Verification;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
@@ -42,8 +42,28 @@ class RouteFactory
             RequestValidatorExtensions::checkPdfFileUploadSuccessful($request, $file);
             $path = Storage::writeUploadedFile(PathHelper::VAR_TRANSIENT_DIR, $file);
 
-            $verificationResult = Receipt::verify($path);
+            $receipt = new Receipt();
+            $verificationResult = $receipt->verify($path);
             Storage::removeFile($path);
+
+            return SlimExtensions::createJsonResponse($request, $response, $verificationResult);
+        });
+
+        $route->post('/verification', function (Request $request, Response $response, array $args) {
+            $payload = SlimExtensions::parseJsonRequestBody($request);
+            RequestValidatorExtensions::checkVerification($request, $payload);
+            /** @var array{
+             *     'payload': string,
+             *     'voterId': string,
+             *     'nonce': string,
+             *     'password': string,
+             * } $payload */
+            $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
+            $deviceParametersJson = Storage::readFile($deviceParametersPath);
+
+            $apiClient = new ApiClient();
+            $verification = new Verification($deviceParametersJson, $apiClient);
+            $verificationResult = $verification->verify($payload, $failedCheck);
 
             return SlimExtensions::createJsonResponse($request, $response, $verificationResult);
         });

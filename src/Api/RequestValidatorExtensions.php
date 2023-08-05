@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Famoser\PolyasVerification\Utils;
+namespace Famoser\PolyasVerification\Api;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
@@ -29,6 +29,33 @@ class RequestValidatorExtensions
 
         if ($file->getClientFilename() && !str_ends_with($file->getClientFilename(), 'pdf')) {
             throw new HttpBadRequestException($request, 'file upload failed; please upload a pdf file.');
+        }
+    }
+
+    /**
+     * @param string[] $verification
+     */
+    public static function checkVerification(Request $request, array $verification): void
+    {
+        RequestValidatorExtensions::checkExactlyKeysSet($request, $verification, ['payload', 'voterId', 'nonce', 'password']);
+    }
+
+    /**
+     * @param string[] $array
+     * @param string[] $requiredKeys
+     */
+    public static function checkExactlyKeysSet(Request $request, array $array, array $requiredKeys): void
+    {
+        foreach ($requiredKeys as $key) {
+            if (!key_exists($key, $array)) {
+                throw new HttpBadRequestException($request, 'key '.$key.' expected, but not provided.');
+            }
+        }
+
+        foreach (array_keys($array) as $key) {
+            if (!in_array($key, $requiredKeys, true)) {
+                throw new HttpBadRequestException($request, 'the key '.$key.' is invalid.');
+            }
         }
     }
 }
