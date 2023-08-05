@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Famoser\PolyasVerification\Utils;
+namespace Famoser\PolyasVerification\Api;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -18,7 +18,16 @@ use Slim\Exception\HttpInternalServerErrorException;
 class SlimExtensions
 {
     public const STATUS_OK = 200;
-    public const STATUS_INTERNAL_SERVER_ERROR = 500;
+
+    /**
+     * @return string[]
+     */
+    public static function parseJsonRequestBody(Request $request): array
+    {
+        $bodyContents = $request->getBody()->getContents();
+
+        return json_decode($bodyContents, true);
+    }
 
     public static function createJsonResponse(Request $request, Response $response, mixed $body, int $statusCode = self::STATUS_OK): Response
     {

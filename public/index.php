@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use Famoser\PolyasVerification\Receipt\RouteFactory;
+use Famoser\PolyasVerification\Api\RouteFactory;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
