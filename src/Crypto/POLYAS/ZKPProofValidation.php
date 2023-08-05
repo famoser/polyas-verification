@@ -26,9 +26,9 @@ readonly class ZKPProofValidation
      *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
      *      }
      *     } $payload
-     * @param string[] $zPayload
+     * @param string[] $z
      */
-    public function __construct(private array $payload, private string $challenge, private array $zPayload, private string $publicKey, private string $randomCoinSeed)
+    public function __construct(private array $payload, private \GMP $challenge, private array $z, private string $publicKey, private string $randomCoinSeed)
     {
     }
 
@@ -40,7 +40,7 @@ readonly class ZKPProofValidation
         }
 
         for ($i = 0; $i < $ciphertextCount; ++$i) {
-            if (!$this->checkSamePlaintext($this->payload['factorA'][$i], $this->payload['factorB'][$i], $this->payload['factorX'][$i], $this->payload['factorY'][$i], $this->zPayload[$i])) {
+            if (!$this->checkSamePlaintext($this->payload['factorA'][$i], $this->payload['factorB'][$i], $this->payload['factorX'][$i], $this->payload['factorY'][$i], $this->z[$i])) {
                 return false;
             }
         }
@@ -62,7 +62,7 @@ readonly class ZKPProofValidation
         $factorBLength = count($this->payload['factorB']);
         $factorXLength = count($this->payload['factorX']);
         $factorYLength = count($this->payload['factorY']);
-        $zLength = count($this->zPayload);
+        $zLength = count($this->z);
 
         return $ciphertextCount === $factorALength && $ciphertextCount === $factorBLength && $ciphertextCount === $factorXLength && $ciphertextCount === $factorYLength && $ciphertextCount === $zLength;
     }
@@ -78,7 +78,7 @@ readonly class ZKPProofValidation
         $yPoint = SECP256K1\Encoder::parseCompressedPoint($Y);
 
         $z = gmp_init($zString, 10);
-        $e = gmp_init($this->challenge, 10);
+        $e = $this->challenge;
 
         $AXValid = $aPoint->add($xPoint->mul($e))->equals($g->mul($z));
         $BYValid = $bPoint->add($yPoint->mul($e))->equals($h->mul($z));

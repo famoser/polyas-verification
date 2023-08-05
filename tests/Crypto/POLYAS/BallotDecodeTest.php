@@ -14,20 +14,18 @@ namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDecode;
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
 use Famoser\PolyasVerification\Crypto\SECP256K1;
-use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
 use Mdanter\Ecc\Primitives\PointInterface;
 use PHPUnit\Framework\TestCase;
 
 class BallotDecodeTest extends TestCase
 {
-    use IncompleteTestTrait;
-
     public function testBallotDigestDigestedBytes(): void
     {
         $ballotDecode = $this->getBallotDecode();
         $expectedPlaintextHex = $this->getExpectedPlaintextHex();
 
         $message = $ballotDecode->decode();
+        $this->assertNotNull($message);
         $this->assertEquals($expectedPlaintextHex, bin2hex($message));
     }
 

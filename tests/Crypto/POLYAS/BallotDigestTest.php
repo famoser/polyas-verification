@@ -94,7 +94,7 @@ class BallotDigestTest extends TestCase
          *     } $ballotDigestContent
          */
         $ballotDigestContent = json_decode($ballotDigestJson, true); // @phpstan-ignore-line
-        return new BallotDigest($ballotDigestContent);
+        return new BallotDigest($ballotDigestContent, $ballotDigestContent['publicLabel'], $ballotDigestContent['voterId']);
     }
 
     private function getBallotDigestDigest(string $ballot): string

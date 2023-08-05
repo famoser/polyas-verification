@@ -12,14 +12,21 @@
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigest;
-use Famoser\PolyasVerification\Crypto\POLYAS\QRCode;
 use Famoser\PolyasVerification\Crypto\POLYAS\QRCodeDecryption;
-use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
 use PHPUnit\Framework\TestCase;
 
 class QRCodeDecryptionTest extends TestCase
 {
-    use IncompleteTestTrait;
+    public function testDecrypt(): void
+    {
+        $QRCodeDecryptedHex = $this->getQRCodeDecryptedHex();
+        $qrCodeDecryption = $this->getQRCodeDecryption();
+
+        $actualQRCodeDecrypted = $qrCodeDecryption->decrypt();
+
+        $this->assertNotNull($actualQRCodeDecrypted);
+        $this->assertEquals($QRCodeDecryptedHex, bin2hex($actualQRCodeDecrypted));
+    }
 
     public function testCreateComKey(): void
     {
@@ -32,18 +39,7 @@ class QRCodeDecryptionTest extends TestCase
         $this->assertEquals($comKeyHex, $actualComKeyHex);
     }
 
-    public function testGetContent(): void
-    {
-        $QRCodeDecryptedHex = $this->getQRCodeDecryptedHex();
-        $qrCodeDecryption = $this->getQRCodeDecryption();
-
-        $actualQRCodeDecrypted = $qrCodeDecryption->getContent();
-
-        $actualQRCodeDecryptedHex = bin2hex($actualQRCodeDecrypted);
-        $this->assertEquals($QRCodeDecryptedHex, $actualQRCodeDecryptedHex);
-    }
-
-    public function testDecrypt(): void
+    public function testPerformDecryption(): void
     {
         $comKeyHex = $this->getComKeyHex();
         /** @var string $comKey */
@@ -52,7 +48,7 @@ class QRCodeDecryptionTest extends TestCase
         $QRCodeDecryptedHex = $this->getQRCodeDecryptedHex();
         $qrCodeDecryption = $this->getQRCodeDecryption();
 
-        $actualQRCodeDecrypted = $qrCodeDecryption->decrypt($comKey);
+        $actualQRCodeDecrypted = $qrCodeDecryption->performDecryption($comKey);
 
         $actualQRCodeDecryptedHex = bin2hex($actualQRCodeDecrypted);
         $this->assertEquals($QRCodeDecryptedHex, $actualQRCodeDecryptedHex);
@@ -60,11 +56,11 @@ class QRCodeDecryptionTest extends TestCase
 
     private function getQRCodeDecryption(): QRCodeDecryption
     {
-        $qrCode = $this->getQRCode();
+        $qrCodePayload = $this->getQRCodePayload();
         $ballotDigest = $this->getBallotDigest();
         $comSeed = $this->getTraceSecondDeviceInitialMsg()['comSeed'];
 
-        return new QRCodeDecryption($qrCode, $ballotDigest, $comSeed);
+        return new QRCodeDecryption($qrCodePayload, $ballotDigest, $comSeed);
     }
 
     /**
@@ -108,10 +104,10 @@ class QRCodeDecryptionTest extends TestCase
          */
         $ballotDigestContent = json_decode($ballotDigestJson, true);
 
-        return new BallotDigest($ballotDigestContent);
+        return new BallotDigest($ballotDigestContent, $ballotDigestContent['publicLabel'], $ballotDigestContent['voterId']);
     }
 
-    private function getQRCode(): QRCode
+    private function getQRCodePayload(): string
     {
         /** @var string $qrCodeJson */
         $qrCodeJson = file_get_contents(__DIR__.'/resources/ballot1/trace/0_QRcode.json');
@@ -123,6 +119,6 @@ class QRCodeDecryptionTest extends TestCase
          *     } $content */
         $content = json_decode($qrCodeJson, true);
 
-        return new QRCode($content);
+        return $content['c'];
     }
 }

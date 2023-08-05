@@ -15,11 +15,22 @@ use Famoser\PolyasVerification\Crypto\PEDERSON\PedersonCommit;
 use Famoser\PolyasVerification\Crypto\SECP256K1;
 use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Primitives\PointInterface;
+use Mdanter\Ecc\Random\RandomGeneratorFactory;
 
 readonly class ChallengeCommit
 {
     public function __construct(private \GMP $e, private \GMP $r)
     {
+    }
+
+    public static function createWithRandom(): self
+    {
+        $generatorG = EccFactory::getSecgCurves()->generator256k1();
+        $random = RandomGeneratorFactory::getRandomGenerator();
+        $randomE = $random->generate($generatorG->getOrder());
+        $randomR = $random->generate($generatorG->getOrder());
+
+        return new self($randomE, $randomR);
     }
 
     public function commit(): string
@@ -45,5 +56,20 @@ readonly class ChallengeCommit
         $point = $commitment->commit($this->e, $this->r);
 
         return $point;
+    }
+
+    public function getE(): \GMP
+    {
+        return $this->e;
+    }
+
+    public function getEString(): string
+    {
+        return gmp_strval($this->e);
+    }
+
+    public function getRString(): string
+    {
+        return gmp_strval($this->r);
     }
 }
