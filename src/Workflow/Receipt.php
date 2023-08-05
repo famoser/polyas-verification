@@ -13,33 +13,25 @@ namespace Famoser\PolyasVerification\Workflow;
 
 use Famoser\PolyasVerification\Crypto\PEM\Decoder;
 
-class Receipt
+readonly class Receipt
 {
     public const RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE = 'RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE';
     public const SIGNATURE_VALID = 'SIGNATURE_VALID';
     public const FINGERPRINT_REGISTERED = 'FINGERPRINT_REGISTERED';
 
-    /**
-     * @return bool[]
-     */
-    public function verify(string $path): array
+    public function verify(string $path, string &$failedCheck = null): bool
     {
-        $verificationResult = [
-            self::RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE => false,
-            self::SIGNATURE_VALID => false,
-            self::FINGERPRINT_REGISTERED => false,
-        ];
-
         if (!self::getFingerprintAndSignature($path, $fingerprint, $signature)) {
-            return $verificationResult;
+            $failedCheck = self::RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE;
+
+            return false;
         }
-        $verificationResult[self::RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE] = true;
 
         // TODO check signature valid
 
         // TODO check fingerprint registered at POLYAS
 
-        return $verificationResult;
+        return false;
     }
 
     private function getFingerprintAndSignature(string $path, ?string &$fingerprint, ?string &$signature): bool

@@ -11,18 +11,34 @@
 
 namespace Famoser\PolyasVerification\Workflow;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Http\Message\ResponseInterface;
+
 class ApiClient
 {
+    private Client $client;
+
+    public function __construct(string $baseUrl)
+    {
+        $this->client = new Client([
+            'base_uri' => $baseUrl.'/ssd/rest/',
+            'headers' => ['User-Agent' => 'famoser-polyas-verification/1.0'],
+        ]);
+    }
+
     /**
      * @return array{
      *     'title': array{'default': string},
      * }
+     *
+     * @throws GuzzleException
      */
     public function getElection(): array
     {
-        return [
-            'title' => ['default' => 'Dummy'],
-        ];
+        $response = $this->client->get('electionData');
+
+        return $this->returnBody($response);
     }
 
     /**
@@ -39,15 +55,14 @@ class ApiClient
      *      'publicLabel': string,
      *      'initialMessage': string
      * }
+     *
+     * @throws GuzzleException
      */
     public function postLogin(array $payload): ?array
     {
-        return [
-            'token' => 'MDIwNWJmMmUxNDQ5NmY2OGMwZjg2ZjZiMzEzZjIxMGE5MzkzZWRiMDgzODIxZGNjNGY5OTE0Y2FiOWM1MWM5ZjJl.UjVXYXRxTlRzdk12QWRwOA==',
-            'ballotVoterId' => '0205bf2e14496f68c0f86f6b313f210a9393edb083821dcc4f9914cab9c51c9f2e',
-            'publicLabel' => 'A',
-            'initialMessage' => '',
-        ];
+        $response = $this->client->post('login', ['json' => $payload]);
+
+        return $this->returnBodyValue($response);
     }
 
     /**
@@ -59,13 +74,32 @@ class ApiClient
      * @return null|array{
      *      'z': string[]
      * }
+     *
+     * @throws GuzzleException
      */
     public function postChallenge(array $payload, string $authenticationToken): ?array
     {
-        return [
-            'z' => [
-                '3633826251616834446657553661530373736489206587264246793596555854504147120873052400272122845815239659486740186516083053240689380948861192914781931033170662',
-            ],
-        ];
+        $response = $this->client->post('challenge', [
+            'json' => $payload,
+            'headers' => ['AuthToken' => $authenticationToken],
+        ]);
+
+        return $this->returnBodyValue($response);
+    }
+
+    private function returnBody(ResponseInterface $response): mixed
+    {
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
+    private function returnBodyValue(ResponseInterface $response): mixed
+    {
+        /** @var array{status: string, value: mixed} $body */
+        $body = $this->returnBody($response);
+        if ('OK' !== $body['status']) {
+            return null;
+        }
+
+        return $body['value'];
     }
 }

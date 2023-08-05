@@ -28,10 +28,17 @@ class RouteFactory
     public static function addRoutes(RouteCollectorProxy $route): void
     {
         $route->get('/election', function (Request $request, Response $response, array $args) {
-            $path = PathHelper::ELECTION_JSON_FILE;
-            $content = Storage::readJsonFile($path);
+            $electionJsonFile = PathHelper::ELECTION_JSON_FILE;
+            $election = Storage::readJsonFile($electionJsonFile);
 
-            return SlimExtensions::createJsonResponse($request, $response, $content);
+            return SlimExtensions::createJsonResponse($request, $response, $election);
+        });
+
+        $route->get('/electionDetails', function (Request $request, Response $response, array $args) {
+            $apiClient = self::createPOLYASApiClient();
+            $election = $apiClient->getElection();
+
+            return SlimExtensions::createJsonResponse($request, $response, $election);
         });
 
         $route->post('/receipt', function (Request $request, Response $response, array $args) {
@@ -44,10 +51,10 @@ class RouteFactory
             $path = Storage::writeUploadedFile(PathHelper::VAR_TRANSIENT_DIR, $file);
 
             $receipt = new Receipt();
-            $verificationResult = $receipt->verify($path);
+            $result = $receipt->verify($path, $failedCheck);
             Storage::removeFile($path);
 
-            return SlimExtensions::createJsonResponse($request, $response, $verificationResult);
+            return SlimExtensions::createStatusJsonResponse($request, $response, $result, $failedCheck);
         });
 
         $route->post('/verification', function (Request $request, Response $response, array $args) {
@@ -58,16 +65,25 @@ class RouteFactory
              *     'voterId': string,
              *     'nonce': string,
              *     'password': string,
-             * } $payload */
+             * } $payload
+             */
             $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
             $deviceParametersJson = Storage::readFile($deviceParametersPath);
 
-            $apiClient = new ApiClient();
+            $apiClient = self::createPOLYASApiClient();
             $verification = new Verification($deviceParametersJson, $apiClient);
             $challengeCommit = ChallengeCommit::createWithRandom();
-            $verificationResult = $verification->verify($payload, $challengeCommit, $failedCheck);
+            $result = $verification->verify($payload, $challengeCommit, $failedCheck);
 
-            return SlimExtensions::createJsonResponse($request, $response, $verificationResult);
+            return SlimExtensions::createStatusJsonResponse($request, $response, null !== $result, $failedCheck, $result);
         });
+    }
+
+    public static function createPOLYASApiClient(): ApiClient
+    {
+        $path = PathHelper::ELECTION_JSON_FILE;
+        $content = Storage::readJsonFile($path);
+
+        return new ApiClient($content['polyasElection']);
     }
 }

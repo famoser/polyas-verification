@@ -1,7 +1,9 @@
 import axios from 'axios'
 import { displayError } from './notifiers'
-import type { VerificationResult } from '@/components/domain/VerificationResult'
+import type { Status } from '@/components/domain/Status'
 import type { Election } from '@/components/domain/Election'
+import type { ElectionDetails } from '@/components/domain/ElectionDetails'
+import type { Verification } from '@/components/domain/Verification'
 
 let baseUrl = ''
 if (window.location.hostname === 'localhost') {
@@ -36,11 +38,19 @@ const api = {
     const response = await axios.get('/api/election')
     return response.data as Election
   },
+  getElectionDetails: async function () {
+    const response = await axios.get('/api/electionDetails')
+    return response.data as ElectionDetails
+  },
+  postVerification: async function (data: Verification) {
+    const response = await axios.post('/api/verification', data)
+    return response.data as Status
+  },
   postReceipt: async function (receipt: File) {
     const data = new FormData()
     data.append('receipt', receipt)
     const response = await axios.post('/api/receipt', data)
-    return response.data as VerificationResult
+    return response.data as Status
   }
 }
 
