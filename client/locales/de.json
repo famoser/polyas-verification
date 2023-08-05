@@ -36,7 +36,8 @@
     }
   },
   "domain": {
-    "verification_result": {
+    "receipt_status": {
+      "unknown": "Unbekannt",
       "RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE": {
         "title": "Rezept enthält die verschlüsselte Stimme",
         "description": "Durchsucht das Rezept (die .pdf Datei) nach der verschlüsselten Stimme und einer Signatur davon.",

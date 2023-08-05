@@ -3,10 +3,10 @@ import { api } from '@/services/api'
 import { useI18n } from 'vue-i18n'
 import InfoPopover from '@/components/shared/InfoPopover.vue'
 import { ref } from 'vue'
-import type { VerificationResult } from '@/components/domain/VerificationResult'
+import type { Status } from '@/components/domain/Status'
 
 const emit = defineEmits<{
-  (e: 'verificationCompleted', result: VerificationResult): void
+  (e: 'verificationCompleted', result: Status): void
 }>()
 
 const processingReceipt = ref(false)

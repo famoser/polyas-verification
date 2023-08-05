@@ -4,7 +4,7 @@ import { api } from './services/api.js'
 import UploadReceipt from '@/components/action/UploadReceipt.vue'
 import HeaderJumbotron from '@/components/layout/HeaderJumbotron.vue'
 import { ref } from 'vue'
-import type { VerificationResult } from '@/components/domain/VerificationResult'
+import type { Status } from '@/components/domain/Status'
 import VerificationResultView from '@/components/view/VerificationResultView.vue'
 import VerificationExplanation from '@/components/layout/FAQ.vue'
 import ElectionView from '@/components/view/ElectionView.vue'
@@ -14,7 +14,7 @@ const { t } = useI18n()
 
 api.addInterceptors(t)
 
-const verificationResult = ref<VerificationResult>()
+const verificationResult = ref<Status>()
 const election = ref<Election>()
 
 api.getElection().then((result) => (election.value = result))
