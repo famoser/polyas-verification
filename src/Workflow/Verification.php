@@ -19,7 +19,7 @@ use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
 use Famoser\PolyasVerification\Crypto\POLYAS\QRCodeDecryption;
 use Famoser\PolyasVerification\Crypto\POLYAS\ZKPProofValidation;
 
-class Verification
+readonly class Verification
 {
     public const LOGIN_SUCCESSFUL = 'LOGIN_SUCCESSFUL';
     public const DEVICE_PARAMETERS_MATCH = 'DEVICE_PARAMETERS_MATCH';
