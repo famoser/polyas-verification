@@ -30,16 +30,26 @@ class Storage
     }
 
     /**
+     * @throws \Exception
+     */
+    public static function readFile(string $path): string
+    {
+        $content = file_get_contents($path);
+        if (!$content) {
+            throw new \Exception('File not found');
+        }
+
+        return $content;
+    }
+
+    /**
      * @return string[]
      *
      * @throws \Exception
      */
     public static function readJsonFile(string $path): array
     {
-        $content = file_get_contents($path);
-        if (!$content) {
-            throw new \Exception('File not found');
-        }
+        $content = self::readFile($path);
 
         return json_decode($content, true);
     }
