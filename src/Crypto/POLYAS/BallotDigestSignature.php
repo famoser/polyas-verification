@@ -13,6 +13,7 @@ namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
 use Famoser\PolyasVerification\Crypto\PEM;
 use Famoser\PolyasVerification\Crypto\RSA;
+use Famoser\PolyasVerification\Crypto\RSA\OpenSSLException;
 
 readonly class BallotDigestSignature
 {
@@ -31,6 +32,10 @@ readonly class BallotDigestSignature
         /** @var string $signature */
         $signature = hex2bin($this->signatureHex);
 
-        return RSA\Signature::verifySHA256($data, $signature, $publicKeyPem);
+        try {
+            return RSA\Signature::verifySHA256($data, $signature, $publicKeyPem);
+        } catch (OpenSSLException) {
+            return false;
+        }
     }
 }

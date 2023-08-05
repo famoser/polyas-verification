@@ -43,9 +43,8 @@ class Verification
      *     'password': string,
      * } $verification
      */
-    public function verify(array $verification, string &$failedCheck = null): string|null
+    public function verify(array $verification, ChallengeCommit $challengeCommit, string &$failedCheck = null): string|null
     {
-        $challengeCommit = ChallengeCommit::createWithRandom();
         $challengeCommitment = $challengeCommit->commit();
         $loginPayload = ['voterId' => $verification['voterId'], 'nonce' => $verification['nonce'], 'password' => $verification['password'], 'challengeCommitment' => $challengeCommitment];
         $loginResponse = $this->apiClient->postLogin($loginPayload);
@@ -79,7 +78,7 @@ class Verification
             return null;
         }
 
-        $ballotDigest = new BallotDigest($initialMessage, $loginResponse['publicLabel'], $verification['voterId']);
+        $ballotDigest = new BallotDigest($initialMessage, $loginResponse['publicLabel'], $loginResponse['ballotVoterId']);
         $ballotDigestSignature = new BallotDigestSignature($ballotDigest, $initialMessage['signatureHex'], $deviceParameters->getVerificationKey());
         if (!$ballotDigestSignature->verify()) {
             $failedCheck = self::SIGNATURE_VALID;
@@ -118,6 +117,6 @@ class Verification
             return null;
         }
 
-        return $decodedBallot;
+        return bin2hex($decodedBallot);
     }
 }
