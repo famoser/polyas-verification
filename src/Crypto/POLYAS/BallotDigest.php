@@ -15,9 +15,7 @@ readonly class BallotDigest
 {
     /**
      * @param array{
-     *     'publicLabel': string,
      *     'publicCredential': string,
-     *     'voterId': string,
      *     'ballot': array{
      *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
      *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
@@ -25,7 +23,7 @@ readonly class BallotDigest
      *      }
      *     } $content
      */
-    public function __construct(private array $content)
+    public function __construct(private array $content, private string $publicLabel, private string $voterId)
     {
     }
 
@@ -42,9 +40,9 @@ readonly class BallotDigest
 
     public function createDigestHex(): string
     {
-        $publicLabel = $this->content['publicLabel'];
+        $publicLabel = $this->publicLabel;
         $publicCredential = $this->content['publicCredential'];
-        $voterId = $this->content['voterId'];
+        $voterId = $this->voterId;
 
         $content = Utils\Serialization::getStringHexWithLength($publicLabel);
         $content .= Utils\Serialization::getBytesHexLength4Bytes($publicCredential).$publicCredential;

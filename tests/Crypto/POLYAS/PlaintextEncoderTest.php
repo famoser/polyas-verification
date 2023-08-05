@@ -11,7 +11,7 @@
 
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
-use Famoser\PolyasVerification\Crypto\POLYAS\PlaintextEncoder;
+use Famoser\PolyasVerification\Crypto\POLYAS\PlaintextEncoding;
 use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
 use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Primitives\PointInterface;
@@ -28,7 +28,7 @@ class PlaintextEncoderTest extends TestCase
         $value = $this->getValue();
         $point = $this->getPoint();
 
-        $encoded = PlaintextEncoder::encode($value);
+        $encoded = PlaintextEncoding::encode($value);
 
         $this->assertTrue($point->equals($encoded));
     }
@@ -38,8 +38,8 @@ class PlaintextEncoderTest extends TestCase
         $message = 'hi mom';
         $q = gmp_init(257);
 
-        $encodedNumbers = PlaintextEncoder::encodeMultiPlaintext($q, $message);
-        $decodedMessage = PlaintextEncoder::decodeMultiPlaintext($q, $encodedNumbers);
+        $encodedNumbers = PlaintextEncoding::encodeMultiPlaintext($q, $message);
+        $decodedMessage = PlaintextEncoding::decodeMultiPlaintext($q, $encodedNumbers);
 
         $this->assertCount(strlen($message) + 2, $encodedNumbers);
         $this->assertEquals($message, $decodedMessage);
@@ -50,8 +50,8 @@ class PlaintextEncoderTest extends TestCase
         $message = 'hi mom!';
         $q = gmp_init(65537);
 
-        $encodedNumbers = PlaintextEncoder::encodeMultiPlaintext($q, $message);
-        $decodedMessage = PlaintextEncoder::decodeMultiPlaintext($q, $encodedNumbers);
+        $encodedNumbers = PlaintextEncoding::encodeMultiPlaintext($q, $message);
+        $decodedMessage = PlaintextEncoding::decodeMultiPlaintext($q, $encodedNumbers);
 
         $bytesRequired = strlen($message) + 2;
         $this->assertCount((int) ceil($bytesRequired / 2.0), $encodedNumbers);
@@ -63,8 +63,8 @@ class PlaintextEncoderTest extends TestCase
         $message = 'hi mom! how is it going? this is a really long text to surpass the block limit.';
         $q = EccFactory::getSecgCurves()->generator256k1()->getOrder();
 
-        $encodedNumbers = PlaintextEncoder::encodeMultiPlaintext($q, $message);
-        $decodedMessage = PlaintextEncoder::decodeMultiPlaintext($q, $encodedNumbers);
+        $encodedNumbers = PlaintextEncoding::encodeMultiPlaintext($q, $message);
+        $decodedMessage = PlaintextEncoding::decodeMultiPlaintext($q, $encodedNumbers);
 
         $this->assertCount(3, $encodedNumbers);
         $this->assertEquals($message, $decodedMessage);
@@ -89,7 +89,7 @@ class PlaintextEncoderTest extends TestCase
         $point = $this->getPoint();
         $value = $this->getValue();
 
-        $decoded = PlaintextEncoder::decode($point);
+        $decoded = PlaintextEncoding::decode($point);
 
         $this->assertTrue(0 === gmp_cmp($value, $decoded));
     }

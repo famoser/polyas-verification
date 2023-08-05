@@ -16,13 +16,10 @@ use Famoser\PolyasVerification\Crypto\PEM;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigest;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigestSignature;
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
-use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
 use PHPUnit\Framework\TestCase;
 
 class BallotDigestSignatureTest extends TestCase
 {
-    use IncompleteTestTrait;
-
     public function testBallotDigestSignature(): void
     {
         $ballotDigestSignature = $this->getBallotDigestSignature();
@@ -76,7 +73,7 @@ class BallotDigestSignatureTest extends TestCase
          */
         $ballotDigestContent = json_decode($ballotDigestJson, true); // @phpstan-ignore-line
 
-        return new BallotDigest($ballotDigestContent);
+        return new BallotDigest($ballotDigestContent, $ballotDigestContent['publicLabel'], $ballotDigestContent['voterId']);
     }
 
     private function getDeviceParameters(): DeviceParameters

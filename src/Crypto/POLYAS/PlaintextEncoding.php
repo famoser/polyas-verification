@@ -18,7 +18,7 @@ use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Exception\PointRecoveryException;
 use Mdanter\Ecc\Primitives\PointInterface;
 
-class PlaintextEncoder
+class PlaintextEncoding
 {
     private const MAX_COUNTER = 80;
 

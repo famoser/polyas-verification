@@ -11,11 +11,12 @@
 
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
+use Famoser\PolyasVerification\Crypto\POLYAS\Utils\PlaintextEncodingException;
 use Famoser\PolyasVerification\Crypto\SECP256K1;
 use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Primitives\PointInterface;
 
-class BallotDecode
+readonly class BallotDecode
 {
     /**
      * @param array{
@@ -29,7 +30,7 @@ class BallotDecode
     {
     }
 
-    public function decode(): string
+    public function decode(): ?string
     {
         $ciphertextCount = count($this->payload['ballot']['encryptedChoice']['ciphertexts']);
         $order = EccFactory::getSecgCurves()->generator256k1()->getOrder();
@@ -40,10 +41,14 @@ class BallotDecode
         $decodedGroupElements = [];
         for ($i = 0; $i < $ciphertextCount; ++$i) {
             $groupElement = $this->getGroupElement($this->payload['ballot']['encryptedChoice']['ciphertexts'][$i]['y'], $this->payload['factorY'][$i], $randomCoins[$i]);
-            $decodedGroupElements[] = PlaintextEncoder::decode($groupElement);
+            $decodedGroupElements[] = PlaintextEncoding::decode($groupElement);
         }
 
-        return PlaintextEncoder::decodeMultiPlaintext($order, $decodedGroupElements);
+        try {
+            return PlaintextEncoding::decodeMultiPlaintext($order, $decodedGroupElements);
+        } catch (PlaintextEncodingException) {
+            return null;
+        }
     }
 
     public function getGroupElement(string $w, string $Y, \GMP $r): PointInterface

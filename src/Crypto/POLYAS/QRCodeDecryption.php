@@ -12,18 +12,23 @@
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
 use Famoser\PolyasVerification\Crypto\AES;
+use Famoser\PolyasVerification\Crypto\RSA\OpenSSLException;
 
 readonly class QRCodeDecryption
 {
-    public function __construct(private QRCode $QRCode, private BallotDigest $ballotDigest, private string $comSeed)
+    public function __construct(private string $payload, private BallotDigest $ballotDigest, private string $comSeed)
     {
     }
 
-    public function getContent(): string
+    public function decrypt(): ?string
     {
         $comKey = $this->createComKey();
 
-        return $this->decrypt($comKey);
+        try {
+            return $this->performDecryption($comKey);
+        } catch (OpenSSLException) {
+            return null;
+        }
     }
 
     public function createComKey(): string
@@ -37,9 +42,9 @@ readonly class QRCodeDecryption
         return $keyDerivation->derive();
     }
 
-    public function decrypt(string $comKey): string
+    public function performDecryption(string $comKey): string
     {
-        $base64 = Base64UrlEncoding::decode($this->QRCode->getCBase64UrlSafe());
+        $base64 = Base64UrlEncoding::decode($this->payload);
         $data = base64_decode($base64);
         $iv = substr($data, 0, 12);
         $tag = substr($data, 12, 16);
