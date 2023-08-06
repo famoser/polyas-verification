@@ -15,18 +15,18 @@
   "layout": {
     "header_jumbotron": {
       "title": "POLYAS Verifizierung",
-      "description": "Hat der POLYAS Server Ihre Stimme wirklich registriert?"
+      "description": "Hat der POLYAS Server Ihre Stimme richtig registriert?"
     },
-    "faq": {
+    "receipt_explanation": {
       "verification_target": {
-        "question": "Was wird durch die Verifizierung hier erreicht?",
-        "verifies_received_at_server": "Die Verifizierung stellt sicher, dass Ihre verschlüsselte Stimme auf dem POLYAS Server registriert ist. Damit sind die Voraussetzungen gegeben, dass Ihre verschlüsselte Stimme im Wahlresultat auch wirklich berücksichtigt wird.",
-        "must_trust_device": "Die Verifizierung hier kann jedoch nicht feststellen, ob Ihre verschlüsselte Stimme wirklich Ihrem Wunsch entspricht. Dazu müssen Sie dem Wahlgerät (dem Browser oder Smartphone, mit dem Sie gewählt haben) vertrauen.",
-        "must_trust_servers": "Die Verifizierung hier kann auch nicht festellen, ob Ihre verschlüsselte Stimme auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem POLYAS Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten."
+        "question": "Was kann durch das Rezept verifiziert werden?",
+        "verifies_received_at_server": "Mit dem Rezept kann festgestellt werden, ob die dazugehörige verschlüsselte Stimme auf dem POLYAS Server registriert ist. Damit sind die Voraussetzungen gegeben, dass die verschlüsselte Stimme im Wahlresultat auch wirklich berücksichtigt wird.",
+        "must_trust_device": "Das Rezept erlaubt es aber nicht zu überprüfen, ob die dazugehörige verschlüsselte Stimme wirklich dem Wunsch des Wählenden entspricht. Dazu muss dem Wahlgerät (mit dem die Stimmeingabe erfolgte) oder dem Zweitgerät (mit dem die Stimmabgabe erneut angezeigt wurde) vertraut werden.",
+        "must_trust_servers": "Das Rezept alleine kann auch nicht festellen, ob die dazugehörige verschlüsselte Stimme auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem POLYAS Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten."
       },
       "verification_fails": {
         "question": "Was tun, wenn die Verifizierung hier fehlschlägt?",
-        "try_again_or_complain": "Stellen Sie sicher, dass Sie das Rezept der oben eingeblendeten Wahl verwenden, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an das Wahlkomitee."
+        "try_again_or_complain": "Stellen Sie sicher, dass Sie ein Rezept der oben eingeblendeten Wahl verwenden, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an das Wahlkomitee."
       }
     }
   },

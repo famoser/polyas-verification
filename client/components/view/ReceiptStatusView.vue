@@ -13,31 +13,34 @@ const props = defineProps<{
 }>()
 
 const errorOrder: ReceiptErrors[] = [ReceiptErrors.RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE, ReceiptErrors.SIGNATURE_VALID, ReceiptErrors.FINGERPRINT_REGISTERED]
-const errorKnown = !!props.result.error && errorOrder.includes(props.result.error as ReceiptErrors)
-const errorUnknown = !props.result.status && !errorOrder.includes(props.result.error as ReceiptErrors)
+const errorKnown = errorOrder.includes(props.result.error as ReceiptErrors)
 const errorEntryIndex = errorOrder.indexOf(props.result.error as ReceiptErrors)
 
 const successPerEntry: { [K in ReceiptErrors]?: boolean | undefined } = {}
 errorOrder.forEach((knownEntry, index) => {
-  if (!props.result.error || (errorKnown && errorEntryIndex < index)) {
+  console.log(knownEntry, index, props.result.status)
+  if (props.result.status || (errorKnown && errorEntryIndex > index)) {
     successPerEntry[knownEntry] = true
   }
 
-  if (!errorKnown || errorEntryIndex < index) {
-    successPerEntry[knownEntry] = undefined
-  }
+  if (!props.result.status) {
+    if (!errorKnown || errorEntryIndex < index) {
+      successPerEntry[knownEntry] = undefined
+    }
 
-  if (errorEntryIndex === index) {
-    successPerEntry[knownEntry] = false
+    if (errorEntryIndex === index) {
+      successPerEntry[knownEntry] = false
+    }
   }
 })
+console.log(successPerEntry)
 
 const { t } = useI18n()
 </script>
 
 <template>
   <div class="row g-2">
-    <CheckView v-if="errorUnknown" :entry="ReceiptErrors.UNKNOWN" :success="false" prefix="domain.receipt_status" />
+    <CheckView v-if="!props.result.status && !errorKnown" :entry="ReceiptErrors.UNKNOWN" :success="false" prefix="domain.receipt_status" />
     <div class="col-12" v-for="entry in errorOrder" :key="entry">
       <CheckView :entry="entry" :success="successPerEntry[entry]" prefix="domain.receipt_status" />
     </div>

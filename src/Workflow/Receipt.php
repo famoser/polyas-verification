@@ -21,7 +21,7 @@ readonly class Receipt
     public const SIGNATURE_VALID = 'SIGNATURE_VALID';
     public const FINGERPRINT_REGISTERED = 'FINGERPRINT_REGISTERED';
 
-    public function __construct(private string $verificationKeyX509)
+    public function __construct(private string $verificationKeyX509Hex)
     {
     }
 
@@ -33,7 +33,9 @@ readonly class Receipt
             return false;
         }
 
-        $ballotSignature = new BallotDigestSignature($fingerprint, $signature, $this->verificationKeyX509);
+        /** @var string $verificationKeyX509 */
+        $verificationKeyX509 = hex2bin($this->verificationKeyX509Hex);
+        $ballotSignature = new BallotDigestSignature($fingerprint, $signature, $verificationKeyX509);
         if (!$ballotSignature->verify()) {
             $failedCheck = self::SIGNATURE_VALID;
 
