@@ -37,7 +37,12 @@
   },
   "domain": {
     "receipt_status": {
-      "unknown": "Unbekannt",
+      "UNKNOWN": {
+        "title": "Unbekanner Fehler",
+        "description": "Bei der Verifizierung ist ein ungekannter Fehler aufgetreten. Dies bedeutet, dass das Rezept vermutlich ungültig ist.",
+        "failed": "Das Rezept kann nicht validiert werden.",
+        "failed_hint": "Bitte stellen Sie sicher, dass Sie die richtige Datei ausgewählt haben."
+      },
       "RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE": {
         "title": "Rezept enthält die verschlüsselte Stimme",
         "description": "Durchsucht das Rezept (die .pdf Datei) nach der verschlüsselten Stimme und einer Signatur davon.",

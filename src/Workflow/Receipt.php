@@ -12,6 +12,7 @@
 namespace Famoser\PolyasVerification\Workflow;
 
 use Famoser\PolyasVerification\Crypto\PEM\Decoder;
+use Famoser\PolyasVerification\Crypto\PEM\Payload;
 
 readonly class Receipt
 {
@@ -43,9 +44,34 @@ readonly class Receipt
 
         $payloads = Decoder::decode($content);
         if (2 !== count($payloads)) {
+            return $this->getFingerprintAndSignatureRaw($content, $fingerprint, $signature);
+        }
+
+        return $this->parseDecodedPEM($payloads, $fingerprint, $signature);
+    }
+
+    private function getFingerprintAndSignatureRaw(string $content, ?string &$fingerprint, ?string &$signature): bool
+    {
+        preg_match_all('/\((.+)\) Tj/', $content, $matches, PREG_OFFSET_CAPTURE);
+        $extractedLines = [];
+        foreach ($matches[1] as $match) {
+            $extractedLines[] = $match[0];
+        }
+
+        $extractedText = implode("\n", $extractedLines);
+        $payloads = Decoder::decode($extractedText);
+        if (2 !== count($payloads)) {
             return false;
         }
 
+        return $this->parseDecodedPEM($payloads, $fingerprint, $signature);
+    }
+
+    /**
+     * @param Payload[] $payloads
+     */
+    private function parseDecodedPEM(array $payloads, ?string &$fingerprint, ?string &$signature): bool
+    {
         foreach ($payloads as $payload) {
             switch ($payload->getLabel()) {
                 case 'FINGERPRINT':
