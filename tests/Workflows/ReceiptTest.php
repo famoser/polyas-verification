@@ -24,10 +24,8 @@ class ReceiptTest extends TestCase
 
         $receiptPath = $this->getReceiptPath();
         $deviceParameters = json_decode(file_get_contents(__DIR__.'/resources/ballot0/deviceParameters.json'), true); // @phpstan-ignore-line
-        /** @var string $verificationKeyX509 */
-        $verificationKeyX509 = hex2bin($deviceParameters['verificationKey']);
 
-        $receipt = new Receipt($verificationKeyX509);
+        $receipt = new Receipt($deviceParameters['verificationKey']);
         $result = $receipt->verify($receiptPath, $failedCheck);
         $this->assertTrue($result);
         $this->assertNull($failedCheck);

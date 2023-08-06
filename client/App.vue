@@ -5,7 +5,7 @@ import UploadReceipt from '@/components/action/UploadReceipt.vue'
 import HeaderJumbotron from '@/components/layout/HeaderJumbotron.vue'
 import { ref } from 'vue'
 import type { Status } from '@/components/domain/Status'
-import VerificationExplanation from '@/components/layout/FAQ.vue'
+import ReceiptExplanation from '@/components/layout/ReceiptExplanation.vue'
 import ElectionView from '@/components/view/ElectionView.vue'
 import type { Election } from '@/components/domain/Election'
 import ReceiptStatusView from '@/components/view/ReceiptStatusView.vue'
@@ -26,9 +26,11 @@ api.getElection().then((result) => (election.value = result))
       <HeaderJumbotron />
       <ElectionView class="my-5" v-if="election" :election="election" />
       <UploadReceipt v-if="!receiptStatus" @verification-completed="receiptStatus = $event" />
-      <ReceiptStatusView v-else :result="receiptStatus" @reset="receiptStatus = undefined" />
-      <div class="my-5">&nbsp;</div>
-      <VerificationExplanation />
+      <template v-if="receiptStatus">
+        <ReceiptStatusView :result="receiptStatus" @reset="receiptStatus = undefined" />
+        <div class="my-5">&nbsp;</div>
+        <ReceiptExplanation />
+      </template>
     </div>
   </div>
 </template>

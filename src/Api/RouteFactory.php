@@ -50,7 +50,10 @@ class RouteFactory
             RequestValidatorExtensions::checkPdfFileUploadSuccessful($request, $file);
             $path = Storage::writeUploadedFile(PathHelper::VAR_TRANSIENT_DIR, $file);
 
-            $receipt = new Receipt();
+            $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
+            $deviceParameters = Storage::readJsonFile($deviceParametersPath);
+
+            $receipt = new Receipt($deviceParameters['verificationKey']);
             $result = $receipt->verify($path, $failedCheck);
             Storage::removeFile($path);
 
