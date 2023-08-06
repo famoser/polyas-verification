@@ -53,7 +53,7 @@ class BallotDigestSignatureTest extends TestCase
         $signatureHex = $this->getTraceSecondDeviceInitialMsg()['signatureHex'];
         $verificationKey = $this->getDeviceParameters()->getVerificationKey();
 
-        return new BallotDigestSignature($ballotDigest, $signatureHex, $verificationKey);
+        return BallotDigestSignature::createFromBallotDigest($ballotDigest, $signatureHex, $verificationKey);
     }
 
     private function getBallotDigest(): BallotDigest

@@ -30,10 +30,8 @@ readonly class BallotDigest
     public function createFingerprint(): string
     {
         $digestHex = BallotDigest::createDigestHex();
+        /** @var string $digest */
         $digest = \hex2bin($digestHex);
-        if (!$digest) {
-            throw new \RuntimeException('Cannot transform digest hex to binary');
-        }
 
         return hash('sha256', $digest, true);
     }
@@ -56,10 +54,8 @@ readonly class BallotDigest
     public function createNorm(): string
     {
         $normalizedHex = self::createNormalizedHex();
+        /** @var string $digest */
         $digest = \hex2bin($normalizedHex);
-        if (!$digest) {
-            throw new \RuntimeException('Cannot transform digest hex to binary');
-        }
 
         return hash('sha256', $digest, true);
     }

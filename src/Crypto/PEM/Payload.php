@@ -29,6 +29,11 @@ class Payload
 
     public function getPayload(): string
     {
+        return base64_decode($this->payload);
+    }
+
+    public function getRawPayload(): string
+    {
         return $this->payload;
     }
 }

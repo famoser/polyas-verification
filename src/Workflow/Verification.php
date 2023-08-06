@@ -79,7 +79,7 @@ readonly class Verification
         }
 
         $ballotDigest = new BallotDigest($initialMessage, $loginResponse['publicLabel'], $loginResponse['ballotVoterId']);
-        $ballotDigestSignature = new BallotDigestSignature($ballotDigest, $initialMessage['signatureHex'], $deviceParameters->getVerificationKey());
+        $ballotDigestSignature = BallotDigestSignature::createFromBallotDigest($ballotDigest, $initialMessage['signatureHex'], $deviceParameters->getVerificationKey());
         if (!$ballotDigestSignature->verify()) {
             $failedCheck = self::SIGNATURE_VALID;
 

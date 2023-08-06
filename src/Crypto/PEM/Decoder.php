@@ -54,12 +54,7 @@ class Decoder
                 }
 
                 $label = substr($activeMarker, 0, strlen($activeMarker) - strlen(self::ENCAPSULATION_BOUNDARY_MARKER));
-                $payload = base64_decode($activeSection);
-                if (!$payload) {
-                    throw new DecodingException('Cannot base64 decode the section with label '.$label);
-                }
-
-                $payloads[] = new Payload($label, $payload);
+                $payloads[] = new Payload($label, $activeSection);
 
                 $activeMarker = null;
                 $activeSection = '';
