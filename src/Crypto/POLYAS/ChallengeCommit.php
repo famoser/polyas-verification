@@ -53,9 +53,8 @@ readonly class ChallengeCommit
         $generatorH = SECP256K1\Encoder::parseCompressedPoint(GlobalParameters::getPOLYASCommitmentGeneratorH());
 
         $commitment = new PedersonCommit($generatorG, $generatorH);
-        $point = $commitment->commit($this->e, $this->r);
 
-        return $point;
+        return $commitment->commit($this->e, $this->r);
     }
 
     public function getE(): \GMP

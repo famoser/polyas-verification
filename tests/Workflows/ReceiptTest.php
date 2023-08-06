@@ -20,11 +20,14 @@ class ReceiptTest extends TestCase
     use IncompleteTestTrait;
     public function testReceiptVerify(): void
     {
-        $this->markTestIncompleteNS('Signature validation fails');
+        $this->markTestIncompleteNS('Ballot existence check not implemented yet.');
 
         $receiptPath = $this->getReceiptPath();
+        $deviceParameters = json_decode(file_get_contents(__DIR__.'/resources/ballot0/deviceParameters.json'), true); // @phpstan-ignore-line
+        /** @var string $verificationKeyX509 */
+        $verificationKeyX509 = hex2bin($deviceParameters['verificationKey']);
 
-        $receipt = new Receipt();
+        $receipt = new Receipt($verificationKeyX509);
         $result = $receipt->verify($receiptPath, $failedCheck);
         $this->assertTrue($result);
         $this->assertNull($failedCheck);
@@ -32,14 +35,13 @@ class ReceiptTest extends TestCase
 
     public function testReceiptRawVerify(): void
     {
-        $this->markTestIncompleteNS('Signature validation fails');
-
         $receiptPath = $this->getReceiptRawPath();
 
-        $receipt = new Receipt();
-        $result = $receipt->verify($receiptPath, $failedCheck);
+        $receipt = new Receipt('');
+        $result = $receipt->getFingerprintAndSignature($receiptPath, $fingerprint, $signature);
         $this->assertTrue($result);
-        $this->assertNull($failedCheck);
+        $this->assertNotNull($fingerprint);
+        $this->assertNotNull($signature);
     }
 
     private function getReceiptPath(): string

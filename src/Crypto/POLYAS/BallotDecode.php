@@ -53,7 +53,6 @@ readonly class BallotDecode
 
     public function getGroupElement(string $w, string $Y, \GMP $r): PointInterface
     {
-        $g = EccFactory::getSecgCurves()->generator256k1();
         $curve = EccFactory::getSecgCurves()->curve256k1();
         $h = SECP256K1\Encoder::parseCompressedPoint($this->publicKey);
 

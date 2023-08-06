@@ -13,12 +13,17 @@ namespace Famoser\PolyasVerification\Workflow;
 
 use Famoser\PolyasVerification\Crypto\PEM\Decoder;
 use Famoser\PolyasVerification\Crypto\PEM\Payload;
+use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigestSignature;
 
 readonly class Receipt
 {
     public const RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE = 'RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE';
     public const SIGNATURE_VALID = 'SIGNATURE_VALID';
     public const FINGERPRINT_REGISTERED = 'FINGERPRINT_REGISTERED';
+
+    public function __construct(private string $verificationKeyX509)
+    {
+    }
 
     public function verify(string $path, string &$failedCheck = null): bool
     {
@@ -28,14 +33,19 @@ readonly class Receipt
             return false;
         }
 
-        // TODO check signature valid
+        $ballotSignature = new BallotDigestSignature($fingerprint, $signature, $this->verificationKeyX509);
+        if (!$ballotSignature->verify()) {
+            $failedCheck = self::SIGNATURE_VALID;
+
+            return false;
+        }
 
         // TODO check fingerprint registered at POLYAS
 
         return false;
     }
 
-    private function getFingerprintAndSignature(string $path, ?string &$fingerprint, ?string &$signature): bool
+    public function getFingerprintAndSignature(string $path, ?string &$fingerprint, ?string &$signature): bool
     {
         $content = file_get_contents($path);
         if (!$content) {
@@ -75,10 +85,10 @@ readonly class Receipt
         foreach ($payloads as $payload) {
             switch ($payload->getLabel()) {
                 case 'FINGERPRINT':
-                    $fingerprint = $payload->getPayload();
+                    $fingerprint = hex2bin($payload->getRawPayload());
                     break;
                 case 'SIGNATURE':
-                    $signature = $payload->getPayload();
+                    $signature = hex2bin($payload->getRawPayload());
                     break;
             }
         }

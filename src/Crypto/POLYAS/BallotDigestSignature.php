@@ -17,23 +17,26 @@ use Famoser\PolyasVerification\Crypto\RSA\OpenSSLException;
 
 readonly class BallotDigestSignature
 {
-    public function __construct(private BallotDigest $ballotEntry, private string $signatureHex, private string $verificationKeyX509Hex)
+    public function __construct(private string $fingerprint, private string $signature, private string $verificationKeyX509)
     {
+    }
+
+    public static function createFromBallotDigest(BallotDigest $ballotDigest, string $signatureHex, string $verificationKeyX509Hex): self
+    {
+        /** @var string $signature */
+        $signature = hex2bin($signatureHex);
+        /** @var string $verificationKeyX509 */
+        $verificationKeyX509 = hex2bin($verificationKeyX509Hex);
+
+        return new self($ballotDigest->createFingerprint(), $signature, $verificationKeyX509);
     }
 
     public function verify(): bool
     {
-        $data = $this->ballotEntry->createFingerprint();
-
-        /** @var string $verificationKeyBin */
-        $verificationKeyBin = hex2bin($this->verificationKeyX509Hex);
-        $publicKeyPem = PEM\Encoder::encode('PUBLIC KEY', $verificationKeyBin);
-
-        /** @var string $signature */
-        $signature = hex2bin($this->signatureHex);
+        $publicKeyPem = PEM\Encoder::encode('PUBLIC KEY', $this->verificationKeyX509);
 
         try {
-            return RSA\Signature::verifySHA256($data, $signature, $publicKeyPem);
+            return RSA\Signature::verifySHA256($this->fingerprint, $this->signature, $publicKeyPem);
         } catch (OpenSSLException) {
             return false;
         }
