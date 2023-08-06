@@ -44,13 +44,13 @@ const api = {
   },
   postVerification: async function (data: Verification) {
     const response = await axios.post('/api/verification', data)
-    return response.data as Status
+    return JSON.parse(response.data) as Status
   },
   postReceipt: async function (receipt: File) {
     const data = new FormData()
     data.append('receipt', receipt)
     const response = await axios.post('/api/receipt', data)
-    return response.data as Status
+    return JSON.parse(response.data) as Status
   }
 }
 
