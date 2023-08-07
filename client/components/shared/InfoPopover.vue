@@ -21,13 +21,13 @@ const popoverHovered = ref(false)
       @mouseleave="popoverHovered = false"
     >
       <span class="popover-arrow position-absolute top-0 start-50 translate-middle"></span>
-      <span class="popover-body w-25em d-block">{{ message }}</span>
+      <span class="popover-body w-35em d-block">{{ message }}</span>
     </span>
   </span>
 </template>
 
 <style scoped>
-.w-25em {
-  width: 25em;
+.w-35em {
+  width: 35em;
 }
 </style>

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { Election } from '@/components/domain/Election'
+import type { ElectionDetails } from '@/components/domain/ElectionDetails'
 
 defineProps<{
   election: Election
+  electionDetails: ElectionDetails
 }>()
 </script>
 
@@ -11,7 +13,7 @@ defineProps<{
     <p class="mb-0">
       <small>{{ election.organizer }}</small
       ><br />
-      <b>{{ election.election }}</b
+      <b>{{ electionDetails.title.default }}</b
       ><br />
       {{ election.period }}<br />
       <a :href="election.link" target="_blank">{{ election.link }}</a>

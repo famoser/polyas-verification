@@ -8,8 +8,15 @@
     "upload_receipt": {
       "title": "Rezept hochladen",
       "processing": "Rezept wird verarbeitet...",
-      "privacy_is_safeguarded": "Ihr Stimmgeheimnis bleibt dadurch gewahrt.",
+      "privacy_is_safeguarded": "Das Rezept erlaubt es zu überprüfen, ob Ihre Stimme gespeichert wurde.",
       "privacy_is_safeguarded_help": "Das Rezept enthält nur die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob der POLYAS Server diese verschlüsselte Stimme registriert hat."
+    },
+    "verify_ballot": {
+      "paste_link": "Link einfügen",
+      "full_verification": "Bei der vollen Verifizierung wird Ihre Stimme erneut angezeigt. So können Sie überprüfen, ob Ihre Stimme so abgegeben wurde, wie von Ihnen erwartet.",
+      "full_verification_help": "Mit dem Link wird es dieser Applikation ermöglicht, Ihre Stimmeabgabe erneut anzuzeigen. Sie können damit einer Drittperson aber Ihre Stimmabgabe nicht beweisen, denn entschlüsselt wird nicht Ihre tatsächliche Stimme, sondern eine daraus abgeleitete Form.",
+      "link_invalid": "Der Link ist invalid.",
+      "reset": "zurücksetzen"
     }
   },
   "layout": {
