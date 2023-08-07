@@ -36,6 +36,63 @@
     }
   },
   "domain": {
+    "verification_status": {
+      "LOGIN_SUCCESSFUL": {
+        "title": "Login erfolgreich",
+        "description": "Logged sich mit dem bereitgestellem Zugangscode ein, und fordert vom Server kryptographisches Material für die weiteren Checks an.",
+        "success": "Der Login ist erfolgt, und kryptographisches Material wurde erhalten.",
+        "failed": "Login fehlgeschlagen.",
+        "failed_hint": "Bitte stellen Sie sicher dass der Zugangscode korrekt und aktuell ist, und versuchen Sie es noch einmal."
+      },
+      "DEVICE_PARAMETERS_MATCH": {
+        "title": "Konfigurierte Parameter stimmen überein",
+        "description": "Vergleicht vorkonfigurierte und vom Server verwendete Parameter.",
+        "success": "Die Parameter sind identisch.",
+        "failed": "Parameter unterschiedlich.",
+        "failed_hint": "Bitte versuchen Sie es erneut."
+      },
+      "SIGNATURE_VALID": {
+        "title": "Verschlüsselte Stimme valid signiert",
+        "description": "Überprüft, ob die vom Server verschlüsselt gespeicherte Stimme valid signiert wurde.",
+        "success": "Die Signatur der verschlüsselten Stimme ist valid.",
+        "failed": "Die Signatur der verschlüsselten Stimme ist invalid.",
+        "failed_hint": "Bitte versuchen Sie es erneut."
+      },
+      "QR_CODE_DECRYPTION": {
+        "title": "QR Code Inhalt entschlüsselt",
+        "description": "Entschlüsselt den Ciphertext der im QR code enthalten ist.",
+        "success": "Erfolgreich entschlüsselt.",
+        "failed": "Der Ciphertext konnte nicht entschlüsselt werden.",
+        "failed_hint": "Bitte versuchen Sie es erneut."
+      },
+      "CHALLENGE_SUCCESSFUL": {
+        "title": "Zero-Knowledge Beweis angefordert",
+        "description": "Fordert vom Server das Resultat des Zero-Knowledge Beweises an.",
+        "success": "Resultat erhalten.",
+        "failed": "Das Resultat wurde nicht erhalten.",
+        "failed_hint": "Bitte versuchen Sie es erneut."
+      },
+      "ZKP_VALID": {
+        "title": "Zero-Knowledge Beweis überprüft",
+        "description": "Überprüft den Zero-Knowledge Beweis um sicherzustellen, dass die zu entschlüsselnde Stimme den gleichen Inhalt der abgegebenen Stimme hat.",
+        "success": "Zero-Knowledge Beweis valid.",
+        "failed": "Zero-Knowledge Beweis invalid.",
+        "failed_hint": "Bitte versuchen Sie es erneut."
+      },
+      "BALLOT_DECODE": {
+        "title": "Stimme wird entschlüsselt",
+        "description": "Die Stimme wird entschlüsselt. Diese ist nicht die tatsächlich abgegebene Stimme; der Zero-Knowledge Beweis stellt aber sicher, dass der Inhalt identitisch ist.",
+        "success": "Stimme entschlüsselt.",
+        "failed": "Stimme kann nicht entschlüsselt werden.",
+        "failed_hint": "Bitte versuchen Sie es erneut."
+      },
+      "UNKNOWN": {
+        "title": "Unbekanner Fehler",
+        "description": "Bei der Verifizierung ist ein ungekannter Fehler aufgetreten.",
+        "failed": "Die Stimme kann nicht verifiziert werden.",
+        "failed_hint": "Bitte versuchen Sie es erneut."
+      }
+    },
     "receipt_status": {
       "UNKNOWN": {
         "title": "Unbekanner Fehler",
