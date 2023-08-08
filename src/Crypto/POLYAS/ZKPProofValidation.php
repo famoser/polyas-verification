@@ -80,8 +80,11 @@ readonly class ZKPProofValidation
         $z = gmp_init($zString, 10);
         $e = $this->challenge;
 
-        $AXValid = $aPoint->add($xPoint->mul($e))->equals($g->mul($z));
-        $BYValid = $bPoint->add($yPoint->mul($e))->equals($h->mul($z));
+        $aComparison = $g->mul($z)->add(SECP256K1\Math::inverse($xPoint->mul($e)));
+        $AXValid = $aPoint->equals($aComparison);
+
+        $bComparison = $h->mul($z)->add(SECP256K1\Math::inverse($yPoint->mul($e)));
+        $BYValid = $bPoint->equals($bComparison);
 
         return $AXValid && $BYValid;
     }

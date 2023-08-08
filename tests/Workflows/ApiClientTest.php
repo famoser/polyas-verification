@@ -12,16 +12,19 @@
 namespace Famoser\PolyasVerification\Test\Workflows;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
+use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
 use Famoser\PolyasVerification\Workflow\ApiClient;
 use PHPUnit\Framework\TestCase;
 
 class ApiClientTest extends TestCase
 {
+    use IncompleteTestTrait;
+
     public function testReceiptVerify(): void
     {
-        $apiClient = new ApiClient('https://election.polyas.com/2dea9d6e-1615-4d33-beba-eccbfa653093/');
+        $this->markTestIncompleteNS('Requires live server.');
 
-        http://localhost:4300/?c=&vid=&nonce=
+        $apiClient = new ApiClient('https://election.polyas.com/2dea9d6e-1615-4d33-beba-eccbfa653093/');
 
         $commit = ChallengeCommit::createWithRandom();
         $challengeCommitment = $commit->commit();

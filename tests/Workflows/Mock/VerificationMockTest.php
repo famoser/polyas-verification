@@ -11,18 +11,13 @@
 
 namespace Famoser\PolyasVerification\Test\Workflows\Mock;
 
-use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
 use Famoser\PolyasVerification\Workflow\Mock\VerificationMock;
 use PHPUnit\Framework\TestCase;
 
 class VerificationMockTest extends TestCase
 {
-    use IncompleteTestTrait;
-
     public function testVerificationMock(): void
     {
-        $this->markTestIncompleteNS('ZKP does not validate');
-
         $payload = [
             'payload' => '7bgIHYQotKLc8tgCbWp5yuc83xSbN-JV4Vwpnb50qyIzNUj2tYDYzPInG80WJ1mf2tB8BstZXWH_b0y4',
             'voterId' => 'voter3',

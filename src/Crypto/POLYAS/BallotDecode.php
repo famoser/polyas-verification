@@ -53,17 +53,15 @@ readonly class BallotDecode
 
     public function getGroupElement(string $w, string $Y, \GMP $r): PointInterface
     {
-        $curve = EccFactory::getSecgCurves()->curve256k1();
         $h = SECP256K1\Encoder::parseCompressedPoint($this->publicKey);
 
         $wPoint = SECP256K1\Encoder::parseCompressedPoint($w);
         $YPoint = SECP256K1\Encoder::parseCompressedPoint($Y);
 
-        $hPowerR = $h->mul($r);
-        $invertedY = EccFactory::getAdapter()->sub($curve->getPrime(), $hPowerR->getY());
-        $negatedHPowerR = $curve->getPoint($hPowerR->getX(), $invertedY);
-
         $point1 = $wPoint->add($YPoint);
+
+        $hPowerR = $h->mul($r);
+        $negatedHPowerR = SECP256K1\Math::inverse($hPowerR);
 
         return $point1->add($negatedHPowerR);
     }

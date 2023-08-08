@@ -33,9 +33,10 @@ class Encoder
         $x = gmp_init('0x'.$xHex, 16);
 
         $curve = EccFactory::getSecgCurves()->curve256k1();
+        $generator = EccFactory::getSecgCurves()->generator256k1();
         $y = $curve->recoverYfromX($wasOdd, $x);
 
-        return $curve->getPoint($x, $y);
+        return $curve->getPoint($x, $y, $generator->getOrder());
     }
 
     /**
