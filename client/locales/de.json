@@ -8,8 +8,8 @@
     "upload_receipt": {
       "title": "Rezept hochladen",
       "processing": "Rezept wird verarbeitet...",
-      "privacy_is_safeguarded": "Das Rezept erlaubt es zu überprüfen, ob Ihre Stimme gespeichert wurde.",
-      "privacy_is_safeguarded_help": "Das Rezept enthält nur die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob der POLYAS Server diese verschlüsselte Stimme registriert hat."
+      "privacy_is_safeguarded": "Das Stimmgeheimnis bleibt dadurch gewahrt.",
+      "privacy_is_safeguarded_help": "Das Rezept enthält nur eine Referenz auf die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob der POLYAS Server diese Stimme registriert hat."
     },
     "verify_ballot": {
       "paste_link": "Link einfügen",
@@ -35,9 +35,36 @@
         "question": "Was tun, wenn die Verifizierung hier fehlschlägt?",
         "try_again_or_complain": "Stellen Sie sicher, dass Sie ein Rezept der oben eingeblendeten Wahl verwenden, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an das Wahlkomitee."
       }
+    },
+    "verification_explanation": {
+      "verification_target": {
+        "question": "Was kann hier verifiziert werden?",
+        "shows_vote_unencrypted": "Hier wird die Stimme noch einmal unverschlüsselt dargestellt. Dadurch kann überprüft werden, dass die Stimme vom Wahlgerät richtig verschlüsselt wurde.",
+        "must_trust_one_device": "Solange entweder das Wahlgerät oder das Verifizierungsgerät richtig funktioniert, können so Fehler bei der Stimmabgabe entdeckt werden.",
+        "must_trust_servers": "Hier kann aber nicht festgestellt werden, ob die Stimme auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem POLYAS Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten."
+      },
+      "verification_fails": {
+        "question": "Was tun, wenn die Verifizierung hier fehlschlägt?",
+        "try_again_or_complain": "Stellen Sie sicher, dass Sie eine Stimme der oben eingeblendeten Wahl verwenden, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an das Wahlkomitee."
+      }
     }
   },
   "view": {
+    "home_app": {
+      "verifications": "Verifizierungen"
+    },
+    "option": {
+      "receipt": {
+        "title": "Rezept überprüfen",
+        "description": "Mit einem Rezept der Wahlabgabe (.pdf) können Sie prüfen, ob Ihre Stimme auf dem POLYAS Server registriert ist.",
+        "go": "Rezept überprüfen"
+      },
+      "verify": {
+        "title": "Stimmabgabe überprüfen",
+        "description": "Mit dem QR Code, der nach der Wahl angezeigt wird, können Sie den Inhalt Ihrer Stimme überprüfen.",
+        "go": "Stimmabgabe überprüfen"
+      }
+    },
     "verification_result_view": {
       "reset": "Ansicht zurücksetzen"
     }
