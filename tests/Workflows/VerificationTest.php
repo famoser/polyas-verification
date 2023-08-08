@@ -12,19 +12,14 @@
 namespace Famoser\PolyasVerification\Test\Workflows;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
-use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
 use Famoser\PolyasVerification\Workflow\ApiClient;
 use Famoser\PolyasVerification\Workflow\Verification;
 use PHPUnit\Framework\TestCase;
 
 class VerificationTest extends TestCase
 {
-    use IncompleteTestTrait;
-
     public function testReceiptVerify(): void
     {
-        $this->markTestIncompleteNS('The zero-knowledge proof does not pass.');
-
         $input = json_decode(file_get_contents(__DIR__.'/resources/ballot0/0_QRcode.json'), true); // @phpstan-ignore-line
         $deviceParametersJson = file_get_contents(__DIR__.'/resources/ballot0/deviceParameters.json');
 

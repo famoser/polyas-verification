@@ -12,13 +12,10 @@
 namespace Famoser\PolyasVerification\Test\Crypto;
 
 use Famoser\PolyasVerification\Crypto\AES;
-use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
 use PHPUnit\Framework\TestCase;
 
 class AESTest extends TestCase
 {
-    use IncompleteTestTrait;
-
     public function testEncryptionReversable(): void
     {
         $data = '1e89b5f95deae82f6f823b52709117405f057783eda018d72cbd83141d394fbd';
