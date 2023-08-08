@@ -36,7 +36,7 @@ const reset = () => {
   link.value = undefined
 }
 
-const isInvalid = link
+const isInvalid = !!link.value
 
 const cameraActive = ref<boolean>()
 
