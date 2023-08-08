@@ -42,6 +42,11 @@ const doVerification = async () => {
   processingVerification.value = false
 }
 
+const reset = () => {
+  password.value = undefined
+  verificationResult.value = undefined
+}
+
 const { t } = useI18n()
 </script>
 
@@ -51,14 +56,7 @@ const { t } = useI18n()
   <p v-else-if="processingVerification">
     {{ t('view.verify_app.processing') }}
   </p>
-  <VerificationStatusView
-    v-if="verificationResult"
-    :result="verificationResult"
-    @reset="
-      password = undefined
-      verificationResult = undefined
-    "
-  />
+  <VerificationStatusView v-if="verificationResult" :result="verificationResult" @reset="reset" />
   <div class="my-5">&nbsp;</div>
   <VerificationExplanation />
 </template>
