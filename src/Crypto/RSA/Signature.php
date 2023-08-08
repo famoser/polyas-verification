@@ -18,11 +18,12 @@ class Signature
      * https://github.com/php/php-src/issues/11054
      */
     private const ERROR_PEM_PARSING = 'error:0480006C:PEM routines::no start line';
+    private const ERROR_PEM_PARSING_2 = 'error:0909006C:PEM routines:get_name:no start line';
 
     public static function verifySHA256(string $data, string $signature, string $publicKey): bool
     {
         $result = @openssl_verify($data, $signature, $publicKey, 'sha256WithRSAEncryption');
-        OpenSSLException::throwIfErrors(self::ERROR_PEM_PARSING);
+        OpenSSLException::throwIfErrors(self::ERROR_PEM_PARSING, self::ERROR_PEM_PARSING_2);
 
         return 1 === $result;
     }
