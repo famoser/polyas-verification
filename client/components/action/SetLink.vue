@@ -14,21 +14,6 @@ const link = ref<string>()
 const reset = () => {
   link.value = undefined
 }
-const urlPayload = computed(() => {
-  if (!link.value) {
-    return null
-  }
-
-  const url = new URL(link.value)
-  const payload = url.searchParams.get('c')
-  const voterId = url.searchParams.get('vid')
-  const nonce = url.searchParams.get('nonce')
-  if (!payload || !voterId || !nonce) {
-    return null
-  }
-
-  return { payload, voterId, nonce }
-})
 
 const password = ref<string>()
 const passwordValid = computed(() => password.value && password.value.length === 6)
