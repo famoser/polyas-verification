@@ -6,13 +6,18 @@ const emit = defineEmits<{
   (e: 'changed', result: string): void
 }>()
 
-const password = ref<number>()
+const password = ref<string>()
 watch(password, () => {
-  if (!password.value || password.value < 100000) {
+  if (!password.value) {
     return
   }
 
-  emit('changed', String(password.value))
+  const cleanedUp = password.value.replace(/[^0-9.]/g, '')
+  if (cleanedUp.length !== 6) {
+    return
+  }
+
+  emit('changed', cleanedUp)
 })
 
 const { t } = useI18n()
@@ -20,7 +25,7 @@ const { t } = useI18n()
 
 <template>
   <div>
-    <input v-model="password" type="number" class="form-control mw-10em form-control-lg" :placeholder="t('action.set_password.set_password')" />
+    <input v-model="password" type="text" class="form-control mw-10em form-control-lg" :placeholder="t('action.set_password.set_password')" />
     <div class="form-text">
       {{ t('action.set_password.one_time_password') }}
     </div>
