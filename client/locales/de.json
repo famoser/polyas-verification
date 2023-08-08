@@ -11,10 +11,11 @@
       "privacy_is_safeguarded": "Das Stimmgeheimnis bleibt dadurch gewahrt.",
       "privacy_is_safeguarded_help": "Das Rezept enthält nur eine Referenz auf die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob der POLYAS Server diese Stimme registriert hat."
     },
-    "verify_ballot": {
+    "set_link": {
+      "activate_camera": "Kamera aktivieren",
       "paste_link": "Link einfügen",
-      "full_verification": "Bei der vollen Verifizierung wird Ihre Stimme erneut angezeigt. So können Sie überprüfen, ob Ihre Stimme so abgegeben wurde, wie von Ihnen erwartet.",
-      "full_verification_help": "Mit dem Link wird es dieser Applikation ermöglicht, Ihre Stimmeabgabe erneut anzuzeigen. Sie können damit einer Drittperson aber Ihre Stimmabgabe nicht beweisen, denn entschlüsselt wird nicht Ihre tatsächliche Stimme, sondern eine daraus abgeleitete Form.",
+      "full_verification": "Ihre Stimme wird erneut unverschlüsselt angezeigt.",
+      "full_verification_help": "Mit dem Link und dem Passwort wird es dieser Applikation ermöglicht, Ihre Stimmeabgabe erneut anzuzeigen. Sie können damit einer Drittperson aber Ihre Stimmabgabe nicht beweisen, denn entschlüsselt wird nicht Ihre tatsächliche Stimme, sondern eine daraus abgeleitete Form.",
       "link_invalid": "Der Link ist invalid.",
       "reset": "zurücksetzen"
     }

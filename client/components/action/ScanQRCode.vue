@@ -11,7 +11,7 @@ const qrScanner = ref<QrScanner>()
 
 onMounted(() => {
   if (video.value) {
-    qrScanner.value = new QrScanner(video.value, (result) => emit('scanned', result))
+    qrScanner.value = new QrScanner(video.value, (result) => emit('scanned', result.data), { returnDetailedScanResult: true })
     qrScanner.value.start()
   }
 })

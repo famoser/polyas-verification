@@ -1,53 +1,73 @@
 <script setup lang="ts">
-import { api } from '@/services/api'
 import { useI18n } from 'vue-i18n'
-import { computed, ref } from 'vue'
-import type { Status } from '@/components/domain/Status'
+import { ref, watch } from 'vue'
 import InfoPopover from '@/components/shared/InfoPopover.vue'
+import { useRouter } from 'vue-router'
+import ScanQRCode from '@/components/action/ScanQRCode.vue'
 
-const emit = defineEmits<{
-  (e: 'verificationCompleted', result: Status): void
-}>()
-
-const processingVerification = ref(false)
 const link = ref<string>()
+const router = useRouter()
+watch(link, () => {
+  if (!link.value) {
+    return
+  }
+
+  try {
+    const url = new URL(link.value)
+    const c = url.searchParams.get('c')
+    const vid = url.searchParams.get('vid')
+    const nonce = url.searchParams.get('nonce')
+    if (!c || !vid || !nonce) {
+      return
+    }
+
+    const urlParams = new URLSearchParams()
+    urlParams.append('c', c)
+    urlParams.append('vid', vid)
+    urlParams.append('nonce', nonce)
+
+    const search = urlParams.toString()
+    router.push(`/verify?${search}`)
+  } catch (_) {
+    // URL constructor crashes if invalid email
+  }
+})
 const reset = () => {
   link.value = undefined
 }
 
-const password = ref<string>()
-const passwordValid = computed(() => password.value && password.value.length === 6)
+const isInvalid = link
 
-const doVerification = async () => {
-  if (!urlPayload.value || !password.value) {
-    return
-  }
-
-  const payload = { ...urlPayload.value, password: password.value }
-  processingVerification.value = true
-  const verificationResult = await api.postVerification(payload)
-  emit('verificationCompleted', verificationResult)
-  processingVerification.value = false
-}
+const cameraActive = ref<boolean>()
 
 const { t } = useI18n()
 </script>
 
 <template>
   <div>
-    <template v-if="!urlPayload">
-      <input class="form-control" v-model="link" :placeholder="t('action.verify_ballot.paste_link')" />
-      <div class="form-text">
-        {{ t('action.verify_ballot.full_verification') }}
-        <InfoPopover :message="t('action.verify_ballot.full_verification_help')" />
-      </div>
-      <p v-if="link" class="alert alert-danger">
-        {{ t('action.verify_ballot.link_invalid') }}
-        <span role="button" @click="reset">{{ t('action.verify_ballot.reset') }}</span>
-      </p>
-    </template>
-    <template v-else>
-      <input v-model="password" />
-    </template>
+    <div class="d-flex border border-1 minh-10em maxh-20em mw-100">
+      <button v-if="!cameraActive" class="btn btn-secondary m-auto" @click="cameraActive = true">
+        {{ t('action.set_link.activate_camera') }}
+      </button>
+      <ScanQRCode v-else @scanned="link = $event" />
+    </div>
+    <input class="form-control" :class="{ 'is-invalid': isInvalid }" v-model="link" :placeholder="t('action.set_link.paste_link')" :disabled="isInvalid" />
+    <div class="form-text" v-if="!isInvalid">
+      {{ t('action.set_link.full_verification') }}
+      <InfoPopover :message="t('action.set_link.full_verification_help')" />
+    </div>
+    <div class="invalid-feedback" v-if="isInvalid">
+      {{ t('action.set_link.link_invalid') }}
+      <a href="#" @click.prevent="reset">{{ t('action.set_link.reset') }}</a>
+    </div>
   </div>
 </template>
+
+<style>
+.minh-10em {
+  min-height: 10em;
+}
+.maxh-20em {
+  max-height: 20em;
+}
+</style>
