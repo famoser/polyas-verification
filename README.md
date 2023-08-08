@@ -48,6 +48,8 @@ This UI allows to verify that signature, and checks whether a ballot with the co
     </tbody>
 </table>
 
+You can test this UI with receipt in `assets/test_vote_receipt.pdf`.
+
 ## Develop
 
 The backend is built using `php` (using the `slim` framework) and manages dependencies using `composer`. Quick start:
