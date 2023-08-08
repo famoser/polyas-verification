@@ -18,6 +18,10 @@
       "full_verification_help": "Mit dem Link und dem Passwort wird es dieser Applikation ermöglicht, Ihre Stimmeabgabe erneut anzuzeigen. Sie können damit einer Drittperson aber Ihre Stimmabgabe nicht beweisen, denn entschlüsselt wird nicht Ihre tatsächliche Stimme, sondern eine daraus abgeleitete Form.",
       "link_invalid": "Der Link ist invalid.",
       "reset": "zurücksetzen"
+    },
+    "set_password": {
+      "set_password": "Passwort",
+      "one_time_password": "Geben Sie das Passwort ein, dass auf dem Wahlgerät angezeigt wird."
     }
   },
   "layout": {
@@ -53,6 +57,9 @@
   "view": {
     "home_app": {
       "verifications": "Verifizierungen"
+    },
+    "verify_app": {
+      "processing": "bitte warten..."
     },
     "option": {
       "receipt": {

@@ -6,6 +6,8 @@ import SetLink from '@/components/action/SetLink.vue'
 import VerificationStatusView from '@/components/view/VerificationStatusView.vue'
 import VerificationExplanation from '@/components/layout/VerificationExplanation.vue'
 import { api } from '@/services/api'
+import SetPassword from '@/components/action/SetPassword.vue'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const urlPayload = computed(() => {
@@ -40,14 +42,23 @@ const doVerification = async () => {
   processingVerification.value = false
 }
 
-const verificationStatus = ref<Status>()
+const { t } = useI18n()
 </script>
 
 <template>
   <SetLink v-if="!urlPayload" />
   <SetPassword v-else-if="!password" @changed="password = $event" />
-  <Processing v-else-if="processingVerification" />
-  <VerificationStatusView v-if="verificationStatus" :result="verificationStatus" @reset="password = undefined" />
+  <p v-else-if="processingVerification">
+    {{ t('view.verify_app.processing') }}
+  </p>
+  <VerificationStatusView
+    v-if="verificationResult"
+    :result="verificationResult"
+    @reset="
+      password = undefined
+      verificationResult = undefined
+    "
+  />
   <div class="my-5">&nbsp;</div>
   <VerificationExplanation />
 </template>
