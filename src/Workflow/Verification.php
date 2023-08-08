@@ -29,8 +29,6 @@ readonly class Verification
     public const ZKP_VALID = 'ZKP_VALID';
     public const BALLOT_DECODE = 'BALLOT_DECODE';
 
-    public const ALL_CHECKS = [self::LOGIN_SUCCESSFUL, self::DEVICE_PARAMETERS_MATCH, self::SIGNATURE_VALID, self::QR_CODE_DECRYPTION, self::CHALLENGE_SUCCESSFUL, self::ZKP_VALID, self::BALLOT_DECODE];
-
     public function __construct(private string $deviceParametersJson, private ApiClient $apiClient)
     {
     }

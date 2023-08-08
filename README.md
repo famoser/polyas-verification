@@ -11,7 +11,11 @@ Allows to verify POLYAS 3.0 (Version 1.3, February 20, 2023), following the seco
 After voting, the voter is presented with a QR code, to be able to enter a second device application.to check how the vote was encrypted 
 The second device application allows the user to verify their plain vote again, to check that the voting procedure finished with the expected vote.
 
-The UI will be built as soon as the cryptography works.
+You can test this UI with the link as folows:
+- Enter the following link: http://localhost:4300/?c=7bgIHYQotKLc8tgCbWp5yuc83xSbN-JV4Vwpnb50qyIzNUj2tYDYzPInG80WJ1mf2tB8BstZXWH_b0y4&vid=voter3&nonce=f299af96450db626754147aa132237bbf5603df2eea8215a0859288df8015c85
+- Enter the password 123456
+
+Then a Mock API client wll kick in, which validates the vote.
 
 ## Receipt verifier UI
 
