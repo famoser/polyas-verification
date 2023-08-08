@@ -8,6 +8,7 @@ import VerificationExplanation from '@/components/layout/VerificationExplanation
 import { api } from '@/services/api'
 import SetPassword from '@/components/action/SetPassword.vue'
 import { useI18n } from 'vue-i18n'
+import BallotView from '@/components/view/BallotView.vue'
 
 const route = useRoute()
 const urlPayload = computed(() => {
@@ -57,6 +58,7 @@ const { t } = useI18n()
     {{ t('view.verify_app.processing') }}
   </p>
   <VerificationStatusView v-if="verificationResult" :result="verificationResult" @reset="reset" />
+  <BallotView v-if="verificationResult?.status && verificationResult.result" :choice="verificationResult.result" />
   <div class="my-5">&nbsp;</div>
   <VerificationExplanation />
 </template>

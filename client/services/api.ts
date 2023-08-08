@@ -4,6 +4,7 @@ import type { Status } from '@/components/domain/Status'
 import type { Election } from '@/components/domain/Election'
 import type { ElectionDetails } from '@/components/domain/ElectionDetails'
 import type { Verification } from '@/components/domain/Verification'
+import type { BallotDefinition } from '@/components/domain/BallotDefinition'
 
 let baseUrl = ''
 if (window.location.hostname === 'localhost') {
@@ -41,6 +42,10 @@ const api = {
   getElectionDetails: async function () {
     const response = await axios.get('/api/electionDetails')
     return response.data as ElectionDetails
+  },
+  getBallotDefinitions: async function () {
+    const response = await axios.get('/api/ballotDefinitions')
+    return response.data as BallotDefinition[]
   },
   postVerification: async function (data: Verification) {
     const response = await axios.post('/api/verification', data)
