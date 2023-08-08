@@ -22,6 +22,8 @@ data:
       required: true
     - path: var/config/election.json
       required: true
+    - path: var/config/deviceParameters.json
+      required: true
 
 scripts:
   build:
