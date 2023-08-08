@@ -94,18 +94,4 @@ class RouteFactory
 
         return new ApiClient($content['polyasElection']);
     }
-
-    /**
-     * @param array{
-     *     'payload': string,
-     *     'voterId': string,
-     *     'nonce': string,
-     *     'password': string,
-     * } $payload
-     *
-     * @throws \Exception
-     */
-    public static function doVerification(array $payload, string &$failedCheck = null): string|null
-    {
-    }
 }
