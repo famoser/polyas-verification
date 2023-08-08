@@ -13,5 +13,5 @@ api.getBallotDefinitions().then((result) => (ballotDefinitions.value = result))
 </script>
 
 <template>
-  <p>Here is your vote</p>
+  <p></p>
 </template>
