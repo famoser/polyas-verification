@@ -17,7 +17,7 @@ const props = defineProps<{
 const errorKnown = props.errorOrder.includes(props.result.error as T)
 const errorEntryIndex = props.errorOrder.indexOf(props.result.error as T)
 
-const successPerEntry: { [K in T]?: boolean | undefined } = {}
+const successPerEntry: { [index: string]: boolean | undefined } = {}
 props.errorOrder.forEach((knownEntry, index) => {
   console.log(knownEntry, index, props.result.status)
   if (props.result.status || (errorKnown && errorEntryIndex > index)) {
@@ -40,7 +40,7 @@ const { t } = useI18n()
 
 <template>
   <div class="row g-2">
-    <CheckView v-if="!props.result.status && !errorKnown" :entry="fallbackError" :success="false" :prefix="prefix" />
+    <CheckView v-if="!result.status && !errorKnown" :entry="String(fallbackError)" :success="false" :prefix="prefix" />
     <div class="col-12" v-for="entry in errorOrder" :key="entry">
       <CheckView :entry="entry" :success="successPerEntry[entry]" :prefix="prefix" />
     </div>
