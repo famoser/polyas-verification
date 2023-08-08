@@ -15,6 +15,7 @@ use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
 use Famoser\PolyasVerification\PathHelper;
 use Famoser\PolyasVerification\Storage;
 use Famoser\PolyasVerification\Workflow\ApiClient;
+use Famoser\PolyasVerification\Workflow\Mock\VerificationMock;
 use Famoser\PolyasVerification\Workflow\Receipt;
 use Famoser\PolyasVerification\Workflow\Verification;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -70,13 +71,17 @@ class RouteFactory
              *     'password': string,
              * } $payload
              */
-            $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
-            $deviceParametersJson = Storage::readFile($deviceParametersPath);
+            if (VerificationMock::isMockPayload($payload)) {
+                $result = VerificationMock::performMockVerification($failedCheck);
+            } else {
+                $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
+                $deviceParametersJson = Storage::readFile($deviceParametersPath);
 
-            $apiClient = self::createPOLYASApiClient();
-            $verification = new Verification($deviceParametersJson, $apiClient);
-            $challengeCommit = ChallengeCommit::createWithRandom();
-            $result = $verification->verify($payload, $challengeCommit, $failedCheck);
+                $apiClient = self::createPOLYASApiClient();
+                $verification = new Verification($deviceParametersJson, $apiClient);
+                $challengeCommit = ChallengeCommit::createWithRandom();
+                $result = $verification->verify($payload, $challengeCommit, $failedCheck);
+            }
 
             return SlimExtensions::createStatusJsonResponse($request, $response, null !== $result, $failedCheck, $result);
         });
@@ -88,5 +93,19 @@ class RouteFactory
         $content = Storage::readJsonFile($path);
 
         return new ApiClient($content['polyasElection']);
+    }
+
+    /**
+     * @param array{
+     *     'payload': string,
+     *     'voterId': string,
+     *     'nonce': string,
+     *     'password': string,
+     * } $payload
+     *
+     * @throws \Exception
+     */
+    public static function doVerification(array $payload, string &$failedCheck = null): string|null
+    {
     }
 }

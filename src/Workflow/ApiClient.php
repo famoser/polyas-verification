@@ -84,7 +84,7 @@ class ApiClient
             'headers' => ['AuthToken' => $authenticationToken],
         ]);
 
-        return $this->returnBodyValue($response);
+        return json_decode($this->returnBodyValue($response), true);
     }
 
     private function returnBody(ResponseInterface $response): mixed
