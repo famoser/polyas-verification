@@ -8,6 +8,7 @@
     "ext-bcmath": "*",
     "ext-gmp": "*",
     "ext-openssl": "*",
+    "guzzlehttp/guzzle": "^7.0",
     "mdanter/ecc": "^1.0",
     "monolog/monolog": "^3.3",
     "slim/psr7": "^1.6",

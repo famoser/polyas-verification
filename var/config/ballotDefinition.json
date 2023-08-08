@@ -1,0 +1,86 @@
+{
+  "ballots": [
+    {
+      "type": "STANDARD_BALLOT",
+      "id": "1",
+      "contentAbove": {
+        "value": {
+          "default": "",
+          "value": {}
+        },
+        "contentType": "TEXT"
+      },
+      "title": {
+        "default": "Wie findest du Vanilleeis?",
+        "value": {}
+      },
+      "lists": [
+        {
+          "id": "2",
+          "columnHeaders": [
+            {
+              "default": "",
+              "value": {}
+            }
+          ],
+          "columnProperties": [
+            {
+              "hide": false
+            }
+          ],
+          "candidates": [
+            {
+              "id": "3",
+              "columns": [
+                {
+                  "value": {
+                    "default": "Lecker!",
+                    "value": {}
+                  },
+                  "contentType": "TEXT"
+                }
+              ],
+              "maxVotes": 1,
+              "minVotes": 0
+            },
+            {
+              "id": "4",
+              "columns": [
+                {
+                  "value": {
+                    "default": "Es gibt besseres",
+                    "value": {}
+                  },
+                  "contentType": "TEXT"
+                }
+              ],
+              "maxVotes": 1,
+              "minVotes": 0
+            }
+          ],
+          "maxVotesOnList": 1,
+          "minVotesOnList": 0,
+          "maxVotesForList": 0,
+          "minVotesForList": 0,
+          "voteCandidateXorList": false
+        }
+      ],
+      "contentBelow": {
+        "value": {
+          "default": "",
+          "value": {}
+        },
+        "contentType": "TEXT"
+      },
+      "showInvalidOption": true,
+      "showAbstainOption": false,
+      "maxVotes": 1,
+      "minVotes": 0,
+      "maxVotesForLists": 0,
+      "minVotesForLists": 0,
+      "prohibitMoreVotes": false,
+      "prohibitLessVotes": false,
+      "calculateAvailableVotes": false
+    }
+  ]
+}
