@@ -61,6 +61,11 @@
     "verify_app": {
       "processing": "bitte warten..."
     },
+    "ballot": {
+      "ballot_view": {
+        "ballot_valid": "Stimmzettel gültig"
+      }
+    },
     "option": {
       "receipt": {
         "title": "Rezept überprüfen",

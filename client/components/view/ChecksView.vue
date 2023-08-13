@@ -19,7 +19,6 @@ const errorEntryIndex = props.errorOrder.indexOf(props.result.error as T)
 
 const successPerEntry: { [index: string]: boolean | undefined } = {}
 props.errorOrder.forEach((knownEntry, index) => {
-  console.log(knownEntry, index, props.result.status)
   if (props.result.status || (errorKnown && errorEntryIndex > index)) {
     successPerEntry[knownEntry] = true
   }
@@ -43,11 +42,6 @@ const { t } = useI18n()
     <CheckView v-if="!result.status && !errorKnown" :entry="String(fallbackError)" :success="false" :prefix="prefix" />
     <div class="col-12" v-for="entry in errorOrder" :key="entry">
       <CheckView :entry="entry" :success="successPerEntry[entry]" :prefix="prefix" />
-    </div>
-    <div class="col-12">
-      <button class="btn btn-outline-primary" @click="emit('reset')">
-        {{ t('view.verification_result_view.reset') }}
-      </button>
     </div>
   </div>
 </template>

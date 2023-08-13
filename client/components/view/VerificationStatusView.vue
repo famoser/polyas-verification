@@ -2,6 +2,8 @@
 import type { Status } from '@/components/domain/Status'
 import ChecksView from '@/components/view/ChecksView.vue'
 import { VerificationErrors } from '@/components/domain/VerificationErrors'
+import BallotsView from '@/components/view/BallotsView.vue'
+import VerificationExplanation from '@/components/layout/VerificationExplanation.vue'
 
 const emit = defineEmits<{
   (e: 'reset'): void
@@ -23,5 +25,9 @@ const errorOrder: VerificationErrors[] = [
 </script>
 
 <template>
+  <BallotsView v-if="result.status && result.result" :choice="result.result" />
+  <p class="mt-5 mb-2">Erfolgte Checks</p>
   <ChecksView prefix="domain.verification_status" :result="result" :error-order="errorOrder" :fallback-error="VerificationErrors.UNKNOWN" @reset="emit('reset')" />
+  <div class="my-5">&nbsp;</div>
+  <VerificationExplanation />
 </template>
