@@ -6,21 +6,56 @@
 
 Allows to verify POLYAS 3.0 (Version 1.3, February 20, 2023), following the second device spec (Version 1.0, July 28, 2023). 
 
-## Second device UI
+<table>
+    <tbody>
+        <tr>
+            <td><img src="assets/0_index.png?raw=true" alt="Screenshot start"></td>
+            <td>&nbsp;</td>
+        </tr>
+    </tbody>
+</table>
 
-After voting, the voter is presented with a QR code, to be able to enter a second device application.to check how the vote was encrypted 
+## Verification UI
+
+After voting, the voter is presented with a QR code, to be able to enter a second device application.
 The second device application allows the user to verify their plain vote again, to check that the voting procedure finished with the expected vote.
 
-You can test this UI with the link as folows:
+<table>
+    <tbody>
+        <tr>
+            <td>Start</td>
+            <td>Enter password</td>
+        </tr>
+        <tr>
+            <td><img src="assets/1_verify_0_index.png?raw=true" alt="Screenshot verification start"></td>
+            <td><img src="assets/1_verify_1_password.png?raw=true" alt="Screenshot password enter"></td>
+        </tr>
+    </tbody>
+</table>
+
+<table>
+    <tbody>
+        <tr>
+            <td>Verification valid</td>
+            <td>Verification invalid</td>
+        </tr>
+        <tr>
+            <td><img src="assets/1_verify_2_success.png?raw=true" alt="Screenshot verification success"></td>
+            <td><img src="assets/1_verify_3_fail.png?raw=true" alt="Screenshot verification failed"></td>
+        </tr>
+    </tbody>
+</table>
+
+You can test this UI with the link as follows:
 - Enter the following link: http://localhost:4300/?c=7bgIHYQotKLc8tgCbWp5yuc83xSbN-JV4Vwpnb50qyIzNUj2tYDYzPInG80WJ1mf2tB8BstZXWH_b0y4&vid=voter3&nonce=f299af96450db626754147aa132237bbf5603df2eea8215a0859288df8015c85
 - Enter the password 123456
 
-Then a Mock API client wll kick in, which validates the vote.
+Then mock data client will kick in, which validates the vote.
 
-## Receipt verifier UI
+## Receipt UI
 
 The second device application outputs a receipt, which contains the fingerprint of the ballot, and a signature over said fingerprint. 
-This UI allows to verify that signature, and checks whether a ballot with the corresponding fingerprint is known to the voting server.
+This UI allows to verify that signature; thereby proving that the voting server must know the referenced ballot.
 
 <table>
     <tbody>
@@ -29,8 +64,8 @@ This UI allows to verify that signature, and checks whether a ballot with the co
             <td>Valid receipt</td>
         </tr>
         <tr>
-            <td><img src="assets/01_start_view.png?raw=true" alt="Screenshot Start"></td>
-            <td><img src="assets/02_receipt_valid.png?raw=true" alt="Screenshot Receipt valid"></td>
+            <td><img src="assets/2_receipt_0_index.png?raw=true" alt="Screenshot receipt start"></td>
+            <td><img src="assets/2_receipt_1_success.png?raw=true" alt="Screenshot receipt valid"></td>
         </tr>
     </tbody>
 </table>
@@ -38,12 +73,12 @@ This UI allows to verify that signature, and checks whether a ballot with the co
 <table>
     <tbody>
         <tr>
-            <td>Start with help</td>
             <td>Invalid receipt</td>
+            <td>Receipt help</td>
         </tr>
         <tr>
-            <td><img src="assets/03_start_view_with_help.png?raw=true" alt="Screenshot Start with expanded help"></td>
-            <td><img src="assets/04_receipt_invalid.png?raw=true" alt="Screenshot Receipt invalid"></td>
+            <td><img src="assets/2_receipt_2_error.png?raw=true" alt="Screenshot receipt error"></td>
+            <td><img src="assets/2_receipt_3_help.png?raw=true" alt="Screenshot receipt help"></td>
         </tr>
     </tbody>
 </table>
