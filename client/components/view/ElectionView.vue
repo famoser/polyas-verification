@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Election } from '@/components/domain/Election'
-import type { ElectionDetails } from '@/components/domain/ElectionDetails'
+
+import type { ElectionDetails } from '@/components/domain/POLYAS'
 
 defineProps<{
   election: Election

@@ -2,9 +2,8 @@ import axios from 'axios'
 import { displayError } from './notifiers'
 import type { Status } from '@/components/domain/Status'
 import type { Election } from '@/components/domain/Election'
-import type { ElectionDetails } from '@/components/domain/ElectionDetails'
 import type { Verification } from '@/components/domain/Verification'
-import type { BallotDefinition } from '@/components/domain/BallotDefinition'
+import type { Ballot, ElectionDetails } from '@/components/domain/POLYAS'
 
 let baseUrl = ''
 if (window.location.hostname === 'localhost') {
@@ -43,9 +42,9 @@ const api = {
     const response = await axios.get('/api/electionDetails')
     return response.data as ElectionDetails
   },
-  getBallotDefinitions: async function () {
-    const response = await axios.get('/api/ballotDefinitions')
-    return response.data as BallotDefinition[]
+  getBallots: async function () {
+    const response = await axios.get('/api/ballots')
+    return response.data as Ballot[]
   },
   postVerification: async function (data: Verification) {
     const response = await axios.post('/api/verification', data)

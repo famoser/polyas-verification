@@ -42,7 +42,7 @@ class RouteFactory
             return SlimExtensions::createJsonResponse($request, $response, $election);
         });
 
-        $route->get('/ballotDefinitions', function (Request $request, Response $response, array $args) {
+        $route->get('/ballots', function (Request $request, Response $response, array $args) {
             $deviceParametersJsonFile = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
             $deviceParameters = Storage::readJsonFile($deviceParametersJsonFile);
 

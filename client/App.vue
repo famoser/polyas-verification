@@ -5,7 +5,8 @@ import HeaderJumbotron from '@/components/layout/HeaderJumbotron.vue'
 import { ref } from 'vue'
 import ElectionView from '@/components/view/ElectionView.vue'
 import type { Election } from '@/components/domain/Election'
-import type { ElectionDetails } from '@/components/domain/ElectionDetails'
+
+import type { ElectionDetails } from '@/components/domain/POLYAS'
 
 const { t } = useI18n()
 
