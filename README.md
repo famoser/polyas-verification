@@ -6,14 +6,7 @@
 
 Allows to verify POLYAS 3.0 (Version 1.3, February 20, 2023), following the second device spec (Version 1.0, July 28, 2023). 
 
-<table>
-    <tbody>
-        <tr>
-            <td><img src="assets/0_index.png?raw=true" alt="Screenshot start"></td>
-            <td>&nbsp;</td>
-        </tr>
-    </tbody>
-</table>
+<img src="assets/0_index.png?raw=true" alt="Screenshot start" width="30%">
 
 ## Verification UI
 
