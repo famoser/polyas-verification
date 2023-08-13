@@ -132,7 +132,7 @@
       },
       "BALLOT_DECODE": {
         "title": "Stimme wird entschlüsselt",
-        "description": "Die Stimme wird entschlüsselt. Diese ist nicht die tatsächlich abgegebene Stimme; der Zero-Knowledge Beweis stellt aber sicher, dass der Inhalt identitisch ist.",
+        "description": "Die Stimme wird entschlüsselt. Diese ist nicht die tatsächlich abgegebene Stimme; der Inhalt ist aber identitisch.",
         "success": "Stimme entschlüsselt.",
         "failed": "Stimme kann nicht entschlüsselt werden.",
         "failed_hint": "Bitte versuchen Sie es erneut."
