@@ -7,6 +7,7 @@ import ExpandedIndicator from '@/components/shared/ExpandedIndicator.vue'
 const props = defineProps<{
   prefix: string
   entry: string
+  loading?: boolean
   success?: boolean
 }>()
 
@@ -17,12 +18,17 @@ const showBody = computed(() => expanded.value || props.success === false)
 </script>
 
 <template>
-  <div class="card shadow-sm" :class="{ 'border-success': success === true, 'border-warning': success === undefined, 'border-danger': success === false }" role="button" @click="expanded = !expanded">
+  <div
+    class="card shadow-sm p-0"
+    :class="{ 'border-success': success === true, 'border-warning': success === undefined || loading, 'border-danger': success === false }"
+    role="button"
+    @click="expanded = !expanded"
+  >
     <div class="card-header" :class="{ 'border-bottom-0': !showBody }">
       <div class="d-flex flex-row">
         <p class="mb-0">
           <b>
-            <SuccessIndicator :success="success" class="me-2" />
+            <SuccessIndicator :loading="loading" :success="success" class="me-2" />
             {{ t(`${entryPrefix}.title`) }}
           </b>
         </p>

@@ -59,23 +59,17 @@
       "verifications": "Verifizierungen"
     },
     "verify_app": {
+      "title": "Stimmabgabe überprüfen",
+      "description": "Mit dem QR Code, der nach der Wahl angezeigt wird, können Sie den Inhalt Ihrer Stimme überprüfen.",
       "processing": "bitte warten..."
+    },
+    "receipt_app": {
+      "title": "Rezept überprüfen",
+      "description": "Mit einem Rezept der Wahlabgabe (.pdf) können Sie prüfen, ob Ihre Stimme auf dem POLYAS Server registriert ist."
     },
     "ballot": {
       "ballot_view": {
         "ballot_valid": "Stimmzettel gültig"
-      }
-    },
-    "option": {
-      "receipt": {
-        "title": "Rezept überprüfen",
-        "description": "Mit einem Rezept der Wahlabgabe (.pdf) können Sie prüfen, ob Ihre Stimme auf dem POLYAS Server registriert ist.",
-        "go": "Rezept überprüfen"
-      },
-      "verify": {
-        "title": "Stimmabgabe überprüfen",
-        "description": "Mit dem QR Code, der nach der Wahl angezeigt wird, können Sie den Inhalt Ihrer Stimme überprüfen.",
-        "go": "Stimmabgabe überprüfen"
       }
     },
     "verification_result_view": {
@@ -84,6 +78,16 @@
   },
   "domain": {
     "verification_status": {
+      "LINK_ENTERED": {
+        "title": "Identifikation ausgelesen",
+        "description": "Liest die Identifikation für den Login, sowie kryptographisches Material aus.",
+        "success": "Alle benötigten Informationen ausgelesen."
+      },
+      "PASSWORD_ENTERED": {
+        "title": "Passwort eingegeben",
+        "description": "Validiert das eingegebene Passwort.",
+        "success": "Der Passwort ist nummerisch und sechsstellig."
+      },
       "LOGIN_SUCCESSFUL": {
         "title": "Login erfolgreich",
         "description": "Logged sich mit dem bereitgestellem Zugangscode ein, und fordert vom Server kryptographisches Material für die weiteren Checks an.",
