@@ -7,6 +7,6 @@ const { t } = useI18n()
 
 <template>
   <h3 class="mb-3">{{ t('view.home_app.verifications') }}</h3>
-  <OptionView class="mb-2" prefix="verify" to="/verify" />
-  <OptionView prefix="receipt" to="/receipt" />
+  <OptionView class="mb-2" prefix="verify_app" to="/verify" />
+  <OptionView prefix="receipt_app" to="/receipt" />
 </template>

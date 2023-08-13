@@ -9,15 +9,15 @@ const emit = defineEmits<{
 const passwordInput = ref<HTMLElement>()
 const password = ref<string>()
 const sanitizedPassword = computed(() => password.value?.replace(/[^0-9.]/g, ''))
+const invalidCharacters = computed(() => password.value && sanitizedPassword.value?.length !== password.value.length)
+
 watch(password, () => {
-  if (!sanitizedPassword.value || sanitizedPassword.value.length !== 6) {
+  if (!sanitizedPassword.value || invalidCharacters.value || sanitizedPassword.value.length !== 6) {
     return
   }
 
   emit('changed', sanitizedPassword.value)
 })
-
-const invalidCharacters = computed(() => password.value && sanitizedPassword.value?.length !== password.value.length)
 
 onMounted(() => {
   passwordInput.value?.focus()
