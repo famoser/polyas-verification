@@ -5,21 +5,6 @@ Noty.overrideDefaults({
   type: 'success'
 })
 
-const displaySuccess = function (successMessage: string) {
-  new Noty({
-    text: successMessage,
-    timeout: 1000
-  }).show()
-}
-
-const displayWarning = function (warningMessage: string) {
-  new Noty({
-    text: warningMessage,
-    type: 'warning',
-    timeout: false
-  }).show()
-}
-
 const displayError = function (errorMessage: string) {
   new Noty({
     text: errorMessage,
@@ -28,4 +13,4 @@ const displayError = function (errorMessage: string) {
   }).show()
 }
 
-export { displaySuccess, displayWarning, displayError }
+export { displayError }
