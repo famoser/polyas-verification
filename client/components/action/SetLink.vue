@@ -45,13 +45,13 @@ const { t } = useI18n()
 
 <template>
   <div>
-    <div class="d-flex border border-1 minh-10em maxh-20em mw-100">
+    <div class="d-flex border border-1 minh-10em maxh-20em mw-100 rounded">
       <button v-if="!cameraActive" class="btn btn-secondary m-auto" @click="cameraActive = true">
-        {{ t('action.set_link.activate_camera') }}
+        {{ t('action.set_link.scan_qr_code') }}
       </button>
       <ScanQRCode v-else @scanned="link = $event" />
     </div>
-    <input class="form-control" :class="{ 'is-invalid': isInvalid }" v-model="link" :placeholder="t('action.set_link.paste_link')" :disabled="isInvalid" />
+    <input class="form-control mt-2" :class="{ 'is-invalid': isInvalid }" v-model="link" :placeholder="t('action.set_link.or_paste_link')" :disabled="isInvalid" />
     <div class="form-text" v-if="!isInvalid">
       {{ t('action.set_link.full_verification') }}
       <InfoPopover :message="t('action.set_link.full_verification_help')" />
