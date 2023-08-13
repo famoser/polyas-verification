@@ -49,9 +49,8 @@ const finishLoading = (entry: T) => {
     // start next invocation
     const index = props.errorOrder.indexOf(entry)
     const next = props.errorOrder[index + 1]
-    console.log(index, next)
     if (index >= 0 && next) {
-      window.setTimeout(() => finishLoading(next), 200)
+      window.setTimeout(() => finishLoading(next), 200 - index * 20)
     } else {
       emit('checksFinishedLoading')
     }
@@ -79,5 +78,5 @@ watch(
 
 <template>
   <CheckView v-if="result && !result.status && !errorKnown" :entry="String(fallbackError)" :success="false" :prefix="prefix" />
-  <CheckView v-for="entry in errorOrder" :key="entry" :entry="entry" :loading="!loadingFinishedPerEntry[entry]" :success="successPerEntry && successPerEntry[entry]" :prefix="prefix" />
+  <CheckView v-for="entry in errorOrder" :key="entry" :prefix="prefix" :entry="entry" :loading="!loadingFinishedPerEntry[entry]" :success="successPerEntry ? successPerEntry[entry] : undefined" />
 </template>

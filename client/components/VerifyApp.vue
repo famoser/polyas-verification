@@ -33,6 +33,7 @@ watch(password, () => {
 })
 
 const verificationResult = ref<Status>()
+const storedReceipt = ref<boolean>()
 const checksShown = ref<boolean>()
 const doVerification = async () => {
   if (!urlPayload.value || !password.value) {
@@ -41,12 +42,7 @@ const doVerification = async () => {
 
   const payload = { ...urlPayload.value, password: password.value }
   verificationResult.value = await api.postVerification(payload)
-}
-
-const reset = () => {
-  password.value = undefined
-  verificationResult.value = undefined
-  checksShown.value = false
+  storedReceipt.value = verificationResult.value?.status
 }
 
 const errorOrder: VerificationErrors[] = [
@@ -73,7 +69,7 @@ const { t } = useI18n()
     <CheckView v-if="urlPayload" prefix="domain.verification_status" :entry="VerificationErrors.LINK_ENTERED" :success="true" />
 
     <SetPassword class="mt-4" v-if="urlPayload && !password" @changed="password = $event" />
-    <CheckView v-if="password" prefix="domain.verification_status" :entry="VerificationErrors.PASSWORD_ENTERED" :success="true" />
+    <CheckView v-if="urlPayload && password" prefix="domain.verification_status" :entry="VerificationErrors.PASSWORD_ENTERED" :success="true" />
 
     <ChecksView
       v-if="urlPayload && password"

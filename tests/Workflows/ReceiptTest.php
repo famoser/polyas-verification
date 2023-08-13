@@ -11,17 +11,13 @@
 
 namespace Famoser\PolyasVerification\Test\Workflows;
 
-use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
 use Famoser\PolyasVerification\Workflow\Receipt;
 use PHPUnit\Framework\TestCase;
 
 class ReceiptTest extends TestCase
 {
-    use IncompleteTestTrait;
     public function testReceiptVerify(): void
     {
-        $this->markTestIncompleteNS('Ballot existence check not implemented yet.');
-
         $receiptPath = $this->getReceiptPath();
         $deviceParameters = json_decode(file_get_contents(__DIR__.'/resources/ballot0/deviceParameters.json'), true); // @phpstan-ignore-line
 

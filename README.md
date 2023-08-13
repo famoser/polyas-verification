@@ -71,3 +71,10 @@ You need access to the config repository specified in `agnes.yml`. Then:
 - deploy release to `prod` environment with `./vendor/bin/agnes deploy *:*:prod v1.0`
 
 The server needs to fulfil requirements specified in `composer.json`.
+
+## Future functionality
+
+The following features would be nice-to-haves:
+- Let the user download a receipt of the ballot verification (fingerprint + signature)
+- Store the receipt of the ballot verification (opt-in) and use it during universal verification
+- Check whether uploaded receipts are included online
