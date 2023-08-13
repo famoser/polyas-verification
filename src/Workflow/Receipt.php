@@ -19,7 +19,6 @@ readonly class Receipt
 {
     public const RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE = 'RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE';
     public const SIGNATURE_VALID = 'SIGNATURE_VALID';
-    public const FINGERPRINT_REGISTERED = 'FINGERPRINT_REGISTERED';
 
     public function __construct(private string $verificationKeyX509Hex)
     {
@@ -42,9 +41,9 @@ readonly class Receipt
             return false;
         }
 
-        // TODO check fingerprint registered at POLYAS
+        // optional: check fingerprint registered at POLYAS
 
-        return false;
+        return true;
     }
 
     public function getFingerprintAndSignature(string $path, ?string &$fingerprint, ?string &$signature): bool

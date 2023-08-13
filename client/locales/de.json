@@ -32,8 +32,8 @@
     "receipt_explanation": {
       "verification_target": {
         "question": "Was kann durch das Rezept verifiziert werden?",
-        "verifies_received_at_server": "Mit dem Rezept kann festgestellt werden, ob die dazugehörige verschlüsselte Stimme auf dem POLYAS Server registriert ist. Damit sind die Voraussetzungen gegeben, dass die verschlüsselte Stimme im Wahlresultat auch wirklich berücksichtigt wird.",
-        "must_trust_device": "Das Rezept erlaubt es aber nicht zu überprüfen, ob die dazugehörige verschlüsselte Stimme wirklich dem Wunsch des Wählenden entspricht. Dazu muss dem Wahlgerät (mit dem die Stimmeingabe erfolgte) oder dem Zweitgerät (mit dem die Stimmabgabe erneut angezeigt wurde) vertraut werden.",
+        "verifies_received_at_server": "Das Rezept enthält eine Signatur über die dazugehörige verschlüsselte Stimme. Damit kann bewiesen werden, dass die Stimme vom POLYAS Server empfangen wurde.",
+        "must_trust_device": "Das Rezept erlaubt es aber nicht zu überprüfen, ob die dazugehörige verschlüsselte Stimme wirklich dem Wunsch des Wählenden entspricht. Dazu muss dem Wahlgerät (mit dem die Stimmeingabe erfolgte) oder dem Zweitgerät (mit dem die Stimmabgabe verifiziert wurde) vertraut werden.",
         "must_trust_servers": "Das Rezept alleine kann auch nicht festellen, ob die dazugehörige verschlüsselte Stimme auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem POLYAS Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten."
       },
       "verification_fails": {
@@ -60,12 +60,12 @@
     },
     "verify_app": {
       "title": "Stimmabgabe überprüfen",
-      "description": "Mit dem QR Code, der nach der Wahl angezeigt wird, können Sie den Inhalt Ihrer Stimme überprüfen.",
-      "processing": "bitte warten..."
+      "description": "Mit dem QR Code, der nach der Wahl angezeigt wird, können Sie den Inhalt Ihrer Stimme überprüfen."
     },
     "receipt_app": {
       "title": "Rezept überprüfen",
-      "description": "Mit einem Rezept der Wahlabgabe (.pdf) können Sie prüfen, ob Ihre Stimme auf dem POLYAS Server registriert ist."
+      "description": "Mit einem Rezept der Wahlabgabe (.pdf) können Sie prüfen, ob Ihre Stimme vom POLYAS Server registriert wurde.",
+      "receipt_valid": "Das Rezept ist valid."
     },
     "ballot": {
       "ballot_view": {
@@ -145,6 +145,11 @@
       }
     },
     "receipt_status": {
+      "RECEIPT_UPLOADED": {
+        "title": "Rezept hochgeladen",
+        "description": "Das Rezept (die .pdf Datei) wird für die Analyse auf den Server hochgeladen.",
+        "success": "Rezept hochgeladen."
+      },
       "UNKNOWN": {
         "title": "Unbekanner Fehler",
         "description": "Bei der Verifizierung ist ein ungekannter Fehler aufgetreten. Dies bedeutet, dass das Rezept vermutlich ungültig ist.",
@@ -164,13 +169,6 @@
         "success": "Die Signatur der verschlüsselten Stimme ist valid.",
         "failed": "Die Signatur der verschlüsselten Stimme ist invalid.",
         "failed_hint": "Bitte stellen Sie sicher, dass das Rezept für die oben eingeblendete Wahl ausgestellt wurde."
-      },
-      "FINGERPRINT_REGISTERED": {
-        "title": "Verschlüsselte Stimme in POLYAS registriert",
-        "description": "Stellt sicher, dass die verschlüsselte Stimme exakt so auf den POLYAS Servern registriert ist.",
-        "success": "Der POLYAS Server kennt diese verschlüsselte Stimme.",
-        "failed": "Der POLYAS Server hat keinen Eintrag für diese verschlüsselte Stimme.",
-        "failed_hint": "Bitte versuchen Sie es ein wenig später noch einmal."
       }
     }
   }

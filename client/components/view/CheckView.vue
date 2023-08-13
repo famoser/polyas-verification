@@ -14,13 +14,14 @@ const props = defineProps<{
 const { t } = useI18n()
 const entryPrefix = `${props.prefix}.${props.entry}`
 const expanded = ref(false)
-const showBody = computed(() => expanded.value || props.success === false)
+const successLoading = computed(() => (props.loading ? undefined : props.success))
+const showBody = computed(() => expanded.value || successLoading.value === false)
 </script>
 
 <template>
   <div
     class="card shadow-sm p-0"
-    :class="{ 'border-success': success === true, 'border-warning': success === undefined || loading, 'border-danger': success === false }"
+    :class="{ 'border-success': successLoading === true, 'border-warning': successLoading === undefined, 'border-danger': successLoading === false }"
     role="button"
     @click="expanded = !expanded"
   >
@@ -41,10 +42,10 @@ const showBody = computed(() => expanded.value || props.success === false)
       <p class="mb-0">
         {{ t(`${entryPrefix}.description`) }}
       </p>
-      <p v-if="success === true" class="mt-2 mb-0 alert alert-success">
+      <p v-if="successLoading === true" class="mt-2 mb-0 alert alert-success">
         {{ t(`${entryPrefix}.success`) }}
       </p>
-      <p v-else-if="success === false" class="mt-2 mb-0 alert alert-danger">
+      <p v-else-if="successLoading === false" class="mt-2 mb-0 alert alert-danger">
         <b>{{ t(`${entryPrefix}.failed`) }}</b>
         {{ t(`${entryPrefix}.failed_hint`) }}
       </p>
