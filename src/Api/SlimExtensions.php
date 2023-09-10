@@ -32,7 +32,7 @@ class SlimExtensions
     /**
      * @param string[]|null $receipt
      */
-    public static function createStatusJsonResponse(Request $request, Response $response, bool $status, ?string $error, string $result = null, array $receipt = null): Response
+    public static function createStatusJsonResponse(Request $request, Response $response, bool $status, string $error = null, string $result = null, array $receipt = null): Response
     {
         $jsonContent = json_encode([
             'status' => $status,
