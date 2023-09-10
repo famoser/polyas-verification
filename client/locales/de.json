@@ -54,14 +54,18 @@
       }
     }
   },
+  "shared": {
+    "reset_button": {
+      "reset": "Zurücksetzen"
+    }
+  },
   "view": {
     "home_app": {
       "verifications": "Verifizierungen"
     },
     "verify_app": {
       "title": "Stimmabgabe überprüfen",
-      "description": "Mit dem QR Code, der nach der Wahl angezeigt wird, können Sie den Inhalt Ihrer Stimme überprüfen.",
-      "reset": "Zurücksetzen"
+      "description": "Mit dem QR Code, der nach der Wahl angezeigt wird, können Sie den Inhalt Ihrer Stimme überprüfen."
     },
     "receipt_app": {
       "title": "Rezept überprüfen",
