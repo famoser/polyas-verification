@@ -58,4 +58,56 @@ class Storage
     {
         unlink($path);
     }
+
+    /**
+     * @param array{
+     *  'fingerprint': string,
+     *  'signature': string,
+     *  } $payload
+     */
+    public static function checkReceiptExists(array $payload): bool
+    {
+        $db = self::getDatabaseConnection();
+
+        $smt = $db->prepare('SELECT FROM receipts WHERE fingerprint = :fingerprint AND signature = :signature');
+        $smt->bindValue(':fingerprint', $payload['fingerprint']);
+        $smt->bindValue(':signature', $payload['signature']);
+
+        $results = $smt->fetchAll();
+
+        return 0 === count($results);
+    }
+
+    /**
+     * @param array{
+     *  'fingerprint': string,
+     *  'signature': string,
+     *  } $payload
+     */
+    public static function storeReceipt(array $payload): bool
+    {
+        $db = self::getDatabaseConnection();
+
+        $smt = $db->prepare("INSERT INTO receipts (fingerprint, signature) VALUES (':fingerprint', ':signature')");
+        $smt->bindValue(':fingerprint', $payload['fingerprint']);
+        $smt->bindValue(':signature', $payload['signature']);
+
+        return $smt->execute();
+    }
+
+    private static \PDO|null $pdo;
+
+    private static function getDatabaseConnection(): \PDO
+    {
+        if (!self::$pdo) {
+            $dbPath = PathHelper::VAR_PERSISTENT_DIR.DIRECTORY_SEPARATOR.'receipts.sqlite';
+            $dbExists = file_exists($dbPath);
+            self::$pdo = new \PDO('sqlite:'.$dbPath);
+            if (!$dbExists) {
+                self::$pdo->exec('CREATE TABLE IF NOT EXISTS receipts (fingerprint TEXT NOT NULL, signature TEXT NOT NULL, UNIQUE(fingerprint,signature))');
+            }
+        }
+
+        return self::$pdo;
+    }
 }

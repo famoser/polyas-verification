@@ -41,6 +41,14 @@ class RequestValidatorExtensions
     }
 
     /**
+     * @param string[] $receipt
+     */
+    public static function checkReceipt(Request $request, array $receipt): void
+    {
+        RequestValidatorExtensions::checkExactlyKeysSet($request, $receipt, ['fingerprint', 'signature']);
+    }
+
+    /**
      * @param string[] $array
      * @param string[] $requiredKeys
      */
