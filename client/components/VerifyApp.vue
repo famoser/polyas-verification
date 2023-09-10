@@ -26,17 +26,22 @@ const urlPayload = computed(() => {
 })
 
 const router = useRouter()
+const backVerify = computed(() => {
+  router.currentRoute.value // need this for reactivity
+  return router.options.history.state.back && router.options.history.state.back.toString().startsWith('/verify')
+})
+
 const reset = () => {
   password.value = undefined
   verificationResult.value = undefined
   checksShown.value = undefined
-  if (router.options.history.state.back) {
+  if (backVerify.value) {
     router.back()
   }
 }
 
 const canReset = computed(() => {
-  return password.value || router.options.history.state.back
+  return password.value || backVerify.value
 })
 
 const password = ref<string>()
@@ -99,6 +104,10 @@ const { t } = useI18n()
 
   <div class="my-5" v-if="checksShown && verificationResult && verificationResult.status && verificationResult.result">
     <BallotsView :choice="verificationResult.result" />
+  </div>
+
+  <div class="my-5" v-if="checksShown && verificationResult && verificationResult.status && verificationResult.receipt">
+    <ReceiptView :receipt="verificationResult.receipt" />
   </div>
 
   <div class="my-5">
