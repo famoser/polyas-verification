@@ -21,6 +21,24 @@ readonly class BallotDigestSignature
     {
     }
 
+    /**
+     * @param array{
+     *   'fingerprint': string,
+     *   'signature': string,
+     *   } $receipt
+     */
+    public static function createFromExport(array $receipt, string $verificationKeyX509Hex): self
+    {
+        /** @var string $fingerprint */
+        $fingerprint = hex2bin($receipt['fingerprint']);
+        /** @var string $signature */
+        $signature = hex2bin($receipt['signature']);
+        /** @var string $verificationKeyX509 */
+        $verificationKeyX509 = hex2bin($verificationKeyX509Hex);
+
+        return new self($fingerprint, $signature, $verificationKeyX509);
+    }
+
     public static function createFromBallotDigest(BallotDigest $ballotDigest, string $signatureHex, string $verificationKeyX509Hex): self
     {
         /** @var string $signature */
@@ -40,5 +58,16 @@ readonly class BallotDigestSignature
         } catch (OpenSSLException) {
             return false;
         }
+    }
+
+    /**
+     * @return array{
+     * 'fingerprint': string,
+     * 'signature': string,
+     * }
+     */
+    public function export(): array
+    {
+        return ['fingerprint' => bin2hex($this->fingerprint), 'signature' => bin2hex($this->signature)];
     }
 }

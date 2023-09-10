@@ -40,8 +40,12 @@ readonly class Verification
      *     'nonce': string,
      *     'password': string,
      * } $verification
+     * @param array{
+     *      'fingerprint': string,
+     *      'signature': string,
+     *  }|null $validReceipt
      */
-    public function verify(array $verification, ChallengeCommit $challengeCommit, string &$failedCheck = null): string|null
+    public function verify(array $verification, ChallengeCommit $challengeCommit, string &$failedCheck = null, array &$validReceipt = null): string|null
     {
         $challengeCommitment = $challengeCommit->commit();
         $loginPayload = ['voterId' => $verification['voterId'], 'nonce' => $verification['nonce'], 'password' => $verification['password'], 'challengeCommitment' => $challengeCommitment];
@@ -83,6 +87,8 @@ readonly class Verification
 
             return null;
         }
+
+        $validReceipt = $ballotDigestSignature->export();
 
         $qrCodeDecryption = new QRCodeDecryption($verification['payload'], $ballotDigest, $initialMessage['comSeed']);
         $randomCoinSeed = $qrCodeDecryption->decrypt();

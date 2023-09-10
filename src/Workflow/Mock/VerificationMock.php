@@ -43,7 +43,13 @@ class VerificationMock
             && self::PASSWORD === $payload['password'];
     }
 
-    public static function performMockVerification(string &$failedCheck = null): string|null
+    /**
+     * @param array{
+     * 'fingerprint': string,
+     * 'signature': string,
+     * }|null $validReceipt
+     */
+    public static function performMockVerification(string &$failedCheck = null, array &$validReceipt = null): string|null
     {
         $apiClient = new VerificationMockApiClient();
         $verification = new Verification(self::DEVICE_PARAMETERS_JSON, $apiClient);
@@ -58,6 +64,6 @@ class VerificationMock
             'password' => self::PASSWORD,
         ];
 
-        return $verification->verify($payload, $challengeCommit, $failedCheck);
+        return $verification->verify($payload, $challengeCommit, $failedCheck, $validReceipt);
     }
 }
