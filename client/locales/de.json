@@ -25,7 +25,7 @@
     },
     "store_receipt": {
       "title": "Rezept zur Überprüfung des Wahlresultates speichern",
-      "privacy_is_safeguarded": "Mit dem Rezept wird überprüft, ob die Stimme im Wahlresultates enthalten ist (... wirklich ausgezählt wurde). Das Stimmgeheimnis bleibt dadurch gewahrt.",
+      "privacy_is_safeguarded": "Mit dem Rezept wird überprüft, ob die Stimme im Wahlresultat enthalten ist (... wirklich ausgezählt wurde). Das Stimmgeheimnis bleibt dadurch gewahrt.",
       "privacy_is_safeguarded_help": "Das Rezept enthält nur eine Referenz auf die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob diese Stimme im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde."
     }
   },
