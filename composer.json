@@ -8,6 +8,8 @@
     "ext-bcmath": "*",
     "ext-gmp": "*",
     "ext-openssl": "*",
+    "ext-pdo": "*",
+    "famoser/pdf-generator": "^0.5.0",
     "guzzlehttp/guzzle": "^7.0",
     "mdanter/ecc": "^1.0",
     "monolog/monolog": "^3.3",
@@ -15,8 +17,7 @@
     "slim/slim": "^4.11",
     "sop/asn1": "^4.1",
     "symfony/dotenv": "^6.2",
-    "symfony/yaml": "^6.2",
-    "ext-pdo": "*"
+    "symfony/yaml": "^6.2"
   },
   "require-dev": {
     "brainmaestro/composer-git-hooks": "^2.8",
