@@ -22,6 +22,11 @@
     "set_password": {
       "set_password": "Passwort",
       "one_time_password": "Das Passwort wird auf dem Wahlgerät angezeigt."
+    },
+    "store_receipt": {
+      "title": "Rezept zur Überprüfung des Wahlresultates speichern",
+      "privacy_is_safeguarded": "Mit dem Rezept wird überprüft, ob die Stimme im Wahlresultates enthalten ist (... wirklich ausgezählt wurde). Das Stimmgeheimnis bleibt dadurch gewahrt.",
+      "privacy_is_safeguarded_help": "Das Rezept enthält nur eine Referenz auf die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob diese Stimme im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde."
     }
   },
   "layout": {
@@ -74,14 +79,25 @@
     },
     "ballot": {
       "ballot_view": {
+        "decrypted_ballot": "Entschlüsselte Stimme",
+        "can_modify_vote": "Dies entspricht der abgegebenen Stimme. Tipp: Die Checkboxen können Sie hier frei ändern, ohne die tatsächliche Stimmabgabe zu ändern.",
         "ballot_valid": "Stimmzettel gültig"
       }
+    },
+    "receipt_view": {
+      "receipt": "Rezept"
     },
     "verification_result_view": {
       "reset": "Ansicht zurücksetzen"
     }
   },
   "domain": {
+    "receipt_store_status": {
+      "RECEIPT_VALID": "Das Rezept ist nicht valid.",
+      "RECEIPT_UNIQUE": "Das Rezept wurde bereits gespeichert.",
+      "RECEIPT_STORED": "Das Rezept konnte nicht gespeichert werden. Bewahren Sie es selbst auf.",
+      "success": "Rezept gespeichert."
+    },
     "verification_status": {
       "LINK_ENTERED": {
         "title": "Identifikation ausgelesen",

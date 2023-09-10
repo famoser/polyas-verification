@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { displayError } from './notifiers'
-import type { Status } from '@/components/domain/Status'
+import type { Receipt, Status } from '@/components/domain/Status'
 import type { Election } from '@/components/domain/Election'
 import type { Verification } from '@/components/domain/Verification'
 import type { Ballot, ElectionDetails } from '@/components/domain/POLYAS'
@@ -54,6 +54,10 @@ const api = {
     const data = new FormData()
     data.append('receipt', receipt)
     const response = await axios.post('/api/receipt', data)
+    return JSON.parse(response.data) as Status
+  },
+  postStoreReceipt: async function (receipt: Receipt) {
+    const response = await axios.post('/api/receipt/store', receipt)
     return JSON.parse(response.data) as Status
   }
 }
