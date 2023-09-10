@@ -32,9 +32,7 @@ readonly class StoreReceipt
      */
     public function store(array $receipt, string &$failedCheck = null): bool
     {
-        /** @var string $verificationKeyX509 */
-        $verificationKeyX509 = hex2bin($this->verificationKeyX509Hex);
-        $ballotSignature = BallotDigestSignature::createFromExport($receipt, $verificationKeyX509);
+        $ballotSignature = BallotDigestSignature::createFromExport($receipt, $this->verificationKeyX509Hex);
         if (!$ballotSignature->verify()) {
             $failedCheck = self::RECEIPT_VALID;
 
@@ -44,7 +42,7 @@ readonly class StoreReceipt
         if (Storage::checkReceiptExists($receipt)) {
             $failedCheck = self::RECEIPT_UNIQUE;
 
-            return false;
+            return true;
         }
 
         if (!Storage::storeReceipt($receipt)) {

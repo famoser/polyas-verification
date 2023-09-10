@@ -15,6 +15,8 @@ use Slim\Psr7\UploadedFile;
 
 class Storage
 {
+    private const DB_PATH = PathHelper::VAR_PERSISTENT_DIR.DIRECTORY_SEPARATOR.'receipts.sqlite';
+
     public static function writeUploadedFile(string $dir, UploadedFile $file): string
     {
         if (!is_dir($dir)) {
@@ -69,13 +71,14 @@ class Storage
     {
         $db = self::getDatabaseConnection();
 
-        $smt = $db->prepare('SELECT FROM receipts WHERE fingerprint = :fingerprint AND signature = :signature');
+        $smt = $db->prepare('SELECT * FROM receipts WHERE fingerprint = :fingerprint AND signature = :signature');
         $smt->bindValue(':fingerprint', $payload['fingerprint']);
         $smt->bindValue(':signature', $payload['signature']);
+        $smt->execute();
 
         $results = $smt->fetchAll();
 
-        return 0 === count($results);
+        return count($results) > 0;
     }
 
     /**
@@ -88,26 +91,30 @@ class Storage
     {
         $db = self::getDatabaseConnection();
 
-        $smt = $db->prepare("INSERT INTO receipts (fingerprint, signature) VALUES (':fingerprint', ':signature')");
+        $smt = $db->prepare('INSERT INTO receipts (fingerprint, signature) VALUES (:fingerprint, :signature)');
         $smt->bindValue(':fingerprint', $payload['fingerprint']);
         $smt->bindValue(':signature', $payload['signature']);
 
         return $smt->execute();
     }
 
-    private static \PDO|null $pdo;
+    private static \PDO|null $pdo = null;
 
     private static function getDatabaseConnection(): \PDO
     {
         if (!self::$pdo) {
-            $dbPath = PathHelper::VAR_PERSISTENT_DIR.DIRECTORY_SEPARATOR.'receipts.sqlite';
-            $dbExists = file_exists($dbPath);
-            self::$pdo = new \PDO('sqlite:'.$dbPath);
+            $dbExists = file_exists(self::DB_PATH);
+            self::$pdo = new \PDO('sqlite:'.self::DB_PATH);
             if (!$dbExists) {
                 self::$pdo->exec('CREATE TABLE IF NOT EXISTS receipts (fingerprint TEXT NOT NULL, signature TEXT NOT NULL, UNIQUE(fingerprint,signature))');
             }
         }
 
         return self::$pdo;
+    }
+
+    public static function resetDb(): void
+    {
+        unlink(self::DB_PATH);
     }
 }
