@@ -50,7 +50,7 @@ const finishLoading = (entry: T) => {
     const index = props.errorOrder.indexOf(entry)
     const next = props.errorOrder[index + 1]
     if (index >= 0 && next) {
-      window.setTimeout(() => finishLoading(next), 200 - index * 20)
+      window.setTimeout(() => finishLoading(next), 400 - index * 60)
     } else {
       emit('checksFinishedLoading')
     }
