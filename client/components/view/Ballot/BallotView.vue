@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { Ballot } from '@/components/domain/POLYAS'
 import ListView from '@/components/view/Ballot/ListView.vue'
 import { useI18n } from 'vue-i18n'
+import InfoPopover from '@/components/shared/InfoPopover.vue'
 
 const props = defineProps<{
   choice: string
@@ -35,6 +36,11 @@ const { t } = useI18n()
       </p>
     </div>
     <div class="card-body">
+      <div class="form-text mb-4">
+        {{ t('view.ballot.ballot_view.change_your_vote') }}
+        <InfoPopover :message="t('view.ballot.ballot_view.change_vote_for_screenshot')" />
+      </div>
+
       <p v-if="ballot.contentAbove.value['default']">
         {{ ballot.contentAbove.value['default'] }}
       </p>
@@ -45,9 +51,8 @@ const { t } = useI18n()
       <p v-if="ballot.contentBelow.value['default']">
         {{ ballot.contentBelow.value['default'] }}
       </p>
-    </div>
-    <div class="card-footer">
-      <div class="form-check">
+
+      <div class="form-check mb-0 mt-4">
         <input class="form-check-input" type="checkbox" :checked="ballotValid" :id="ballot.id" />
         <label class="form-check-label" :for="ballot.id">
           {{ t('view.ballot.ballot_view.ballot_valid') }}
