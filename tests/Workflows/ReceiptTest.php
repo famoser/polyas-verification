@@ -19,7 +19,7 @@ class ReceiptTest extends TestCase
     public function testReceiptVerify(): void
     {
         $receiptPath = $this->getReceiptPath();
-        $deviceParameters = json_decode(file_get_contents(__DIR__.'/resources/ballot0/deviceParameters.json'), true); // @phpstan-ignore-line
+        $deviceParameters = $this->getDeviceParameters();
 
         $receipt = new Receipt($deviceParameters['verificationKey']);
         $result = $receipt->verify($receiptPath, $failedCheck);
@@ -30,12 +30,21 @@ class ReceiptTest extends TestCase
     public function testReceiptRawVerify(): void
     {
         $receiptPath = $this->getReceiptRawPath();
+        $deviceParameters = $this->getDeviceParameters();
 
-        $receipt = new Receipt('');
+        $receipt = new Receipt($deviceParameters['verificationKey']);
         $result = $receipt->getFingerprintAndSignature($receiptPath, $fingerprint, $signature);
         $this->assertTrue($result);
         $this->assertNotNull($fingerprint);
         $this->assertNotNull($signature);
+    }
+
+    /**
+     * @return array{'verificationKey': string}
+     */
+    private function getDeviceParameters(): array
+    {
+        return json_decode(file_get_contents(__DIR__.'/resources/ballot0/deviceParameters.json'), true); // @phpstan-ignore-line
     }
 
     private function getReceiptPath(): string

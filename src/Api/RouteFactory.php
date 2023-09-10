@@ -62,10 +62,10 @@ class RouteFactory
             $deviceParameters = Storage::readJsonFile($deviceParametersPath);
 
             $receipt = new Receipt($deviceParameters['verificationKey']);
-            $result = $receipt->verify($path, $failedCheck);
+            $result = $receipt->verify($path, $failedCheck, $validReceipt);
             Storage::removeFile($path);
 
-            return SlimExtensions::createStatusJsonResponse($request, $response, $result, $failedCheck);
+            return SlimExtensions::createStatusJsonResponse($request, $response, $result, $failedCheck, null, $validReceipt);
         });
 
         $route->post('/verification', function (Request $request, Response $response, array $args) {
@@ -79,7 +79,7 @@ class RouteFactory
              * } $payload
              */
             if (VerificationMock::isMockPayload($payload)) {
-                $result = VerificationMock::performMockVerification($failedCheck);
+                $result = VerificationMock::performMockVerification($failedCheck, $validReceipt);
             } else {
                 $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
                 $deviceParametersJson = Storage::readFile($deviceParametersPath);
@@ -87,10 +87,10 @@ class RouteFactory
                 $apiClient = self::createPOLYASApiClient();
                 $verification = new Verification($deviceParametersJson, $apiClient);
                 $challengeCommit = ChallengeCommit::createWithRandom();
-                $result = $verification->verify($payload, $challengeCommit, $failedCheck);
+                $result = $verification->verify($payload, $challengeCommit, $failedCheck, $validReceipt);
             }
 
-            return SlimExtensions::createStatusJsonResponse($request, $response, null !== $result, $failedCheck, $result);
+            return SlimExtensions::createStatusJsonResponse($request, $response, null !== $result, $failedCheck, $result, $validReceipt);
         });
     }
 

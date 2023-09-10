@@ -24,7 +24,13 @@ readonly class Receipt
     {
     }
 
-    public function verify(string $path, string &$failedCheck = null): bool
+    /**
+     * @param array{
+     * 'fingerprint': string,
+     * 'signature': string,
+     * }|null $validReceipt
+     */
+    public function verify(string $path, string &$failedCheck = null, array &$validReceipt = null): bool
     {
         if (!self::getFingerprintAndSignature($path, $fingerprint, $signature)) {
             $failedCheck = self::RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE;
@@ -40,6 +46,8 @@ readonly class Receipt
 
             return false;
         }
+
+        $validReceipt = $ballotSignature->export();
 
         // optional: check fingerprint registered at POLYAS
 
