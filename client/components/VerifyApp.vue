@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import type { Status } from '@/components/domain/Status'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import SetLink from '@/components/action/SetLink.vue'
 import { api } from '@/services/api'
 import SetPassword from '@/components/action/SetPassword.vue'
@@ -11,6 +11,7 @@ import { VerificationErrors } from '@/components/domain/VerificationErrors'
 import ChecksView from '@/components/view/ChecksView.vue'
 import VerificationExplanation from '@/components/layout/VerificationExplanation.vue'
 import BallotsView from '@/components/view/BallotsView.vue'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 const route = useRoute()
 const urlPayload = computed(() => {
@@ -24,6 +25,20 @@ const urlPayload = computed(() => {
   return { payload, voterId, nonce }
 })
 
+const router = useRouter()
+const reset = () => {
+  password.value = undefined
+  verificationResult.value = undefined
+  checksShown.value = undefined
+  if (router.options.history.state.back) {
+    router.back()
+  }
+}
+
+const canGoBack = computed(() => {
+  return password.value || router.options.history.state.back
+})
+
 const password = ref<string>()
 
 watch(password, () => {
@@ -33,7 +48,6 @@ watch(password, () => {
 })
 
 const verificationResult = ref<Status>()
-const storedReceipt = ref<boolean>()
 const checksShown = ref<boolean>()
 const doVerification = async () => {
   if (!urlPayload.value || !password.value) {
@@ -42,7 +56,6 @@ const doVerification = async () => {
 
   const payload = { ...urlPayload.value, password: password.value }
   verificationResult.value = await api.postVerification(payload)
-  storedReceipt.value = verificationResult.value?.status
 }
 
 const errorOrder: VerificationErrors[] = [
@@ -66,6 +79,12 @@ const { t } = useI18n()
 
   <div class="row g-2">
     <SetLink v-if="!urlPayload" />
+    <div class="p-0" v-if="canGoBack">
+      <button class="btn btn-secondary" @click="reset">
+        <FontAwesomeIcon :icon="['fas', 'rotate']" />
+        {{ t('view.verify_app.reset') }}
+      </button>
+    </div>
     <CheckView v-if="urlPayload" prefix="domain.verification_status" :entry="VerificationErrors.LINK_ENTERED" :success="true" />
 
     <SetPassword class="mt-4" v-if="urlPayload && !password" @changed="password = $event" />
