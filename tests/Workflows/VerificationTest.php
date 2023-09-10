@@ -12,7 +12,9 @@
 namespace Famoser\PolyasVerification\Test\Workflows;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
+use Famoser\PolyasVerification\Storage;
 use Famoser\PolyasVerification\Workflow\ApiClient;
+use Famoser\PolyasVerification\Workflow\StoreReceipt;
 use Famoser\PolyasVerification\Workflow\Verification;
 use PHPUnit\Framework\TestCase;
 
@@ -38,8 +40,15 @@ class VerificationTest extends TestCase
         $commit = new ChallengeCommit($challenge, $challengeRandomCoin);
 
         $verification = new Verification($deviceParametersJson, $apiClient);  // @phpstan-ignore-line
-        $validationResult = $verification->verify($input, $commit, $error);
+        $validationResult = $verification->verify($input, $commit, $error, $validReceipt);
         $this->assertNull($error);
         $this->assertEquals($validationResult, '00000001');
+
+        Storage::resetDb();
+        $verificationKey = json_decode($deviceParametersJson, true)['verificationKey']; // @phpstan-ignore-line
+        $storeReceipt = new StoreReceipt($verificationKey);
+        $storeResult = $storeReceipt->store($validReceipt, $storeError);
+        $this->assertNull($storeError);
+        $this->assertTrue($storeResult);
     }
 }
