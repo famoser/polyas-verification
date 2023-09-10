@@ -12,6 +12,7 @@ import ChecksView from '@/components/view/ChecksView.vue'
 import VerificationExplanation from '@/components/layout/VerificationExplanation.vue'
 import BallotsView from '@/components/view/BallotsView.vue'
 import ResetButton from '@/components/shared/ResetButton.vue'
+import ReceiptView from '@/components/view/ReceiptView.vue'
 
 const route = useRoute()
 const urlPayload = computed(() => {
