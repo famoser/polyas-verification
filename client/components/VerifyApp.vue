@@ -11,7 +11,7 @@ import { VerificationErrors } from '@/components/domain/VerificationErrors'
 import ChecksView from '@/components/view/ChecksView.vue'
 import VerificationExplanation from '@/components/layout/VerificationExplanation.vue'
 import BallotsView from '@/components/view/BallotsView.vue'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import ResetButton from '@/components/shared/ResetButton.vue'
 
 const route = useRoute()
 const urlPayload = computed(() => {
@@ -35,7 +35,7 @@ const reset = () => {
   }
 }
 
-const canGoBack = computed(() => {
+const canReset = computed(() => {
   return password.value || router.options.history.state.back
 })
 
@@ -79,11 +79,8 @@ const { t } = useI18n()
 
   <div class="row g-2">
     <SetLink v-if="!urlPayload" />
-    <div class="p-0" v-if="canGoBack">
-      <button class="btn btn-secondary" @click="reset">
-        <FontAwesomeIcon :icon="['fas', 'rotate']" />
-        {{ t('view.verify_app.reset') }}
-      </button>
+    <div class="p-0" v-if="canReset">
+      <ResetButton @reset="reset" />
     </div>
     <CheckView v-if="urlPayload" prefix="domain.verification_status" :entry="VerificationErrors.LINK_ENTERED" :success="true" />
 

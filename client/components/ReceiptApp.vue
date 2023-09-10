@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import UploadReceipt from '@/components/action/UploadReceipt.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { Status } from '@/components/domain/Status'
 import ReceiptExplanation from '@/components/layout/ReceiptExplanation.vue'
 import CheckView from '@/components/view/CheckView.vue'
@@ -8,6 +8,7 @@ import { ReceiptErrors } from '@/components/domain/ReceiptErrors'
 import { api } from '@/services/api'
 import ChecksView from '@/components/view/ChecksView.vue'
 import { useI18n } from 'vue-i18n'
+import ResetButton from '@/components/shared/ResetButton.vue'
 
 const receiptStatus = ref<Status>()
 const fileSet = ref<boolean>()
@@ -16,6 +17,16 @@ const doVerification = async (file: File) => {
   fileSet.value = true
   receiptStatus.value = await api.postReceipt(file)
 }
+
+const reset = () => {
+  fileSet.value = false
+  checksShown.value = false
+  receiptStatus.value = undefined
+}
+
+const canReset = computed(() => {
+  return fileSet.value
+})
 
 const errorOrder: ReceiptErrors[] = [ReceiptErrors.RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE, ReceiptErrors.SIGNATURE_VALID]
 
@@ -29,6 +40,9 @@ const { t } = useI18n()
   </div>
 
   <div class="row g-2">
+    <div class="p-0" v-if="canReset">
+      <ResetButton @reset="reset" />
+    </div>
     <UploadReceipt v-if="!fileSet" @uploaded="doVerification($event)" />
     <CheckView v-if="fileSet" prefix="domain.receipt_status" :entry="ReceiptErrors.RECEIPT_UPLOADED" :success="true" />
 
