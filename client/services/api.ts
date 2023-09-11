@@ -61,7 +61,7 @@ const api = {
     return JSON.parse(response.data) as Status
   },
   postDownloadReceipt: async function (receipt: Receipt) {
-    const response = await axios.post('/api/receipt/download', receipt)
+    const response = await axios.post('/api/receipt/download', receipt, { responseEncoding: 'binary', responseType: 'arraybuffer' })
     return response.data
   }
 }
