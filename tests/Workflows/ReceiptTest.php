@@ -11,7 +11,7 @@
 
 namespace Famoser\PolyasVerification\Test\Workflows;
 
-use Famoser\PolyasVerification\Workflow\Receipt;
+use Famoser\PolyasVerification\Workflow\VerifyReceipt;
 use PHPUnit\Framework\TestCase;
 
 class ReceiptTest extends TestCase
@@ -21,7 +21,7 @@ class ReceiptTest extends TestCase
         $receiptPath = $this->getReceiptPath();
         $deviceParameters = $this->getDeviceParameters();
 
-        $receipt = new Receipt($deviceParameters['verificationKey']);
+        $receipt = new VerifyReceipt($deviceParameters['verificationKey']);
         $result = $receipt->verify($receiptPath, $failedCheck);
         $this->assertTrue($result);
         $this->assertNull($failedCheck);
@@ -32,7 +32,7 @@ class ReceiptTest extends TestCase
         $receiptPath = $this->getReceiptRawPath();
         $deviceParameters = $this->getDeviceParameters();
 
-        $receipt = new Receipt($deviceParameters['verificationKey']);
+        $receipt = new VerifyReceipt($deviceParameters['verificationKey']);
         $result = $receipt->getFingerprintAndSignature($receiptPath, $fingerprint, $signature);
         $this->assertTrue($result);
         $this->assertNotNull($fingerprint);

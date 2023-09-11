@@ -14,8 +14,10 @@ namespace Famoser\PolyasVerification\Test\Workflows;
 use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
 use Famoser\PolyasVerification\Storage;
 use Famoser\PolyasVerification\Workflow\ApiClient;
+use Famoser\PolyasVerification\Workflow\DownloadReceipt;
 use Famoser\PolyasVerification\Workflow\StoreReceipt;
 use Famoser\PolyasVerification\Workflow\Verification;
+use Famoser\PolyasVerification\Workflow\VerifyReceipt;
 use PHPUnit\Framework\TestCase;
 
 class VerificationTest extends TestCase
@@ -44,11 +46,28 @@ class VerificationTest extends TestCase
         $this->assertNull($error);
         $this->assertEquals($validationResult, '00000001');
 
+        // store receipt
         Storage::resetDb();
         $verificationKey = json_decode($deviceParametersJson, true)['verificationKey']; // @phpstan-ignore-line
         $storeReceipt = new StoreReceipt($verificationKey);
         $storeResult = $storeReceipt->store($validReceipt, $storeError);
         $this->assertNull($storeError);
         $this->assertTrue($storeResult);
+
+        // download receipt
+        $storeReceipt = new DownloadReceipt($verificationKey);
+        $storeResult = $storeReceipt->store($validReceipt, $pdf, $storeError);
+        $this->assertNull($storeError);
+        $this->assertNotNull($pdf);
+        $this->assertTrue($storeResult);
+
+        // verify receipt
+        $path = 'pdf.pdf';
+        file_put_contents($path, $pdf);
+        $receipt = new VerifyReceipt($verificationKey);
+        $result = $receipt->verify($path, $failedCheck);
+        $this->assertTrue($result);
+        $this->assertNull($failedCheck);
+        unlink($path);
     }
 }

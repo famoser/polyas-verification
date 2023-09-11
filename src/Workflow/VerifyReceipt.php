@@ -15,7 +15,7 @@ use Famoser\PolyasVerification\Crypto\PEM\Decoder;
 use Famoser\PolyasVerification\Crypto\PEM\Payload;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigestSignature;
 
-readonly class Receipt
+readonly class VerifyReceipt
 {
     public const RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE = 'RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE';
     public const SIGNATURE_VALID = 'SIGNATURE_VALID';
@@ -71,7 +71,8 @@ readonly class Receipt
 
     private function getFingerprintAndSignatureRaw(string $content, ?string &$fingerprint, ?string &$signature): bool
     {
-        preg_match_all('/\((.+)\) Tj/', $content, $matches, PREG_OFFSET_CAPTURE);
+        // \(([A-Z-0-9 a-f]+)\)( *(Tj)|')
+        preg_match_all('/\(([A-Z-0-9 a-f]+)\)( *(Tj)|\')/', $content, $matches, PREG_OFFSET_CAPTURE);
         $extractedLines = [];
         foreach ($matches[1] as $match) {
             $extractedLines[] = $match[0];
