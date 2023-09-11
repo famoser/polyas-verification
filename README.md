@@ -45,6 +45,14 @@ You can test this UI with the link as follows:
 
 Then mock data client will kick in, which validates the vote.
 
+### Receipt
+
+After successful vote validation, there is an option to either store or download the receipt.
+
+<img src="assets/1_verify_4_receipt_store.png?raw=true" alt="Screenshot store receipt" width="50%">
+
+If the user chooses to store the receipt, the UI implies the server operator will verify the referenced vote is indeed part of the final voting result. If the user chooses to download the receupt, the server will generate them a .pdf file with the fingerprint & signature of the vote (example in `assets/generated_receipt.pdf`).
+
 ## Receipt UI
 
 The second device application outputs a receipt, which contains the fingerprint of the ballot, and a signature over said fingerprint. 
@@ -77,6 +85,8 @@ This UI allows to verify that signature; thereby proving that the voting server 
 </table>
 
 You can test this UI with receipt in `assets/test_vote_receipt.pdf`.
+
+If the receipt validates successfully, the user may choose to store the receipt on the server.
 
 ## Develop
 
