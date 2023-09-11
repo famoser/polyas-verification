@@ -9,6 +9,7 @@ import { api } from '@/services/api'
 import ChecksView from '@/components/view/ChecksView.vue'
 import { useI18n } from 'vue-i18n'
 import ResetButton from '@/components/shared/ResetButton.vue'
+import StoreReceipt from '@/components/action/StoreReceipt.vue'
 
 const receiptStatus = ref<Status>()
 const fileSet = ref<boolean>()
@@ -52,6 +53,8 @@ const { t } = useI18n()
   <p class="my-5 alert alert-success" v-if="checksShown && receiptStatus && receiptStatus.status">
     {{ t('view.receipt_app.receipt_valid') }}
   </p>
+
+  <StoreReceipt v-if="checksShown && receiptStatus && receiptStatus.status && receiptStatus.receipt" :receipt="receiptStatus.receipt" />
 
   <div class="my-5">
     <ReceiptExplanation />

@@ -52,10 +52,7 @@ const { t } = useI18n()
       <ScanQRCode v-else @scanned="link = $event" />
     </div>
     <input class="form-control mt-2" :class="{ 'is-invalid': isInvalid }" v-model="link" :placeholder="t('action.set_link.or_paste_link')" :disabled="isInvalid" />
-    <div class="form-text" v-if="!isInvalid">
-      {{ t('action.set_link.full_verification') }}
-      <InfoPopover :message="t('action.set_link.full_verification_help')" />
-    </div>
+    <InfoPopover v-if="!isInvalid" :message="t('action.set_link.full_verification')" :popover="t('action.set_link.full_verification_help')" />
     <div class="invalid-feedback" v-if="isInvalid">
       {{ t('action.set_link.link_invalid') }}
       <a href="#" @click.prevent="reset">{{ t('action.set_link.reset') }}</a>
@@ -67,6 +64,7 @@ const { t } = useI18n()
 .minh-10em {
   min-height: 10em;
 }
+
 .maxh-20em {
   max-height: 20em;
 }

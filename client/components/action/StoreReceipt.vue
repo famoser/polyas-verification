@@ -34,9 +34,6 @@ const receiptStatusText = computed(() => {
     <p v-if="receiptStatus" class="alert mb-0" :class="{ 'alert-success': receiptStatus.status, 'alert-danger': !receiptStatus.status }">
       {{ receiptStatusText }}
     </p>
-    <div class="form-text">
-      {{ t('action.store_receipt.store') }}
-      <InfoPopover :message="t('action.store_receipt.privacy_is_safeguarded')" />
-    </div>
+    <InfoPopover :message="t('action.store_receipt.store')" :popover="t('action.store_receipt.privacy_is_safeguarded')" />
   </div>
 </template>
