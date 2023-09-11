@@ -51,7 +51,7 @@ After successful vote validation, there is an option to either store or download
 
 <img src="assets/1_verify_4_receipt_store.png?raw=true" alt="Screenshot store receipt" width="50%">
 
-If the user chooses to store the receipt, the UI implies the server operator will verify the referenced vote is indeed part of the final voting result. If the user chooses to download the receupt, the server will generate them a .pdf file with the fingerprint & signature of the vote (example in `assets/generated_receipt.pdf`).
+If the user chooses to store the receipt, the UI implies the server operator will verify the referenced vote is indeed part of the final voting result. If the user chooses to download the receipt, the server will generate them a .pdf file with the fingerprint & signature of the vote (example in `assets/generated_receipt.pdf`).
 
 ## Receipt UI
 
@@ -84,7 +84,7 @@ This UI allows to verify that signature; thereby proving that the voting server 
     </tbody>
 </table>
 
-You can test this UI with receipt in `assets/test_vote_receipt.pdf`.
+You can test this UI with the receipt in `assets/test_vote_receipt.pdf`.
 
 If the receipt validates successfully, the user may choose to store the receipt on the server.
 
