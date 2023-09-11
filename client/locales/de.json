@@ -24,7 +24,7 @@
       "one_time_password": "Das Passwort wird auf dem Wahlgerät angezeigt."
     },
     "store_receipt": {
-      "title": "Rezept auf Server speichern",
+      "title": "Rezept speichern",
       "store": "Wir überprüfen dann, dass das Wahlresultat die referenzierte Stimme enthält.",
       "privacy_is_safeguarded": "Das Rezept enthält nur eine Referenz auf die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob die referenzierte Stimme im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde."
     },
@@ -43,12 +43,12 @@
       "verification_target": {
         "question": "Was kann durch das Rezept verifiziert werden?",
         "verifies_received_at_server": "Das Rezept enthält eine Signatur über die dazugehörige verschlüsselte Stimme. Damit kann bewiesen werden, dass die Stimme vom POLYAS Server empfangen wurde.",
-        "must_trust_device": "Das Rezept erlaubt es aber nicht zu überprüfen, ob die dazugehörige verschlüsselte Stimme wirklich dem Wunsch des Wählenden entspricht. Dazu muss dem Wahlgerät (mit dem die Stimmeingabe erfolgte) oder dem Zweitgerät (mit dem die Stimmabgabe verifiziert wurde) vertraut werden.",
+        "must_trust_device": "Das Rezept erlaubt es aber nicht zu überprüfen, ob die dazugehörige verschlüsselte Stimme wirklich dem Wunsch des Wählenden entspricht. Dazu muss dem Wahlgerät (mit dem die Stimme abgegeben wurde) oder dem Zweitgerät (mit dem die Stimme verifiziert wurde) vertraut werden.",
         "must_trust_servers": "Das Rezept alleine kann auch nicht festellen, ob die dazugehörige verschlüsselte Stimme auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem POLYAS Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten."
       },
       "verification_fails": {
         "question": "Was tun, wenn die Verifizierung hier fehlschlägt?",
-        "try_again_or_complain": "Stellen Sie sicher, dass Sie ein Rezept der oben eingeblendeten Wahl verwenden, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an das Wahlkomitee."
+        "try_again_or_complain": "Stellen Sie sicher, dass Sie ein Rezept der oben eingeblendeten Wahl verwenden, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an das Wahlkommitee."
       }
     },
     "verification_explanation": {
