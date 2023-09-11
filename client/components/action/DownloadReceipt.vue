@@ -28,9 +28,6 @@ watch(
     <a class="btn btn-primary" :href="receiptHref" download>
       {{ t('action.download_receipt.title') }}
     </a>
-    <div class="form-text">
-      {{ t('action.download_receipt.for_validations') }}
-      <InfoPopover :message="t('action.download_receipt.possible_validations')" />
-    </div>
+    <InfoPopover :message="t('action.download_receipt.for_validations')" :popover="t('action.download_receipt.possible_validations')" />
   </div>
 </template>

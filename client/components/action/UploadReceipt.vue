@@ -26,9 +26,7 @@ const { t } = useI18n()
       {{ t('action.upload_receipt.title') }}
     </label>
     <input type="file" accept="application/pdf" @change="uploadReceipt" :id="uniqueId" class="d-none" />
-    <div class="form-text">
-      {{ t('action.upload_receipt.privacy_is_safeguarded') }}
-      <InfoPopover :message="t('action.upload_receipt.privacy_is_safeguarded_help')" />
-    </div>
+
+    <InfoPopover :message="t('action.upload_receipt.privacy_is_safeguarded')" :popover="t('action.upload_receipt.privacy_is_safeguarded_help')" />
   </div>
 </template>

@@ -36,9 +36,8 @@ const { t } = useI18n()
       </p>
     </div>
     <div class="card-body">
-      <div class="form-text mb-4">
-        {{ t('view.ballot.ballot_view.change_your_vote') }}
-        <InfoPopover :message="t('view.ballot.ballot_view.change_vote_for_screenshot')" />
+      <div class="mb-4">
+        <InfoPopover :message="t('view.ballot.ballot_view.change_your_vote')" :popover="t('view.ballot.ballot_view.change_vote_for_screenshot')" />
       </div>
 
       <p v-if="ballot.contentAbove.value['default']">
