@@ -55,12 +55,6 @@ readonly class DownloadReceipt
         return true;
     }
 
-    /**
-     * @param array{
-     * 'fingerprint': string,
-     * 'signature': string,
-     * } $receipt
-     */
     private function generatePdf(string $fingerprint, string $signature, string &$pdf = null): bool
     {
         try {
