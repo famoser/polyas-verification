@@ -23,10 +23,16 @@ class Encoder
 
     public static function encode(string $label, string $payload): string
     {
-        $encoded = base64_encode($payload);
+        $encodedPayload = base64_encode($payload);
+
+        return self::encodeRaw($label, $encodedPayload);
+    }
+
+    public static function encodeRaw(string $label, string $encodedPayload): string
+    {
         $begin = self::BEGIN_MARKER.$label.self::ENCAPSULATION_BOUNDARY_MARKER;
         $end = self::END_MARKER.$label.self::ENCAPSULATION_BOUNDARY_MARKER;
-        $content = chunk_split($encoded, 64, PHP_EOL);
+        $content = chunk_split($encodedPayload, 64, PHP_EOL);
 
         return $begin.PHP_EOL.$content.$end.PHP_EOL;
     }

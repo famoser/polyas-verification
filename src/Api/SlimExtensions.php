@@ -44,6 +44,18 @@ class SlimExtensions
         return self::createJsonResponse($request, $response, $jsonContent);
     }
 
+    public static function createPdfFileResponse(Response $response, bool $status, string $filename, string $file = null): Response
+    {
+        if ($file) {
+            $response->getBody()->write($file);
+        }
+
+        return $response
+            ->withStatus($status ? 200 : 500)
+            ->withHeader('Content-Type', 'application/pdf')
+            ->withHeader('Content-Disposition', 'attachment; filename="'.$filename.'"');
+    }
+
     public static function createJsonResponse(Request $request, Response $response, mixed $body, int $statusCode = self::STATUS_OK): Response
     {
         $jsonContent = json_encode($body);

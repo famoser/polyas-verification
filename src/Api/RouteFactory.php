@@ -15,10 +15,11 @@ use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
 use Famoser\PolyasVerification\PathHelper;
 use Famoser\PolyasVerification\Storage;
 use Famoser\PolyasVerification\Workflow\ApiClient;
+use Famoser\PolyasVerification\Workflow\DownloadReceipt;
 use Famoser\PolyasVerification\Workflow\Mock\VerificationMock;
-use Famoser\PolyasVerification\Workflow\Receipt;
 use Famoser\PolyasVerification\Workflow\StoreReceipt;
 use Famoser\PolyasVerification\Workflow\Verification;
+use Famoser\PolyasVerification\Workflow\VerifyReceipt;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
@@ -62,7 +63,7 @@ class RouteFactory
             $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
             $deviceParameters = Storage::readJsonFile($deviceParametersPath);
 
-            $receipt = new Receipt($deviceParameters['verificationKey']);
+            $receipt = new VerifyReceipt($deviceParameters['verificationKey']);
             $result = $receipt->verify($path, $failedCheck, $validReceipt);
             Storage::removeFile($path);
 
@@ -84,6 +85,23 @@ class RouteFactory
             $result = $storeReceipt->store($payload, $failedCheck);
 
             return SlimExtensions::createStatusJsonResponse($request, $response, $result, $failedCheck);
+        });
+
+        $route->post('/receipt/download', function (Request $request, Response $response, array $args) {
+            $payload = SlimExtensions::parseJsonRequestBody($request);
+            RequestValidatorExtensions::checkReceipt($request, $payload);
+            /** @var array{
+             *     'fingerprint': string,
+             *     'signature': string,
+             * } $payload
+             */
+            $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
+            $deviceParameters = Storage::readJsonFile($deviceParametersPath);
+
+            $storeReceipt = new DownloadReceipt($deviceParameters['verificationKey']);
+            $result = $storeReceipt->store($payload, $pdf);
+
+            return SlimExtensions::createPdfFileResponse($response, $result, 'receipt.pdf', $pdf);
         });
 
         $route->post('/verification', function (Request $request, Response $response, array $args) {
