@@ -35,8 +35,8 @@ const receiptStatusText = computed(() => {
       {{ receiptStatusText }}
     </p>
     <div class="form-text">
-      {{ t('action.store_receipt.privacy_is_safeguarded') }}
-      <InfoPopover :message="t('action.store_receipt.privacy_is_safeguarded_help')" />
+      {{ t('action.store_receipt.store') }}
+      <InfoPopover :message="t('action.store_receipt.privacy_is_safeguarded')" />
     </div>
   </div>
 </template>

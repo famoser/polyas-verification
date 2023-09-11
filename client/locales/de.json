@@ -9,13 +9,13 @@
       "title": "Rezept hochladen",
       "processing": "Rezept wird verarbeitet...",
       "privacy_is_safeguarded": "Das Stimmgeheimnis bleibt dadurch gewahrt.",
-      "privacy_is_safeguarded_help": "Das Rezept enthält nur eine Referenz auf die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob der POLYAS Server diese Stimme registriert hat."
+      "privacy_is_safeguarded_help": "Das Rezept enthält nur eine Referenz auf die verschlüsselte Stimme."
     },
     "set_link": {
       "scan_qr_code": "QR Code scannen",
       "or_paste_link": "oder Link einfügen",
       "full_verification": "Ihre Stimme wird erneut unverschlüsselt angezeigt.",
-      "full_verification_help": "Mit dem Link und dem Passwort wird es dieser Applikation ermöglicht, Ihre Stimmeabgabe erneut anzuzeigen. Sie können aber damit einer Drittperson Ihre Stimmabgabe nicht beweisen: Entschlüsselt wird nicht Ihre tatsächliche Stimme, sondern eine daraus abgeleitete Form.",
+      "full_verification_help": "Mit dem Link und dem Passwort wird es ermöglicht, Ihre Stimmeabgabe erneut anzuzeigen. Sie können aber damit einer Drittperson Ihre Stimmabgabe nicht beweisen: Entschlüsselt wird nicht Ihre tatsächliche Stimme, sondern lediglich eine daraus abgeleitete Form.",
       "link_invalid": "Der Link ist invalid.",
       "reset": "zurücksetzen"
     },
@@ -24,9 +24,14 @@
       "one_time_password": "Das Passwort wird auf dem Wahlgerät angezeigt."
     },
     "store_receipt": {
-      "title": "Rezept zur Überprüfung des Wahlresultates speichern",
-      "privacy_is_safeguarded": "Mit dem Rezept wird überprüft, ob die Stimme wirklich ausgezählt wurde. Das Stimmgeheimnis bleibt dadurch gewahrt.",
-      "privacy_is_safeguarded_help": "Das Rezept enthält nur eine Referenz auf die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob diese Stimme im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde."
+      "title": "Rezept auf Server speichern",
+      "store": "Wir überprüfen dann, dass das Wahlresultat die referenzierte Stimme enthält.",
+      "privacy_is_safeguarded": "Das Rezept enthält nur eine Referenz auf die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob die referenzierte Stimme im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde."
+    },
+    "download_receipt": {
+      "title": "Rezept herunterladen",
+      "for_validations": "Sie können damit selbst weitere Validierungen vornehmen.",
+      "possible_validations": "Mit dem Rezept können Sie Ihre Stimmabgabe weiteren Verifizierungstools beweisen. Diese können dann ebenfalls sicherstellen, dass die referenzierte Stimme im Wahlresultat enthalten ist."
     }
   },
   "layout": {
@@ -86,7 +91,9 @@
       }
     },
     "receipt_view": {
-      "receipt": "Rezept"
+      "receipt": "Rezept",
+      "privacy_is_safeguarded": "Mit dem Rezept kann überprüft werden, ob die Stimme wirklich ausgezählt wurde. Das Stimmgeheimnis bleibt dadurch gewahrt.",
+      "privacy_is_safeguarded_help": "Das Rezept enthält nur eine Referenz auf die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob die referenzierte Stimme im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde."
     },
     "verification_result_view": {
       "reset": "Ansicht zurücksetzen"
