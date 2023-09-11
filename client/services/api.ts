@@ -59,6 +59,10 @@ const api = {
   postStoreReceipt: async function (receipt: Receipt) {
     const response = await axios.post('/api/receipt/store', receipt)
     return JSON.parse(response.data) as Status
+  },
+  postDownloadReceipt: async function (receipt: Receipt) {
+    const response = await axios.post('/api/receipt/download', receipt)
+    return response.data
   }
 }
 

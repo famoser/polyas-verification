@@ -3,6 +3,7 @@ import type { Receipt } from '@/components/domain/Status'
 import StoreReceipt from '@/components/action/StoreReceipt.vue'
 import { useI18n } from 'vue-i18n'
 import InfoPopover from '@/components/shared/InfoPopover.vue'
+import DownloadReceipt from '@/components/action/DownloadReceipt.vue'
 
 defineProps<{
   receipt: Receipt
@@ -25,7 +26,8 @@ const { t } = useI18n()
         {{ t('view.receipt_view.privacy_is_safeguarded') }}
         <InfoPopover :message="t('view.receipt_view.privacy_is_safeguarded_help')" />
       </div>
-      <StoreReceipt :receipt="receipt" />
+      <StoreReceipt :receipt="receipt" class="mb-4" />
+      <DownloadReceipt :receipt="receipt" />
     </div>
   </div>
 </template>
