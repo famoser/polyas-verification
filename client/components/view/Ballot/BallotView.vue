@@ -57,6 +57,9 @@ const { t } = useI18n()
           {{ t('view.ballot.ballot_view.ballot_valid') }}
         </label>
       </div>
+      <p class="alert alert-warning mt-2 mb-0" v-if="!ballotValid">
+        {{ t(`view.ballot.ballot_view.ballot_invalid_explanation`) }}
+      </p>
     </div>
   </div>
 </template>
