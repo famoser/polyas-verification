@@ -113,6 +113,4 @@ The server needs to fulfil requirements specified in `composer.json`.
 ## Future functionality
 
 The following features would be nice-to-haves:
-- Let the user download a receipt of the ballot verification (fingerprint + signature)
-- Store the receipt of the ballot verification (opt-in) and use it during universal verification
-- Check whether uploaded receipts are included online
+- Check whether uploaded receipts are contained on the bulletin board of the POLYAS server
