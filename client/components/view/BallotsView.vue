@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { api } from '@/services/api'
 import type { Ballot } from '@/components/domain/POLYAS'
 import BallotView from '@/components/view/Ballot/BallotView.vue'
+import InfoPopover from '@/components/shared/InfoPopover.vue'
+import { useI18n } from 'vue-i18n'
 
 defineProps<{
   choice: string
@@ -11,10 +13,26 @@ defineProps<{
 const ballots = ref<Ballot[]>()
 
 api.getBallots().then((result) => (ballots.value = result))
-// only support single ballot
-const ballot = computed(() => (ballots.value ? ballots.value[0] : undefined))
+
+const { t } = useI18n()
 </script>
 
 <template>
-  <BallotView v-if="ballot" :ballot="ballot" :choice="choice" />
+  <div class="card">
+    <div class="card-header">
+      <p class="mb-0">
+        <b>
+          {{ t(`view.ballot.ballot_view.decrypted_ballot`) }}
+        </b>
+      </p>
+    </div>
+    <div class="card-body">
+      <div class="mb-5">
+        <InfoPopover :message="t('view.ballot.ballot_view.change_your_vote')" :popover="t('view.ballot.ballot_view.change_vote_for_screenshot')" />
+      </div>
+      <div class="d-flex row-gap-5 flex-column">
+        <BallotView v-for="ballot in ballots" :key="ballot.id" :ballot="ballot" :choice="choice" />
+      </div>
+    </div>
+  </div>
 </template>
