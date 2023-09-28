@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { Ballot } from '@/components/domain/POLYAS'
 import ListView from '@/components/view/Ballot/ListView.vue'
 import { useI18n } from 'vue-i18n'
+import BallotContentView from '@/components/view/Ballot/BallotContentView.vue'
 
 const props = defineProps<{
   choice: string
@@ -22,43 +23,6 @@ const choicePerList = computed(() => {
   return lookup
 })
 
-type PolyasDocument = {
-  nodes: any[]
-}
-
-type PolyasBlock = {
-  nodes: any[]
-  type: string
-}
-
-type PolyasText = {
-  text: string
-}
-
-function isDocument(document: any): document is PolyasDocument {
-  return 'object' in document && document['object'] === 'document'
-}
-
-function isBlock(block: any): block is PolyasBlock {
-  return 'object' in block && block['object'] === 'block'
-}
-
-function isText(text: any): text is PolyasText {
-  return 'object' in text && text['object'] === 'text'
-}
-
-const renderDocument = (document: any) => {
-  return isDocument(document) ? document.nodes.map((node) => renderBlock(node)).join('\n') : ''
-}
-
-const renderBlock = (content: any) => {
-  return isBlock(content) && content.type === 'paragraph' ? content.nodes.map((content) => renderParagraph(content)).join('\n') : ''
-}
-
-const renderParagraph = (text: any) => {
-  return isText(text) ? text.text : ''
-}
-
 const { t } = useI18n()
 </script>
 
@@ -68,11 +32,11 @@ const { t } = useI18n()
       <b>{{ ballot.title['default'] }}</b>
     </p>
     <p v-if="ballot.contentAbove.value['default']">
-      {{ renderDocument(ballot.contentAbove.value['default']) }}
+      <BallotContentView :content="ballot.contentAbove.value['default']" />
     </p>
     <ListView v-for="list in ballot.lists" :key="list.id" :list="list" :choice="choicePerList[list.id]!" />
     <p v-if="ballot.contentBelow.value['default']">
-      {{ renderDocument(ballot.contentBelow.value['default']) }}
+      <BallotContentView :content="ballot.contentBelow.value['default']" />
     </p>
 
     <div class="form-check mb-0 mt-4">
