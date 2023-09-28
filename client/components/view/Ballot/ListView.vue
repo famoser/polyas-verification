@@ -20,5 +20,10 @@ const votesPerCandidate = computed(() => {
 </script>
 
 <template>
-  <CandidateView v-for="candidate in list.candidates" :key="candidate.id" :candidate="candidate" :votes="votesPerCandidate[candidate.id]!" />
+  <div>
+    <h5 class="mb-0" v-if="list.columnHeaders.length > 0">
+      {{ list.columnHeaders.map((header) => header.default).join(', ') }}
+    </h5>
+    <CandidateView v-for="candidate in list.candidates" :key="candidate.id" :candidate="candidate" :votes="votesPerCandidate[candidate.id]!" />
+  </div>
 </template>
