@@ -23,6 +23,11 @@ onMounted(() => {
   passwordInput.value?.focus()
 })
 
+const onPaste = (event: ClipboardEvent) => {
+  const data = event.clipboardData?.getData('text')
+  password.value = (password.value ?? '') + data?.replace(' ', '')
+}
+
 const { t } = useI18n()
 </script>
 
@@ -34,6 +39,7 @@ const { t } = useI18n()
       class="form-control mw-10em form-control-lg text-center"
       :placeholder="t('action.set_password.set_password')"
       v-model="password"
+      @paste.prevent="onPaste"
       :class="{ 'is-invalid': invalidCharacters }"
     />
     <div class="form-text">
