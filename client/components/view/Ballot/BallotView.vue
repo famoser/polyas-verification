@@ -28,13 +28,15 @@ const { t } = useI18n()
 
 <template>
   <div>
-    <p>
-      <b>{{ ballot.title['default'] }}</b>
-    </p>
+    <h4>
+      <em>{{ ballot.title['default'] }}</em>
+    </h4>
     <p v-if="ballot.contentAbove.value['default']">
       <BallotContentView :content="ballot.contentAbove.value['default']" />
     </p>
-    <ListView v-for="list in ballot.lists" :key="list.id" :list="list" :choice="choicePerList[list.id]!" />
+    <div class="d-flex flex-column row-gap-3">
+      <ListView v-for="list in ballot.lists" :key="list.id" :list="list" :choice="choicePerList[list.id]!" />
+    </div>
     <p v-if="ballot.contentBelow.value['default']">
       <BallotContentView :content="ballot.contentBelow.value['default']" />
     </p>

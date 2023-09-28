@@ -19,6 +19,7 @@ export type Ballot = {
 export type List = {
   id: string
   candidates: Candidate[]
+  columnHeaders: Translation[]
 
   // properties left out which influence validation
 
