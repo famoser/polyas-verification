@@ -29,7 +29,7 @@ const { t } = useI18n()
 <template>
   <div>
     <h4>
-      <em>{{ ballot.title['default'] }}</em>
+      {{ ballot.title['default'] }}
     </h4>
     <p v-if="ballot.contentAbove.value['default']">
       <BallotContentView :content="ballot.contentAbove.value['default']" />
