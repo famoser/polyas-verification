@@ -2,8 +2,6 @@
 import { computed, ref } from 'vue'
 import { api } from '@/services/api'
 import type { Ballot } from '@/components/domain/POLYAS'
-import BallotView from '@/components/view/Ballot/BallotView.vue'
-import InfoPopover from '@/components/shared/InfoPopover.vue'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps<{
@@ -15,13 +13,9 @@ const ballots = ref<Ballot[]>()
 api.getBallots().then((result) => (ballots.value = result))
 
 const choicePerBallot = computed(() => {
-  if (!ballots.value) {
-    return []
-  }
-
   const lookup: { [index: string]: string | undefined } = {}
   let activeIndex = 0
-  ballots.value.forEach((ballot) => {
+  ballots.value?.forEach((ballot) => {
     const length = (1 + ballot.lists.reduce((previous, current) => previous + 1 + current.candidates.length, 0)) * 2
     lookup[ballot.id] = props.choice.substring(activeIndex, activeIndex + length)
     activeIndex += length
@@ -47,7 +41,7 @@ const { t } = useI18n()
         <InfoPopover :message="t('view.ballot.ballot_view.change_your_vote')" :popover="t('view.ballot.ballot_view.change_vote_for_screenshot')" />
       </div>
       <div class="d-flex row-gap-5 flex-column">
-        <BallotView v-for="ballot in ballots" :key="ballot.id" :ballot="ballot" :choice="choicePerBallot[ballot.id]" />
+        <BallotView v-for="ballot in ballots" :key="ballot.id" :ballot="ballot" :choice="choicePerBallot[ballot.id] ?? ''" />
       </div>
     </div>
   </div>
