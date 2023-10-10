@@ -118,7 +118,7 @@ class RouteFactory
                 $result = VerificationMock::performMockVerification($failedCheck, $validReceipt);
             } else {
                 $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
-                $deviceParametersJson = Storage::readFile($deviceParametersPath);
+                $deviceParametersJson = trim(Storage::readFile($deviceParametersPath));
 
                 $apiClient = self::createPOLYASApiClient();
                 $verification = new Verification($deviceParametersJson, $apiClient);
