@@ -24,14 +24,13 @@ class ApiClientTest extends TestCase
     {
         $this->markTestIncompleteNS('Requires live server.');
 
-        $apiClient = new ApiClient('https://elections-k8s-dev.polyas.com/15d8e65f-1ccc-41a3-8fac-03361bc21979/');
-
+        $apiClient = new ApiClient('https://election.polyas.com/a02435b3-3d7e-4a6c-ab9b-0b3dab1103ed/');
         $commit = ChallengeCommit::createWithRandom();
         $challengeCommitment = $commit->commit();
         $loginPayload = [
-            'voterId' => '110',
-            'nonce' => '20e75f0b030268cefe5e23579ae3ac7152b9badc55099cba3dcb1e24ce900743',
-            'password' => '265305',
+            'voterId' => 'voter40',
+            'nonce' => 'a9ce03337895a1482c08361e8435c34ffa07857fad0c56efcd6807a28fc0f26a',
+            'password' => '299406',
             'challengeCommitment' => $challengeCommitment,
         ];
         $loginResponse = $apiClient->postLogin($loginPayload);
