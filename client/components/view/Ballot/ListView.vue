@@ -8,7 +8,6 @@ const props = defineProps<{
   list: List
 }>()
 
-const listVotes = computed(() => parseInt(props.choice.substring(0, 1), 2))
 const votesPerCandidate = computed(() => {
   const lookup: { [index: string]: number | undefined } = {}
   props.list.candidates.forEach((candidate, index) => {
