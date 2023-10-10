@@ -10,7 +10,7 @@ const props = defineProps<{
   ballot: Ballot
 }>()
 
-const ballotValid = computed(() => props.choice.startsWith('00'))
+const invalidChoice = computed(() => props.choice.startsWith('01'))
 const choicePerList = computed(() => {
   const lookup: { [index: string]: string | undefined } = {}
   let activeIndex = 2 // first byte is just ballot validity
@@ -42,13 +42,10 @@ const { t } = useI18n()
     </p>
 
     <div class="form-check mb-0 mt-4">
-      <input class="form-check-input" type="checkbox" :checked="ballotValid" :id="ballot.id" />
+      <input class="form-check-input" type="checkbox" :checked="invalidChoice" :id="ballot.id" />
       <label class="form-check-label" :for="ballot.id">
-        {{ t('view.ballot.ballot_view.ballot_valid') }}
+        {{ t('view.ballot.ballot_view.invalid_choice') }}
       </label>
     </div>
-    <p class="alert alert-warning mt-2 mb-0" v-if="!ballotValid">
-      {{ t(`view.ballot.ballot_view.ballot_invalid_explanation`) }}
-    </p>
   </div>
 </template>
