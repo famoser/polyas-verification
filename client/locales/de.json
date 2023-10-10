@@ -85,8 +85,7 @@
     "ballot": {
       "ballot_view": {
         "decrypted_ballot": "Entschlüsselter Stimmzettel",
-        "ballot_valid": "Stimmezettel gültig",
-        "ballot_invalid_explanation": "Der Stimmzettel ist ungültig, und wird nicht gezählt.",
+        "invalid_choice": "Ungültig wählen",
         "change_your_vote": "Hier wird der entschlüsselte Stimmzettel dargestellt. Die Checkboxen können hier frei geändert werden, ohne den gespeicherten Stimmzettel zu verändern.",
         "change_vote_for_screenshot": "Weil die Checkboxen geändert werden können, zeugt ein Screenshot dieser Ansicht nicht von der tatsächlichen Stimmabgabe."
       }
