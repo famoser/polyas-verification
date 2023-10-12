@@ -12,6 +12,7 @@
 namespace Famoser\PolyasVerification\Api;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
+use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
 use Famoser\PolyasVerification\PathHelper;
 use Famoser\PolyasVerification\Storage;
 use Famoser\PolyasVerification\Workflow\ApiClient;
@@ -33,6 +34,10 @@ class RouteFactory
         $route->get('/election', function (Request $request, Response $response, array $args) {
             $electionJsonFile = PathHelper::ELECTION_JSON_FILE;
             $election = Storage::readJsonFile($electionJsonFile);
+
+            $deviceParametersJson = self::getDeviceParametersJson();
+            $deviceParameters = new DeviceParameters($deviceParametersJson);
+            $election['deviceParametersFingerprint'] = $deviceParameters->createFingerprint();
 
             return SlimExtensions::createJsonResponse($request, $response, $election);
         });
@@ -117,8 +122,7 @@ class RouteFactory
             if (VerificationMock::isMockPayload($payload)) {
                 $result = VerificationMock::performMockVerification($failedCheck, $validReceipt);
             } else {
-                $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
-                $deviceParametersJson = trim(Storage::readFile($deviceParametersPath));
+                $deviceParametersJson = self::getDeviceParametersJson();
 
                 $apiClient = self::createPOLYASApiClient();
                 $verification = new Verification($deviceParametersJson, $apiClient);
@@ -130,7 +134,18 @@ class RouteFactory
         });
     }
 
-    public static function createPOLYASApiClient(): ApiClient
+    /**
+     * @throws \Exception
+     */
+    private static function getDeviceParametersJson(): string
+    {
+        $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
+        $deviceParametersJson = Storage::readFile($deviceParametersPath);
+
+        return trim($deviceParametersJson);
+    }
+
+    private static function createPOLYASApiClient(): ApiClient
     {
         $path = PathHelper::ELECTION_JSON_FILE;
         $content = Storage::readJsonFile($path);
