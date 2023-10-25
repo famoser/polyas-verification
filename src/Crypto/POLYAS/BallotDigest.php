@@ -23,7 +23,7 @@ readonly class BallotDigest
      *      }
      *     } $content
      */
-    public function __construct(private array $content, private string $publicLabel, private string $voterId)
+    public function __construct(private array $content, private string $publicLabel, private string $ballotVoterId)
     {
     }
 
@@ -40,11 +40,11 @@ readonly class BallotDigest
     {
         $publicLabel = $this->publicLabel;
         $publicCredential = $this->content['publicCredential'];
-        $voterId = $this->voterId;
+        $ballotVoterId = $this->ballotVoterId;
 
         $content = Utils\Serialization::getStringHexWithLength($publicLabel);
         $content .= Utils\Serialization::getBytesHexLength4Bytes($publicCredential).$publicCredential;
-        $content .= Utils\Serialization::getStringHexWithLength($voterId);
+        $content .= Utils\Serialization::getStringHexWithLength($ballotVoterId);
 
         $content .= $this->createNormalizedHex();
 
