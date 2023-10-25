@@ -21,7 +21,8 @@
     },
     "set_password": {
       "set_password": "Einmalpasswort",
-      "one_time_password": "Das Einmalpasswort wird auf dem Wahlgerät angezeigt."
+      "one_time_password": "Das Einmalpasswort wird auf dem Wahlgerät angezeigt.",
+      "verified_voter": "Verifizierung des Stimmzettels von"
     },
     "store_receipt": {
       "title": "Bestätigung der Stimmabgabe speichern",

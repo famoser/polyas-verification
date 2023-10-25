@@ -90,7 +90,7 @@ const { t } = useI18n()
     </div>
     <CheckView v-if="urlPayload" prefix="domain.verification_status" :entry="VerificationErrors.LINK_ENTERED" :success="true" />
 
-    <SetPassword class="mt-4" v-if="urlPayload && !password" @changed="password = $event" />
+    <SetPassword class="mt-4" v-if="urlPayload && !password" @changed="password = $event" :voterId="urlPayload.voterId" />
     <CheckView v-if="urlPayload && password" prefix="domain.verification_status" :entry="VerificationErrors.PASSWORD_ENTERED" :success="true" />
 
     <ChecksView
