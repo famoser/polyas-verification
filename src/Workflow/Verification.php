@@ -14,6 +14,7 @@ namespace Famoser\PolyasVerification\Workflow;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDecode;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigest;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigestSignature;
+use Famoser\PolyasVerification\Crypto\POLYAS\BallotReceipt;
 use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
 use Famoser\PolyasVerification\Crypto\POLYAS\QRCodeDecryption;
@@ -42,7 +43,8 @@ readonly class Verification
      * } $verification
      * @param array{
      *      'fingerprint': string,
-     *      'signature': string,
+     *       'signature': string,
+     *       'ballotVoterId': string,
      *  }|null $validReceipt
      */
     public function verify(array $verification, ChallengeCommit $challengeCommit, string &$failedCheck = null, array &$validReceipt = null): string|null
@@ -88,7 +90,8 @@ readonly class Verification
             return null;
         }
 
-        $validReceipt = $ballotDigestSignature->export();
+        $ballotReceipt = new BallotReceipt($ballotDigestSignature, $loginResponse['ballotVoterId']);
+        $validReceipt = $ballotReceipt->export();
 
         $qrCodeDecryption = new QRCodeDecryption($verification['payload'], $ballotDigest, $initialMessage['comSeed']);
         $randomCoinSeed = $qrCodeDecryption->decrypt();
