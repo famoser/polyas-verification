@@ -25,7 +25,7 @@ readonly class DownloadReceipt
     public const RECEIPT_VALID = 'RECEIPT_VALID';
     public const PDF_GENERATED = 'PDF_GENERATED';
 
-    public function __construct(private string $verificationKeyX509Hex)
+    public function __construct(private string $verificationKeyX509Hex, private string $polyasElection)
     {
     }
 
@@ -47,7 +47,7 @@ readonly class DownloadReceipt
         $fingerprint = Encoder::encodeRaw('FINGERPRINT', $receipt['fingerprint']);
         $signature = Encoder::encodeRaw('SIGNATURE', $receipt['signature']);
 
-        if (!$this->generatePdf($fingerprint, $signature, $pdf)) {
+        if (!$this->generatePdf($fingerprint, $signature, $this->polyasElection, null, $pdf)) {
             $failedCheck = self::PDF_GENERATED;
 
             return false;
@@ -56,7 +56,7 @@ readonly class DownloadReceipt
         return true;
     }
 
-    private function generatePdf(string $fingerprint, string $signature, string &$pdf = null): bool
+    private function generatePdf(string $fingerprint, string $signature, string $polyasElection, ?string $ballotVoterId, string &$pdf = null): bool
     {
         try {
             $document = new LinearDocument();
@@ -64,6 +64,7 @@ readonly class DownloadReceipt
 
             self::addIntroduction($flow);
             self::addFingerprintAndSignature($flow, $fingerprint, $signature);
+            self::addMeta($flow, $polyasElection, $ballotVoterId);
 
             $document->add($flow);
             $pdf = $document->save();
@@ -115,6 +116,23 @@ readonly class DownloadReceipt
 
         $contentBlock = new ContentBlock($paragraph);
         $contentBlock->setMargin([0, $normalText->getLineHeight() * 1.6 * 4, 0, 0]);
+
+        $flow->add($contentBlock);
+    }
+
+    private function addMeta(Flow $flow, string $polyasElection, ?string $ballotVoterId): void
+    {
+        $codeFont = Font::createFromDefault(Font\FontFamily::Courier);
+        $normalText = new TextStyle($codeFont, 3.8 / 1.6);
+
+        $paragraph = new Paragraph();
+        $paragraph->add($normalText, 'Election: '.$polyasElection);
+        if ($ballotVoterId) {
+            $paragraph->add($normalText, "\nBallot Voter ID: ".$ballotVoterId);
+        }
+
+        $contentBlock = new ContentBlock($paragraph);
+        $contentBlock->setMargin([0, $normalText->getLineHeight() * 1.6 * 2, 0, 0]);
 
         $flow->add($contentBlock);
     }

@@ -20,14 +20,15 @@ readonly class StoreReceipt
     public const RECEIPT_UNIQUE = 'RECEIPT_UNIQUE';
     public const RECEIPT_STORED = 'RECEIPT_STORED';
 
-    public function __construct(private string $verificationKeyX509Hex)
+    public function __construct(private string $verificationKeyX509Hex, private string $polyasElection)
     {
     }
 
     /**
      * @param array{
      * 'fingerprint': string,
-     * 'signature': string,
+     *  'signature': string,
+     *  'ballotVoterId': ?string,
      * } $receipt
      */
     public function store(array $receipt, string &$failedCheck = null): bool
@@ -45,7 +46,7 @@ readonly class StoreReceipt
             return true;
         }
 
-        if (!Storage::storeReceipt($receipt)) {
+        if (!Storage::storeReceipt($receipt, $this->polyasElection)) {
             $failedCheck = self::RECEIPT_STORED;
 
             return false;
