@@ -13,7 +13,7 @@ namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
 readonly class BallotReceipt
 {
-    public function __construct(private BallotDigestSignature $ballotDigestSignature, private string $ballotVoterId)
+    public function __construct(private BallotDigestSignature $ballotDigestSignature, private ?string $ballotVoterId)
     {
     }
 
@@ -21,7 +21,7 @@ readonly class BallotReceipt
      * @return array{
      * 'fingerprint': string,
      * 'signature': string,
-     *   'ballotVoterId': string,
+     *   'ballotVoterId': ?string,
      * }
      */
     public function export(): array

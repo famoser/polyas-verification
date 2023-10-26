@@ -14,6 +14,7 @@ namespace Famoser\PolyasVerification\Workflow;
 use Famoser\PolyasVerification\Crypto\PEM\Decoder;
 use Famoser\PolyasVerification\Crypto\PEM\Payload;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigestSignature;
+use Famoser\PolyasVerification\Crypto\POLYAS\BallotReceipt;
 
 readonly class VerifyReceipt
 {
@@ -47,7 +48,8 @@ readonly class VerifyReceipt
             return false;
         }
 
-        $validReceipt = $ballotSignature->export();
+        $ballotReceipt = new BallotReceipt($ballotSignature, null); // we do not support extraction of the ballot voter id yet
+        $validReceipt = $ballotReceipt->export();
 
         // optional: check fingerprint registered at POLYAS
 
