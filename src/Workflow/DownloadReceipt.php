@@ -32,7 +32,8 @@ readonly class DownloadReceipt
     /**
      * @param array{
      * 'fingerprint': string,
-     * 'signature': string,
+     *  'signature': string,
+     *  'ballotVoterId': ?string,
      * } $receipt
      */
     public function store(array $receipt, string &$pdf = null, string &$failedCheck = null): bool
@@ -47,7 +48,7 @@ readonly class DownloadReceipt
         $fingerprint = Encoder::encodeRaw('FINGERPRINT', $receipt['fingerprint']);
         $signature = Encoder::encodeRaw('SIGNATURE', $receipt['signature']);
 
-        if (!$this->generatePdf($fingerprint, $signature, $this->polyasElection, null, $pdf)) {
+        if (!$this->generatePdf($fingerprint, $signature, $this->polyasElection, $receipt['ballotVoterId'], $pdf)) {
             $failedCheck = self::PDF_GENERATED;
 
             return false;
@@ -126,10 +127,10 @@ readonly class DownloadReceipt
         $normalText = new TextStyle($codeFont, 3.8 / 1.6);
 
         $paragraph = new Paragraph();
-        $paragraph->add($normalText, 'Election: '.$polyasElection);
         if ($ballotVoterId) {
-            $paragraph->add($normalText, "\nBallot Voter ID: ".$ballotVoterId);
+            $paragraph->add($normalText, 'Ballot Voter ID: '.$ballotVoterId."\n");
         }
+        $paragraph->add($normalText, 'Election: '.$polyasElection);
 
         $contentBlock = new ContentBlock($paragraph);
         $contentBlock->setMargin([0, $normalText->getLineHeight() * 1.6 * 2, 0, 0]);
