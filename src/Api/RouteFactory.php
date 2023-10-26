@@ -32,8 +32,7 @@ class RouteFactory
     public static function addRoutes(RouteCollectorProxy $route): void
     {
         $route->get('/election', function (Request $request, Response $response, array $args) {
-            $electionJsonFile = PathHelper::ELECTION_JSON_FILE;
-            $election = Storage::readJsonFile($electionJsonFile);
+            $election = self::getElection();
 
             $deviceParametersJson = self::getDeviceParametersJson();
             $deviceParameters = new DeviceParameters($deviceParametersJson);
@@ -50,8 +49,7 @@ class RouteFactory
         });
 
         $route->get('/ballots', function (Request $request, Response $response, array $args) {
-            $deviceParametersJsonFile = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
-            $deviceParameters = Storage::readJsonFile($deviceParametersJsonFile);
+            $deviceParameters = self::getDeviceParameters();
 
             return SlimExtensions::createJsonResponse($request, $response, $deviceParameters['ballots']);
         });
@@ -65,8 +63,7 @@ class RouteFactory
             RequestValidatorExtensions::checkPdfFileUploadSuccessful($request, $file);
             $path = Storage::writeUploadedFile(PathHelper::VAR_TRANSIENT_DIR, $file);
 
-            $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
-            $deviceParameters = Storage::readJsonFile($deviceParametersPath);
+            $deviceParameters = self::getDeviceParameters();
 
             $receipt = new VerifyReceipt($deviceParameters['verificationKey']);
             $result = $receipt->verify($path, $failedCheck, $validReceipt);
@@ -80,13 +77,14 @@ class RouteFactory
             RequestValidatorExtensions::checkReceipt($request, $payload);
             /** @var array{
              *     'fingerprint': string,
-             *     'signature': string,
+             *      'signature': string,
+             *      'ballotVoterId': ?string,
              * } $payload
              */
-            $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
-            $deviceParameters = Storage::readJsonFile($deviceParametersPath);
+            $deviceParameters = self::getDeviceParameters();
+            $election = self::getElection();
 
-            $storeReceipt = new StoreReceipt($deviceParameters['verificationKey']);
+            $storeReceipt = new StoreReceipt($deviceParameters['verificationKey'], $election['polyasElection']);
             $result = $storeReceipt->store($payload, $failedCheck);
 
             return SlimExtensions::createStatusJsonResponse($request, $response, $result, $failedCheck);
@@ -98,12 +96,13 @@ class RouteFactory
             /** @var array{
              *     'fingerprint': string,
              *     'signature': string,
+             *       'ballotVoterId': ?string,
              * } $payload
              */
-            $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
-            $deviceParameters = Storage::readJsonFile($deviceParametersPath);
+            $deviceParameters = self::getDeviceParameters();
+            $election = self::getElection();
 
-            $storeReceipt = new DownloadReceipt($deviceParameters['verificationKey']);
+            $storeReceipt = new DownloadReceipt($deviceParameters['verificationKey'], $election['polyasElection']);
             $result = $storeReceipt->store($payload, $pdf);
 
             return SlimExtensions::createPdfFileResponse($response, $result, 'receipt.pdf', $pdf);
@@ -143,6 +142,36 @@ class RouteFactory
         $deviceParametersJson = Storage::readFile($deviceParametersPath);
 
         return trim($deviceParametersJson);
+    }
+
+    /**
+     * @return array{
+     *      'publicKey': string,
+     *      'verificationKey': string,
+     *     'ballots': mixed
+     * }
+     */
+    private static function getDeviceParameters(): array
+    {
+        $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
+
+        return Storage::readJsonFile($deviceParametersPath);
+    }
+
+    /**
+     * @return array{
+     *      'organizer': string,
+     *       'election': string,
+     *       'period': string,
+     *       'link': string,
+     *       'polyasElection': string,
+     * }
+     */
+    private static function getElection(): array
+    {
+        $electionJsonPath = PathHelper::ELECTION_JSON_FILE;
+
+        return Storage::readJsonFile($electionJsonPath);
     }
 
     private static function createPOLYASApiClient(): ApiClient
