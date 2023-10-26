@@ -49,13 +49,13 @@ class VerificationTest extends TestCase
         // store receipt
         Storage::resetDb();
         $verificationKey = json_decode($deviceParametersJson, true)['verificationKey']; // @phpstan-ignore-line
-        $storeReceipt = new StoreReceipt($verificationKey);
+        $storeReceipt = new StoreReceipt($verificationKey, 'electionId');
         $storeResult = $storeReceipt->store($validReceipt, $storeError);
         $this->assertNull($storeError);
         $this->assertTrue($storeResult);
 
         // download receipt
-        $storeReceipt = new DownloadReceipt($verificationKey);
+        $storeReceipt = new DownloadReceipt($verificationKey, 'electionId');
         $storeResult = $storeReceipt->store($validReceipt, $pdf, $storeError);
         $this->assertNull($storeError);
         $this->assertNotNull($pdf);
