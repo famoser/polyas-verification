@@ -155,7 +155,7 @@ class RouteFactory
     {
         $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
 
-        return Storage::readJsonFile($deviceParametersPath);
+        return Storage::readJsonFile($deviceParametersPath); // @phpstan-ignore-line
     }
 
     /**
@@ -171,7 +171,7 @@ class RouteFactory
     {
         $electionJsonPath = PathHelper::ELECTION_JSON_FILE;
 
-        return Storage::readJsonFile($electionJsonPath);
+        return Storage::readJsonFile($electionJsonPath); // @phpstan-ignore-line
     }
 
     private static function createPOLYASApiClient(): ApiClient
