@@ -102,6 +102,24 @@ class Storage
         return $smt->execute();
     }
 
+    /**
+     * @return array{array{
+     *  'fingerprint': string,
+     *   'signature': string,
+     *   'ballotVoterId': ?string,
+     *  }} $payload
+     */
+    public static function getReceipts(string $electionId): array
+    {
+        $db = self::getDatabaseConnection();
+
+        $smt = $db->prepare('SELECT fingerprint, signature, ballot_voter_id as ballotVoterId FROM receipts WHERE election_id = :election_id OR election_id = NULL');
+        $smt->bindValue(':election_id', $electionId);
+        $smt->execute();
+
+        return $smt->fetchAll(); // @phpstan-ignore-line
+    }
+
     private static \PDO|null $pdo = null;
 
     private static function getDatabaseConnection(): \PDO
@@ -129,5 +147,6 @@ class Storage
     public static function resetDb(): void
     {
         unlink(self::DB_PATH);
+        unlink(self::VERSION_PATH);
     }
 }

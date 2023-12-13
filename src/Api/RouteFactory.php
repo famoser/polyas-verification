@@ -167,7 +167,7 @@ class RouteFactory
      *       'polyasElection': string,
      * }
      */
-    private static function getElection(): array
+    public static function getElection(): array
     {
         $electionJsonPath = PathHelper::ELECTION_JSON_FILE;
 

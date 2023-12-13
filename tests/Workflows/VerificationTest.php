@@ -12,9 +12,11 @@
 namespace Famoser\PolyasVerification\Test\Workflows;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
+use Famoser\PolyasVerification\PDFGenerator;
 use Famoser\PolyasVerification\Storage;
 use Famoser\PolyasVerification\Workflow\ApiClient;
 use Famoser\PolyasVerification\Workflow\DownloadReceipt;
+use Famoser\PolyasVerification\Workflow\ExportReceipts;
 use Famoser\PolyasVerification\Workflow\StoreReceipt;
 use Famoser\PolyasVerification\Workflow\Verification;
 use Famoser\PolyasVerification\Workflow\VerifyReceipt;
@@ -69,5 +71,18 @@ class VerificationTest extends TestCase
         $this->assertTrue($result);
         $this->assertNull($failedCheck);
         unlink($path);
+
+        // export receipt
+        $exportReceipt = new ExportReceipts('electionId');
+        $exportReceipt->exportAll($pdfs, $exportError);
+        $this->assertNull($exportError);
+        $this->assertNotNull($pdfs);
+        $this->assertCount(1, $pdfs);
+
+        // check content is equal up to the creation date
+        $creationDatePattern = '#/CreationDate \(D:[0-9]+\+00\'00\)#';
+        $originalPDF = preg_replace($creationDatePattern, '', $pdf);
+        $exportedPDF = preg_replace($creationDatePattern, '', $pdfs[0]);
+        $this->assertEquals($originalPDF, $exportedPDF);
     }
 }
