@@ -11,11 +11,10 @@
  */
 
 $projectDir = dirname(realpath(__DIR__));
-$autoloadRelativePath = 'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
+chdir($projectDir);
 
-$autoloadPath = $projectDir.$autoloadRelativePath;
-chdir($autoloadPath);
-require $autoloadRelativePath;
+$autoloadPath = $projectDir.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
+require $autoloadPath;
 
 function writeErrorAndExit(string $error): void
 {
@@ -34,18 +33,20 @@ if (file_exists('.env')) {
 
 $election = RouteFactory::getElection();
 $exportReceipts = new ExportReceipts($election['polyasElection']);
-if (!$exportReceipts->exportAll($error, $pdfs)) {
+if (!$exportReceipts->exportAll($pdfs, $error)) {
     writeErrorAndExit($error);
 }
 
 $zip = new ZipArchive();
-$filename = 'export_receipts.zip';
-
-if (true !== $zip->open($filename, ZipArchive::CREATE)) {
-    writeErrorAndExit('cannot open '.$filename);
+$targetFilePath = $projectDir.DIRECTORY_SEPARATOR.'export_receipts.zip';
+if (true !== $zip->open($targetFilePath, ZipArchive::CREATE)) {
+    writeErrorAndExit('cannot open '.$targetFilePath);
 }
 
+$zip->addFromString('README.MD', 'Exported receipts at '.time());
 foreach ($pdfs as $index => $pdf) {
     $zip->addFromString('receipt'.$index.'.pdf', $pdf);
 }
 $zip->close();
+
+echo 'File written to '.realpath($targetFilePath)." with ".count($pdfs)." receipts.\n";

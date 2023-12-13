@@ -27,9 +27,11 @@ class ExportReceipts
      */
     public function exportAll(array &$pdfs = null, string &$error = null): bool
     {
+        $pdfs = [];
+
         $receipts = Storage::getReceipts($this->polyasElection);
         foreach ($receipts as $receipt) {
-            if (!PDFGenerator::generate($receipt, $this->polyasElection, $pdf)) {
+            if (!PDFGenerator::generate($receipt, $receipt['electionId'], $pdf)) {
                 $error = self::PDF_GENERATION_FAILED;
 
                 return false;

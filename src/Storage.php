@@ -107,13 +107,14 @@ class Storage
      *  'fingerprint': string,
      *   'signature': string,
      *   'ballotVoterId': ?string,
+     *   'electionId': ?string
      *  }} $payload
      */
     public static function getReceipts(string $electionId): array
     {
         $db = self::getDatabaseConnection();
 
-        $smt = $db->prepare('SELECT fingerprint, signature, ballot_voter_id as ballotVoterId FROM receipts WHERE election_id = :election_id OR election_id = NULL');
+        $smt = $db->prepare('SELECT fingerprint, signature, ballot_voter_id as ballotVoterId, election_id as electionId FROM receipts WHERE election_id = :election_id OR election_id IS NULL');
         $smt->bindValue(':election_id', $electionId);
         $smt->execute();
 
