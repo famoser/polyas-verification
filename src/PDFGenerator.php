@@ -28,7 +28,7 @@ class PDFGenerator
      *   'ballotVoterId': ?string,
      *  } $receipt
      */
-    public static function generate(array $receipt, string $polyasElection, string &$pdf = null): bool
+    public static function generate(array $receipt, ?string $polyasElection, string &$pdf = null): bool
     {
         $fingerprint = Encoder::encodeRaw('FINGERPRINT', $receipt['fingerprint']);
         $signature = Encoder::encodeRaw('SIGNATURE', $receipt['signature']);
@@ -96,8 +96,12 @@ class PDFGenerator
         $flow->add($contentBlock);
     }
 
-    private static function addMeta(Flow $flow, string $polyasElection, ?string $ballotVoterId): void
+    private static function addMeta(Flow $flow, ?string $polyasElection, ?string $ballotVoterId): void
     {
+        if (!$ballotVoterId && !$polyasElection) {
+            return;
+        }
+
         $codeFont = Font::createFromDefault(Font\FontFamily::Courier);
         $normalText = new TextStyle($codeFont, 3.8 / 1.6);
 
@@ -105,7 +109,9 @@ class PDFGenerator
         if ($ballotVoterId) {
             $paragraph->add($normalText, 'Ballot Voter ID: '.$ballotVoterId."\n");
         }
-        $paragraph->add($normalText, 'Election: '.$polyasElection);
+        if ($polyasElection) {
+            $paragraph->add($normalText, 'Election: '.$polyasElection);
+        }
 
         $contentBlock = new ContentBlock($paragraph);
         $contentBlock->setMargin([0, $normalText->getLineHeight() * 1.6 * 2, 0, 0]);
