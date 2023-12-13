@@ -9,6 +9,7 @@
     "ext-gmp": "*",
     "ext-openssl": "*",
     "ext-pdo": "*",
+    "ext-zip": "*",
     "famoser/pdf-generator": "^0.5.0",
     "guzzlehttp/guzzle": "^7.0",
     "mdanter/ecc": "^1.0",
