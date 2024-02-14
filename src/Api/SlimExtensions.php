@@ -32,7 +32,7 @@ class SlimExtensions
     /**
      * @param string[]|null $receipt
      */
-    public static function createStatusJsonResponse(Request $request, Response $response, bool $status, string $error = null, string $result = null, array $receipt = null): Response
+    public static function createStatusJsonResponse(Request $request, Response $response, bool $status, ?string $error = null, ?string $result = null, ?array $receipt = null): Response
     {
         $jsonContent = json_encode([
             'status' => $status,
@@ -44,7 +44,7 @@ class SlimExtensions
         return self::createJsonResponse($request, $response, $jsonContent);
     }
 
-    public static function createPdfFileResponse(Response $response, bool $status, string $filename, string $file = null): Response
+    public static function createPdfFileResponse(Response $response, bool $status, string $filename, ?string $file = null): Response
     {
         if ($file) {
             $response->getBody()->write($file);

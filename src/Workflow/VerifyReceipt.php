@@ -31,7 +31,7 @@ readonly class VerifyReceipt
      * 'signature': string,
      * }|null $validReceipt
      */
-    public function verify(string $path, string &$failedCheck = null, array &$validReceipt = null): bool
+    public function verify(string $path, ?string &$failedCheck = null, ?array &$validReceipt = null): bool
     {
         if (!self::getFingerprintAndSignature($path, $fingerprint, $signature)) {
             $failedCheck = self::RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE;

@@ -25,7 +25,7 @@ class ExportReceipts
     /**
      * @param string[] $pdfs
      */
-    public function exportAll(array &$pdfs = null, string &$error = null): bool
+    public function exportAll(?array &$pdfs = null, ?string &$error = null): bool
     {
         $pdfs = [];
 

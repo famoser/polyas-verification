@@ -28,7 +28,7 @@ class PDFGenerator
      *   'ballotVoterId': ?string,
      *  } $receipt
      */
-    public static function generate(array $receipt, ?string $polyasElection, string &$pdf = null): bool
+    public static function generate(array $receipt, ?string $polyasElection, ?string &$pdf = null): bool
     {
         $fingerprint = Encoder::encodeRaw('FINGERPRINT', $receipt['fingerprint']);
         $signature = Encoder::encodeRaw('SIGNATURE', $receipt['signature']);

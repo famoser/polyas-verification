@@ -31,7 +31,7 @@ readonly class StoreReceipt
      *  'ballotVoterId': ?string,
      * } $receipt
      */
-    public function store(array $receipt, string &$failedCheck = null): bool
+    public function store(array $receipt, ?string &$failedCheck = null): bool
     {
         $ballotSignature = BallotDigestSignature::createFromExport($receipt, $this->verificationKeyX509Hex);
         if (!$ballotSignature->verify()) {
