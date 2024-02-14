@@ -49,7 +49,7 @@ class VerificationMock
      * 'signature': string,
      * }|null $validReceipt
      */
-    public static function performMockVerification(string &$failedCheck = null, array &$validReceipt = null): string|null
+    public static function performMockVerification(?string &$failedCheck = null, ?array &$validReceipt = null): string|null
     {
         $apiClient = new VerificationMockApiClient();
         $verification = new Verification(self::DEVICE_PARAMETERS_JSON, $apiClient);

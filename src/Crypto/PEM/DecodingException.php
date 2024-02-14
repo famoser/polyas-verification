@@ -13,7 +13,7 @@ namespace Famoser\PolyasVerification\Crypto\PEM;
 
 class DecodingException extends \RuntimeException
 {
-    public function __construct(string $message, int $line = null)
+    public function __construct(string $message, ?int $line = null)
     {
         if (null !== $line) {
             $message = 'line '.$line.': '.$message;
