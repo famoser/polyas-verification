@@ -76,11 +76,6 @@ AddDefaultCharset utf-8
     Header set X-Content-Type-Options "nosniff"
 </IfModule>
 
-# Opt out google cohort tracking
-<IfModule mod_headers.c>
-    Header always set Permissions-Policy: interest-cohort=()
-</IfModule>
-
 # Set referrer policy (disable all potentially leaking information)
 <IfModule mod_headers.c>
     Header set Referrer-Policy: no-referrer
@@ -99,28 +94,6 @@ AddDefaultCharset utf-8
     </FilesMatch>
 
 </IfModule>
-
-# (1) Try to re-enable the cross-site scripting (XSS) filter built
-#     into most web browsers.
-#
-# (2) Prevent web browsers from rendering the web page if a potential
-#     reflected (a.k.a non-persistent) XSS attack is detected by the
-#     filter.
-
-<IfModule mod_headers.c>
-
-    #                           (1)    (2)
-    Header set X-XSS-Protection "1; mode=block"
-
-    # `mod_headers` cannot match based on the content-type, however,
-    # the `X-XSS-Protection` response header should be send only for
-    # HTML documents and not for the other resources.
-    <FilesMatch "\.(bmp|css|eot|gif|jpe?g|json(ld)?|otf|pdf|png|txt|woff2?)$">
-        Header unset X-XSS-Protection
-    </FilesMatch>
-
-</IfModule>
-
 
 # Mitigate the risk of cross-site scripting and other content-injection
 # attacks.
