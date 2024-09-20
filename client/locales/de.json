@@ -1,7 +1,8 @@
 {
   "service": {
     "api": {
-      "request_failed": "Serveraufruf fehlgeschlagen"
+      "request_failed": "Serveraufruf fehlgeschlagen",
+      "election_server_offline": "Der Wahlserver ist nicht erreichbar."
     }
   },
   "action": {

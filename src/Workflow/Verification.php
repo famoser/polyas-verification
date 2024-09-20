@@ -19,6 +19,7 @@ use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
 use Famoser\PolyasVerification\Crypto\POLYAS\QRCodeDecryption;
 use Famoser\PolyasVerification\Crypto\POLYAS\ZKPProofValidation;
+use GuzzleHttp\Exception\GuzzleException;
 
 readonly class Verification
 {
@@ -51,7 +52,11 @@ readonly class Verification
     {
         $challengeCommitment = $challengeCommit->commit();
         $loginPayload = ['voterId' => $payload['voterId'], 'nonce' => $payload['nonce'], 'password' => $payload['password'], 'challengeCommitment' => $challengeCommitment];
-        $loginResponse = $this->apiClient->postLogin($loginPayload);
+        try {
+            $loginResponse = $this->apiClient->postLogin($loginPayload);
+        } catch (GuzzleException) {
+            $loginResponse = null;
+        }
         if (!$loginResponse) {
             $failedCheck = self::LOGIN_SUCCESSFUL;
 
@@ -102,7 +107,12 @@ readonly class Verification
         }
 
         $challengePayload = ['challenge' => $challengeCommit->getEString(), 'challengeRandomCoin' => $challengeCommit->getRString()];
-        $challengeResponse = $this->apiClient->postChallenge($challengePayload, $loginResponse['token']);
+        try {
+            $challengeResponse = $this->apiClient->postChallenge($challengePayload, $loginResponse['token']);
+        } catch (GuzzleException) {
+            $challengeResponse = null;
+        }
+
         if (!$challengeResponse) {
             $failedCheck = self::CHALLENGE_SUCCESSFUL;
 

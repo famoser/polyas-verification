@@ -7,6 +7,7 @@ import ElectionView from '@/components/view/ElectionView.vue'
 import type { Election } from '@/components/domain/Election'
 
 import type { ElectionDetails } from '@/components/domain/POLYAS'
+import { displayError } from '@/services/notifiers'
 
 const { t } = useI18n()
 
@@ -16,7 +17,15 @@ const election = ref<Election>()
 const electionDetails = ref<ElectionDetails>()
 
 api.getElection().then((result) => (election.value = result))
-api.getElectionDetails().then((result) => (electionDetails.value = result))
+api.getElectionDetails().then((result) => {
+  if (!result) {
+    const errorMessage = t('service.api.election_server_offline')
+    displayError(errorMessage)
+    return
+  }
+
+  electionDetails.value = result
+})
 </script>
 
 <template>

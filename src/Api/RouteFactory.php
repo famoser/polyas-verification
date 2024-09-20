@@ -17,6 +17,7 @@ use Famoser\PolyasVerification\PathHelper;
 use Famoser\PolyasVerification\Storage;
 use Famoser\PolyasVerification\Workflow\ApiClient;
 use Famoser\PolyasVerification\Workflow\DownloadReceipt;
+use Famoser\PolyasVerification\Workflow\ElectionDetails;
 use Famoser\PolyasVerification\Workflow\Mock\VerificationMock;
 use Famoser\PolyasVerification\Workflow\StoreReceipt;
 use Famoser\PolyasVerification\Workflow\Verification;
@@ -43,7 +44,8 @@ class RouteFactory
 
         $route->get('/electionDetails', function (Request $request, Response $response, array $args) {
             $apiClient = self::createPOLYASApiClient();
-            $election = $apiClient->getElection();
+            $electionDetails = new ElectionDetails($apiClient);
+            $election = $electionDetails->get();
 
             return SlimExtensions::createJsonResponse($request, $response, $election);
         });

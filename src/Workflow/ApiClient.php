@@ -30,11 +30,11 @@ class ApiClient
     /**
      * @return array{
      *     'title': array{'default': string},
-     * }
+     * }|null
      *
      * @throws GuzzleException
      */
-    public function getElection(): array
+    public function getElection(): ?array
     {
         $response = $this->client->get('electionData');
 
