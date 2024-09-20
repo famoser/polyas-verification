@@ -34,6 +34,11 @@
       "title": "Bestätigung der Stimmabgabe herunterladen",
       "for_validations": "Sie können damit selbst weitere Validierungen vornehmen.",
       "possible_validations": "Mit der Bestätigung der Stimmabgabe können Sie Ihre Stimmabgabe weiteren Verifizierungstools beweisen. Diese können dann ebenfalls sicherstellen, dass der referenzierte Stimmzettel im Wahlresultat enthalten ist."
+    },
+    "verify_ballot_owner": {
+      "question": "Is dies ihre Wahl-ID?",
+      "successful": "Sie haben angegeben, dass dies Ihre Wahl-ID ist.",
+      "failed": "Sie haben angegeben, dass dies nicht Ihre Wahl-ID ist. Bitte nehmen Sie umgehend Kontakt mit den Wahlorganisatoren auf."
     }
   },
   "layout": {
@@ -69,7 +74,9 @@
   "shared": {
     "reset_button": {
       "reset": "Zurücksetzen"
-    }
+    },
+    "yes": "Ja",
+    "no": "Nein"
   },
   "view": {
     "home_app": {
@@ -121,11 +128,11 @@
         "title": "Wahlzettel wiederherstellen",
         "done": "Wahlzettel wiederhergestellt"
       },
-      "CHECK_BALLOT_VOTER_ID": {
+      "VERIFY_BALLOT_OWNER": {
         "title": "Zugehörigkeit überprüfen",
         "done": "Zugehörigkeit überprüft"
       },
-      "CHECK_BALLOT": {
+      "VERIFY_BALLOT_CONTENT": {
         "title": "Stimmzettel überprüfen",
         "done": "Zugehörigkeit überprüft"
       }
