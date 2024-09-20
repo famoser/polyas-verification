@@ -16,6 +16,7 @@ import ReceiptView from '@/components/view/ReceiptView.vue'
 import TextCheckView from '@/components/view/library/TextCheckView.vue'
 import { VerificationSteps } from '@/components/domain/VerificationSteps'
 import StepView from '@/components/view/library/StepView.vue'
+import VerifyBallotOwner from '@/components/action/VerifyBallotOwner.vue'
 
 const route = useRoute()
 const urlPayload = computed(() => {
@@ -108,13 +109,13 @@ const { t } = useI18n()
     </StepView>
 
     <StepView
-      v-if="!!verificationResult?.status"
+      v-if="!!(verificationResult?.status && verificationResult.receipt)"
       prefix="domain.verification_step"
       :entry="VerificationSteps.VERIFY_BALLOT_OWNER"
       :done="ballotOwnerVerifiedResult !== undefined"
-      :success="ballotOwnerVerifiedResult"
+      :success="!!ballotOwnerVerifiedResult"
     >
-      <SetPassword @changed="password = $event" :voterId="urlPayload.voterId" />
+      <VerifyBallotOwner :owner-id="verificationResult.receipt.ballotVoterId" @verified="ballotOwnerVerifiedResult = $event" />
     </StepView>
   </div>
 

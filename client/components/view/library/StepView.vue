@@ -15,7 +15,8 @@ const props = defineProps<{
 const { t } = useI18n()
 const entryPrefix = `${props.prefix}.${props.entry}`
 const expanded = ref(false)
-const showBody = computed(() => !props.done || (expanded.value && (!props.forceClosedWhenDone || !props.done)))
+const invertedExpandedForFail = computed(() => (props.success ? expanded.value : !expanded.value))
+const showBody = computed(() => !props.done || (invertedExpandedForFail.value && (!props.forceClosedWhenDone || !props.done)))
 </script>
 
 <template>
