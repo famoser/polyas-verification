@@ -25,7 +25,7 @@ class PDFGenerator
      * @param array{
      *  'fingerprint': string,
      *   'signature': string,
-     *   'ballotVoterId': ?string,
+     *   'ballotVoterId': string,
      *  } $receipt
      */
     public static function generate(array $receipt, ?string $polyasElection, ?string &$pdf = null): bool
@@ -40,7 +40,7 @@ class PDFGenerator
 
             self::addIntroduction($flow);
             self::addFingerprintAndSignature($flow, $fingerprint, $signature);
-            self::addMeta($flow, $polyasElection, $ballotVoterId);
+            self::addMeta($flow, $ballotVoterId, $polyasElection);
 
             $document->add($flow);
             $pdf = $document->save();
@@ -64,14 +64,12 @@ class PDFGenerator
         $flow->addContent($paragraph);
 
         $contentOfReceipt = 'Dieses Rezept enthält eine Referenz (ein "Fingerprint") einer verschlüsselten Stimme, sowie eine vom POLYAS Server ausgestellte gültige Signatur davon.';
-        $purposeOfReceipt = 'Mit dem Rezept kann überprüft werden, ob die Stimme wirklich ausgezählt wurde.';
-        $introduction = $contentOfReceipt.' '.$purposeOfReceipt;
 
         $howToVerify = 'Stellen Sie das Rezept von Ihnen vertrauten Auditor:innen zu. Die Auditor:innen können damit überprüfen, ob die referenzierte Stimme im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde.';
         $verificationIsPrivate = 'Durch die Verifizierung bleibt das Stimmgeheimnis gewahrt: Nur mit dem Rezept ist es nicht möglich, die Stimme wieder zu entschlüsseln (auch nicht für die Auditor:innen).';
         $howTo = $howToVerify.' '.$verificationIsPrivate;
 
-        foreach ([$introduction, $howTo] as $text) {
+        foreach ([$contentOfReceipt, $howTo] as $text) {
             $paragraph = new Paragraph();
             $paragraph->add($normalText, $text);
 
@@ -96,7 +94,7 @@ class PDFGenerator
         $flow->add($contentBlock);
     }
 
-    private static function addMeta(Flow $flow, ?string $polyasElection, ?string $ballotVoterId): void
+    private static function addMeta(Flow $flow, string $ballotVoterId, ?string $polyasElection): void
     {
         if (!$ballotVoterId && !$polyasElection) {
             return;
