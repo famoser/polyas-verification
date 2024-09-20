@@ -40,17 +40,17 @@ readonly class Verification
      *     'voterId': string,
      *     'nonce': string,
      *     'password': string,
-     * } $verification
+     * } $payload
      * @param array{
      *      'fingerprint': string,
      *       'signature': string,
      *       'ballotVoterId': string,
      *  }|null $validReceipt
      */
-    public function verify(array $verification, ChallengeCommit $challengeCommit, ?string &$failedCheck = null, ?array &$validReceipt = null): string|null
+    public function verify(array $payload, ChallengeCommit $challengeCommit, ?string &$failedCheck = null, ?array &$validReceipt = null): string|null
     {
         $challengeCommitment = $challengeCommit->commit();
-        $loginPayload = ['voterId' => $verification['voterId'], 'nonce' => $verification['nonce'], 'password' => $verification['password'], 'challengeCommitment' => $challengeCommitment];
+        $loginPayload = ['voterId' => $payload['voterId'], 'nonce' => $payload['nonce'], 'password' => $payload['password'], 'challengeCommitment' => $challengeCommitment];
         $loginResponse = $this->apiClient->postLogin($loginPayload);
         if (!$loginResponse) {
             $failedCheck = self::LOGIN_SUCCESSFUL;
@@ -93,7 +93,7 @@ readonly class Verification
         $ballotReceipt = new BallotReceipt($ballotDigestSignature, $loginResponse['ballotVoterId']);
         $validReceipt = $ballotReceipt->export();
 
-        $qrCodeDecryption = new QRCodeDecryption($verification['payload'], $ballotDigest, $initialMessage['comSeed']);
+        $qrCodeDecryption = new QRCodeDecryption($payload['payload'], $ballotDigest, $initialMessage['comSeed']);
         $randomCoinSeed = $qrCodeDecryption->decrypt();
         if (!$randomCoinSeed) {
             $failedCheck = self::QR_CODE_DECRYPTION;
