@@ -3,13 +3,14 @@ import UploadReceipt from '@/components/action/UploadReceipt.vue'
 import { computed, ref } from 'vue'
 import type { Status } from '@/components/domain/Status'
 import ReceiptExplanation from '@/components/layout/ReceiptExplanation.vue'
-import CheckView from '@/components/view/CheckView.vue'
+import CheckView from '@/components/view/library/CheckView.vue'
 import { ReceiptErrors } from '@/components/domain/ReceiptErrors'
 import { api } from '@/services/api'
-import ChecksView from '@/components/view/ChecksView.vue'
+import ChecksView from '@/components/view/library/ChecksView.vue'
 import { useI18n } from 'vue-i18n'
 import ResetButton from '@/components/shared/ResetButton.vue'
 import StoreReceipt from '@/components/action/StoreReceipt.vue'
+import TextCheckView from '@/components/view/library/TextCheckView.vue'
 
 const receiptStatus = ref<Status>()
 const fileSet = ref<boolean>()
@@ -45,7 +46,7 @@ const { t } = useI18n()
       <ResetButton @reset="reset" />
     </div>
     <UploadReceipt v-if="!fileSet" @uploaded="doVerification($event)" />
-    <CheckView v-if="fileSet" prefix="domain.receipt_status" :entry="ReceiptErrors.RECEIPT_UPLOADED" :success="true" />
+    <TextCheckView v-if="fileSet" prefix="domain.receipt_status" :entry="ReceiptErrors.RECEIPT_UPLOADED" :success="true" />
 
     <ChecksView v-if="fileSet" prefix="domain.receipt_status" :result="receiptStatus" :error-order="errorOrder" :fallback-error="ReceiptErrors.UNKNOWN" @checks-finished-loading="checksShown = true" />
   </div>

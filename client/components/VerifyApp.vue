@@ -6,13 +6,16 @@ import SetLink from '@/components/action/SetLink.vue'
 import { api } from '@/services/api'
 import SetPassword from '@/components/action/SetPassword.vue'
 import { useI18n } from 'vue-i18n'
-import CheckView from '@/components/view/CheckView.vue'
+import CheckView from '@/components/view/library/CheckView.vue'
 import { VerificationErrors } from '@/components/domain/VerificationErrors'
-import ChecksView from '@/components/view/ChecksView.vue'
+import ChecksView from '@/components/view/library/ChecksView.vue'
 import VerificationExplanation from '@/components/layout/VerificationExplanation.vue'
 import BallotsView from '@/components/view/BallotsView.vue'
 import ResetButton from '@/components/shared/ResetButton.vue'
 import ReceiptView from '@/components/view/ReceiptView.vue'
+import TextCheckView from '@/components/view/library/TextCheckView.vue'
+import { VerificationSteps } from '@/components/domain/VerificationSteps'
+import StepView from '@/components/view/library/StepView.vue'
 
 const route = useRoute()
 const urlPayload = computed(() => {
@@ -54,7 +57,6 @@ watch(password, () => {
 })
 
 const verificationResult = ref<Status>()
-const checksShown = ref<boolean>()
 const doVerification = async () => {
   if (!urlPayload.value || !password.value) {
     return
@@ -74,6 +76,9 @@ const errorOrder: VerificationErrors[] = [
   VerificationErrors.BALLOT_DECODE
 ]
 
+const ballotOwnerVerifiedResult = ref<boolean>()
+const ballotContentVerifiedResult = ref<boolean>()
+
 const { t } = useI18n()
 </script>
 
@@ -84,30 +89,40 @@ const { t } = useI18n()
   </div>
 
   <div class="row g-2">
-    <SetLink v-if="!urlPayload" />
     <div class="p-0" v-if="canReset">
       <ResetButton @reset="reset" />
     </div>
-    <CheckView v-if="urlPayload" prefix="domain.verification_status" :entry="VerificationErrors.LINK_ENTERED" :success="true" />
 
-    <SetPassword class="mt-4" v-if="urlPayload && !password" @changed="password = $event" :voterId="urlPayload.voterId" />
-    <CheckView v-if="urlPayload && password" prefix="domain.verification_status" :entry="VerificationErrors.PASSWORD_ENTERED" :success="true" />
+    <StepView prefix="domain.verification_step" :entry="VerificationSteps.INITIALIZE" :done="!!urlPayload" :success="true" :force-closed-when-done="true">
+      <SetLink />
+    </StepView>
 
-    <ChecksView
-      v-if="urlPayload && password"
-      prefix="domain.verification_status"
-      :result="verificationResult"
-      :error-order="errorOrder"
-      :fallback-error="VerificationErrors.UNKNOWN"
-      @checks-finished-loading="checksShown = true"
-    />
+    <StepView v-if="urlPayload" prefix="domain.verification_step" :entry="VerificationSteps.ENTER_PASSWORD" :done="!!password" :success="true" :force-closed-when-done="true">
+      <SetPassword @changed="password = $event" :voterId="urlPayload.voterId" />
+    </StepView>
+
+    <StepView v-if="urlPayload && password" prefix="domain.verification_step" :entry="VerificationSteps.RECOVER_BALLOT" :done="!!verificationResult" :success="!!verificationResult?.status">
+      <div class="row g-2">
+        <ChecksView prefix="domain.verification_status" :result="verificationResult" :error-order="errorOrder" :fallback-error="VerificationErrors.UNKNOWN" />
+      </div>
+    </StepView>
+
+    <StepView
+      v-if="!!verificationResult?.status"
+      prefix="domain.verification_step"
+      :entry="VerificationSteps.VERIFY_BALLOT_OWNER"
+      :done="ballotOwnerVerifiedResult !== undefined"
+      :success="ballotOwnerVerifiedResult"
+    >
+      <SetPassword @changed="password = $event" :voterId="urlPayload.voterId" />
+    </StepView>
   </div>
 
-  <div class="my-5" v-if="checksShown && verificationResult && verificationResult.status && verificationResult.result">
+  <div class="my-5" v-if="verificationResult && verificationResult.status && verificationResult.result">
     <BallotsView :choice="verificationResult.result" />
   </div>
 
-  <div class="my-5" v-if="checksShown && verificationResult && verificationResult.status && verificationResult.receipt">
+  <div class="my-5" v-if="verificationResult && verificationResult.status && verificationResult.receipt">
     <ReceiptView :receipt="verificationResult.receipt" />
   </div>
 
