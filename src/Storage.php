@@ -85,9 +85,9 @@ class Storage
     /**
      * @param array{
      *  'fingerprint': string,
-     *   'signature': string,
-     *   'ballotVoterId': ?string,
-     *  } $payload
+     *  'signature': string,
+     *  'ballotVoterId': string,
+     * } $payload
      */
     public static function storeReceipt(array $payload, string $electionId): bool
     {
@@ -96,7 +96,7 @@ class Storage
         $smt = $db->prepare('INSERT INTO receipts (fingerprint, signature, ballot_voter_id, election_id) VALUES (:fingerprint, :signature, :ballot_voter_id, :election_id)');
         $smt->bindValue(':fingerprint', $payload['fingerprint']);
         $smt->bindValue(':signature', $payload['signature']);
-        $smt->bindValue(':ballot_voter_id', $payload['ballotVoterId'] ?? null);
+        $smt->bindValue(':ballot_voter_id', $payload['ballotVoterId']);
         $smt->bindValue(':election_id', $electionId);
 
         return $smt->execute();
@@ -106,9 +106,9 @@ class Storage
      * @return array{array{
      *  'fingerprint': string,
      *   'signature': string,
-     *   'ballotVoterId': ?string,
-     *   'electionId': ?string
-     *  }} $payload
+     *   'ballotVoterId': string,
+     *   'electionId': string
+     *  }}
      */
     public static function getReceipts(string $electionId): array
     {
@@ -130,16 +130,16 @@ class Storage
             $version = file_exists(self::VERSION_PATH) ? file_get_contents(self::VERSION_PATH) : '';
 
             self::$pdo = new \PDO('sqlite:'.self::DB_PATH);
-            if (!$dbExists) {
-                self::$pdo->exec('CREATE TABLE receipts (fingerprint TEXT NOT NULL, signature TEXT NOT NULL, UNIQUE(fingerprint,signature))');
+            if (!$dbExists || '' === $version) {
+                self::$pdo->exec('CREATE TABLE receipts (fingerprint TEXT NOT NULL, signature TEXT NOT NULL, ballot_voter_id TEXT NOT NULL, election_id TEXT NOT NULL, UNIQUE(fingerprint,signature))');
             }
 
-            if ('' === $version) {
-                self::$pdo->exec('ALTER TABLE receipts ADD ballot_voter_id TEXT');
-                self::$pdo->exec('ALTER TABLE receipts ADD election_id TEXT');
-            }
+            // if you need to migrate the DB
+            // if ('initial' === $version) {
+            // migrate
+            // }
 
-            file_put_contents(self::VERSION_PATH, 'with_fingerprint_meta');
+            file_put_contents(self::VERSION_PATH, 'initial');
         }
 
         return self::$pdo;
