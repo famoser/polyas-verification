@@ -18,6 +18,7 @@ use Famoser\PolyasVerification\Storage;
 use Famoser\PolyasVerification\Workflow\ApiClient;
 use Famoser\PolyasVerification\Workflow\DownloadReceipt;
 use Famoser\PolyasVerification\Workflow\ElectionDetails;
+use Famoser\PolyasVerification\Workflow\Mock\DownloadReceiptMock;
 use Famoser\PolyasVerification\Workflow\Mock\VerificationMock;
 use Famoser\PolyasVerification\Workflow\StoreReceipt;
 use Famoser\PolyasVerification\Workflow\Verification;
@@ -98,14 +99,18 @@ class RouteFactory
             /** @var array{
              *     'fingerprint': string,
              *     'signature': string,
-             *       'ballotVoterId': ?string,
+             *     'ballotVoterId': string,
              * } $payload
              */
-            $deviceParameters = self::getDeviceParameters();
-            $election = self::getElection();
+            if (DownloadReceiptMock::isMockPayload($payload)) {
+                $result = DownloadReceiptMock::performMockDownloadReceipt($payload, $pdf);
+            } else {
+                $deviceParameters = self::getDeviceParameters();
+                $election = self::getElection();
 
-            $storeReceipt = new DownloadReceipt($deviceParameters['verificationKey'], $election['polyasElection']);
-            $result = $storeReceipt->store($payload, $pdf);
+                $storeReceipt = new DownloadReceipt($deviceParameters['verificationKey'], $election['polyasElection']);
+                $result = $storeReceipt->store($payload, $pdf);
+            }
 
             return SlimExtensions::createPdfFileResponse($response, $result, 'receipt.pdf', $pdf);
         });

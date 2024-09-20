@@ -27,7 +27,7 @@ readonly class DownloadReceipt
      * @param array{
      * 'fingerprint': string,
      *  'signature': string,
-     *  'ballotVoterId': ?string,
+     *  'ballotVoterId': string,
      * } $receipt
      */
     public function store(array $receipt, ?string &$pdf = null, ?string &$failedCheck = null): bool
