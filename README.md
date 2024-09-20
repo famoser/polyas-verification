@@ -4,9 +4,7 @@
 [![PHP Composer](https://github.com/famoser/polyas-verification/actions/workflows/php.yml/badge.svg)](https://github.com/famoser/polyas-verification/actions/workflows/php.yml)
 [![Node.js Encore](https://github.com/famoser/polyas-verification/actions/workflows/node.js.yml/badge.svg)](https://github.com/famoser/polyas-verification/actions/workflows/node.js.yml)
 
-**Maintenance is paused as election using this verifier is over. Maintenance will resume when the verifier is used again.**
-
-Allows to verify POLYAS 3.0 (Version 1.3.2, 31 July 2023), following the second device spec (Version 1.1, 09 Februar 2024). You can find the specification in the folder [spec](./spec); this folder is excluded from the MIT license (the copyright remains at POLYAS).
+Allows to verify POLYAS 3.0 (Version 1.3.2, 31 July 2023), following the second device spec (Version 1.1, 09 February 2024). You can find the specification in the folder [spec](./spec); this folder is excluded from the MIT license (the copyright remains at POLYAS).
 
 <img src="assets/0_index.png?raw=true" alt="Screenshot start" width="30%">
 
