@@ -37,12 +37,6 @@ const { t } = useI18n()
 
 <template>
   <div class="d-flex flex-column align-items-center">
-    <span class="mb-2">
-      {{ t('action.set_password.verified_voter') }}
-      <em>
-        <b>{{ voterId }}</b>
-      </em>
-    </span>
     <input
       ref="passwordInput"
       type="text"

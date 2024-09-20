@@ -23,7 +23,7 @@ const showBody = computed(() => expanded.value || successLoading.value === false
     class="card shadow-sm p-0"
     :class="{ 'border-success': successLoading === true, 'border-warning': successLoading === undefined, 'border-danger': successLoading === false }"
     role="button"
-    @click="expanded = !expanded"
+    @click.prevent="expanded = !expanded"
   >
     <div class="card-header" :class="{ 'border-bottom-0': !showBody }">
       <div class="d-flex flex-row">
@@ -39,16 +39,7 @@ const showBody = computed(() => expanded.value || successLoading.value === false
       </div>
     </div>
     <div class="card-body" v-if="showBody">
-      <p class="mb-0">
-        {{ t(`${entryPrefix}.description`) }}
-      </p>
-      <p v-if="successLoading === true" class="mt-2 mb-0 alert alert-success">
-        {{ t(`${entryPrefix}.success`) }}
-      </p>
-      <p v-else-if="successLoading === false" class="mt-2 mb-0 alert alert-danger">
-        <b>{{ t(`${entryPrefix}.failed`) }}</b>
-        {{ t(`${entryPrefix}.failed_hint`) }}
-      </p>
+      <slot></slot>
     </div>
   </div>
 </template>

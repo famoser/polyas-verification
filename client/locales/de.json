@@ -108,6 +108,28 @@
       "RECEIPT_STORED": "Die Bestätigung der Stimmabgabe konnte nicht gespeichert werden. Bewahren Sie es selbst auf.",
       "success": "Bestätigung der Stimmabgabe gespeichert."
     },
+    "verification_step": {
+      "INITIALIZE": {
+        "title": "Initialisieren",
+        "done": "Initialisiert"
+      },
+      "ENTER_PASSWORD": {
+        "title": "Passwort eingeben",
+        "done": "Passwort eingegeben"
+      },
+      "RECOVER_BALLOT": {
+        "title": "Wahlzettel wiederherstellen",
+        "done": "Wahlzettel wiederhergestellt"
+      },
+      "CHECK_BALLOT_VOTER_ID": {
+        "title": "Zugehörigkeit überprüfen",
+        "done": "Zugehörigkeit überprüft"
+      },
+      "CHECK_BALLOT": {
+        "title": "Stimmzettel überprüfen",
+        "done": "Zugehörigkeit überprüft"
+      }
+    },
     "verification_status": {
       "LINK_ENTERED": {
         "title": "Identifikation ausgelesen",
