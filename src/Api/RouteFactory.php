@@ -119,7 +119,7 @@ class RouteFactory
              * } $payload
              */
             if (VerificationMock::isMockPayload($payload)) {
-                $result = VerificationMock::performMockVerification($failedCheck, $validReceipt);
+                $result = VerificationMock::performMockVerification($payload, $failedCheck, $validReceipt);
             } else {
                 $deviceParametersJson = self::getDeviceParametersJson();
 
