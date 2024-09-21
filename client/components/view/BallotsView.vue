@@ -31,13 +31,6 @@ const { t } = useI18n()
 
 <template>
   <div class="card">
-    <div class="card-header">
-      <p class="mb-0">
-        <b>
-          {{ t(`view.ballot.ballot_view.decrypted_ballot`) }}
-        </b>
-      </p>
-    </div>
     <div class="card-body">
       <div class="mb-5">
         <InfoPopover :message="t('view.ballot.ballot_view.change_your_vote')" :popover="t('view.ballot.ballot_view.change_vote_for_screenshot')" />
