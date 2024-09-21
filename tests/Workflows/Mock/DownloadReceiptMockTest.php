@@ -12,7 +12,6 @@
 namespace Famoser\PolyasVerification\Test\Workflows\Mock;
 
 use Famoser\PolyasVerification\Workflow\Mock\DownloadReceiptMock;
-use Famoser\PolyasVerification\Workflow\Mock\VerificationMock;
 use PHPUnit\Framework\TestCase;
 
 class DownloadReceiptMockTest extends TestCase
