@@ -12,7 +12,6 @@
 namespace Famoser\PolyasVerification\Workflow\Mock;
 
 use Famoser\PolyasVerification\Workflow\DownloadReceipt;
-use Famoser\PolyasVerification\Workflow\Verification;
 
 /**
  * Used to test the verification procedure without needing an active election.
