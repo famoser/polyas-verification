@@ -17,6 +17,7 @@ import TextCheckView from '@/components/view/library/TextCheckView.vue'
 import { VerificationSteps } from '@/components/domain/VerificationSteps'
 import StepView from '@/components/view/library/StepView.vue'
 import VerifyBallotOwner from '@/components/action/VerifyBallotOwner.vue'
+import VerifyBallotContent from '@/components/action/VerifyBallotContent.vue'
 
 const route = useRoute()
 const urlPayload = computed(() => {
@@ -39,7 +40,8 @@ const backVerify = computed(() => {
 const reset = () => {
   password.value = undefined
   verificationResult.value = undefined
-  checksShown.value = undefined
+  ballotOwnerVerifiedResult.value = undefined
+  ballotContentVerifiedResult.value = undefined
   if (backVerify.value) {
     router.back()
   }
@@ -115,15 +117,21 @@ const { t } = useI18n()
       :done="ballotOwnerVerifiedResult !== undefined"
       :success="!!ballotOwnerVerifiedResult"
     >
-      <VerifyBallotOwner :owner-id="verificationResult.receipt.ballotVoterId" @verified="ballotOwnerVerifiedResult = $event" />
+      <VerifyBallotOwner :owner-id="verificationResult.receipt.ballotVoterId" @verified="ballotOwnerVerifiedResult = $event" :decision="ballotOwnerVerifiedResult" />
+    </StepView>
+
+    <StepView
+      v-if="!!(ballotOwnerVerifiedResult && verificationResult)"
+      prefix="domain.verification_step"
+      :entry="VerificationSteps.VERIFY_BALLOT_CONTENT"
+      :done="ballotContentVerifiedResult !== undefined"
+      :success="!!ballotContentVerifiedResult"
+    >
+      <VerifyBallotContent :choice="verificationResult.result" @verified="ballotContentVerifiedResult = $event" :decision="ballotContentVerifiedResult" />
     </StepView>
   </div>
 
-  <div class="my-5" v-if="verificationResult && verificationResult.status && verificationResult.result">
-    <BallotsView :choice="verificationResult.result" />
-  </div>
-
-  <div class="my-5" v-if="verificationResult && verificationResult.status && verificationResult.receipt">
+  <div class="my-5" v-if="!!(ballotContentVerifiedResult && verificationResult.receipt)">
     <ReceiptView :receipt="verificationResult.receipt" />
   </div>
 

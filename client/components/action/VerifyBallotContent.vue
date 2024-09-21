@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import BallotsView from '@/components/view/BallotsView.vue'
 
 defineProps<{
-  ownerId: string
+  choice: string
   decision?: boolean
 }>()
 
@@ -18,8 +19,10 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <p class="text-body-emphasis mb-2">{{ t('action.verify_ballot_owner.question') }}</p>
-  <input type="text" class="form-control form-control-lg mb-2" disabled :value="ownerId" />
+  <p class="text-body-emphasis mb-2">{{ t('action.verify_ballot_content.question') }}</p>
+
+  <BallotsView class="mb-2" :choice="choice" />
+
   <template v-if="decision === undefined">
     <button class="btn btn-success me-2" @click="verify(true)">
       {{ t('shared.yes') }}
@@ -29,10 +32,10 @@ const { t } = useI18n()
     </button>
   </template>
   <p v-else-if="decision" class="alert alert-success mb-0">
-    {{ t('action.verify_ballot_owner.successful') }}
+    {{ t('action.verify_ballot_content.successful') }}
   </p>
   <p v-else class="alert alert-danger mb-0">
-    {{ t('action.verify_ballot_owner.failed') }}
+    {{ t('action.verify_ballot_content.failed') }}
   </p>
 </template>
 
