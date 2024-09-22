@@ -40,7 +40,7 @@ The second device application allows the user to verify their plain vote again, 
 </table>
 
 You can test this UI with the link as follows:
-- Enter the following link: http://localhost:4300/?c=7bgIHYQotKLc8tgCbWp5yuc83xSbN-JV4Vwpnb50qyIzNUj2tYDYzPInG80WJ1mf2tB8BstZXWH_b0y4&vid=voter3&nonce=f299af96450db626754147aa132237bbf5603df2eea8215a0859288df8015c85
+- Enter the following link: http://localhost:5173/verify?c=7bgIHYQotKLc8tgCbWp5yuc83xSbN-JV4Vwpnb50qyIzNUj2tYDYzPInG80WJ1mf2tB8BstZXWH_b0y4&vid=voter3&nonce=f299af96450db626754147aa132237bbf5603df2eea8215a0859288df8015c85
 - Enter the password 123456
 
 Then mock data client will kick in, which validates the vote.
