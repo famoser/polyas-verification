@@ -12,12 +12,10 @@
 namespace Famoser\PolyasVerification\Test\Workflows;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
-use Famoser\PolyasVerification\PDFGenerator;
 use Famoser\PolyasVerification\Storage;
 use Famoser\PolyasVerification\Workflow\ApiClient;
 use Famoser\PolyasVerification\Workflow\DownloadReceipt;
 use Famoser\PolyasVerification\Workflow\ExportReceipts;
-use Famoser\PolyasVerification\Workflow\StoreReceipt;
 use Famoser\PolyasVerification\Workflow\Verification;
 use Famoser\PolyasVerification\Workflow\VerifyReceipt;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +24,7 @@ class VerificationTest extends TestCase
 {
     public function testReceiptVerify(): void
     {
+        $election = 'electionId';
         $input = json_decode(file_get_contents(__DIR__.'/resources/ballot0/0_QRcode.json'), true); // @phpstan-ignore-line
         $deviceParametersJson = file_get_contents(__DIR__.'/resources/ballot0/deviceParameters.json');
 
@@ -43,20 +42,15 @@ class VerificationTest extends TestCase
         $challengeRandomCoin = gmp_init($challengeRequest['challengeRandomCoin'], 10);
         $commit = new ChallengeCommit($challenge, $challengeRandomCoin);
 
-        $verification = new Verification($deviceParametersJson, $apiClient);  // @phpstan-ignore-line
+        Storage::resetDb();
+        $verification = new Verification($deviceParametersJson, $apiClient, $election);  // @phpstan-ignore-line
         $validationResult = $verification->verify($input, $commit, $error, $validReceipt);
         $this->assertNull($error);
         $this->assertEquals($validationResult, '00000001');
-
-        // store receipt
-        Storage::resetDb();
-        $verificationKey = json_decode($deviceParametersJson, true)['verificationKey']; // @phpstan-ignore-line
-        $storeReceipt = new StoreReceipt($verificationKey, 'electionId');
-        $storeResult = $storeReceipt->store($validReceipt, $storeError);
-        $this->assertNull($storeError);
-        $this->assertTrue($storeResult);
+        $this->assertTrue(Storage::checkReceiptExists($validReceipt));
 
         // download receipt
+        $verificationKey = json_decode($deviceParametersJson, true)['verificationKey']; // @phpstan-ignore-line
         $storeReceipt = new DownloadReceipt($verificationKey, 'electionId');
         $storeResult = $storeReceipt->store($validReceipt, $pdf, $storeError);
         $this->assertNull($storeError);
@@ -73,7 +67,7 @@ class VerificationTest extends TestCase
         unlink($path);
 
         // export receipt
-        $exportReceipt = new ExportReceipts('electionId');
+        $exportReceipt = new ExportReceipts($election);
         $exportReceipt->exportAll($pdfs, $exportError);
         $this->assertNull($exportError);
         $this->assertNotNull($pdfs);
