@@ -48,7 +48,7 @@ readonly class VerifyReceipt
             return false;
         }
 
-        $ballotReceipt = new BallotReceipt($ballotSignature, null); // we do not support extraction of the ballot voter id yet
+        $ballotReceipt = new BallotReceipt($ballotSignature, 'unknown'); // we do not support extraction of the ballot voter id yet
         $validReceipt = $ballotReceipt->export();
 
         // optional: check fingerprint registered at POLYAS
