@@ -22,6 +22,7 @@ use Famoser\PolyasVerification\Workflow\Mock\DownloadReceiptMock;
 use Famoser\PolyasVerification\Workflow\Mock\VerificationMock;
 use Famoser\PolyasVerification\Workflow\Verification;
 use Famoser\PolyasVerification\Workflow\VerifyReceipt;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
@@ -30,6 +31,9 @@ use Slim\Routing\RouteCollectorProxy;
 
 class RouteFactory
 {
+    /**
+     * @param RouteCollectorProxy<ContainerInterface> $route
+     */
     public static function addRoutes(RouteCollectorProxy $route): void
     {
         $route->get('/election', function (Request $request, Response $response, array $args) {
