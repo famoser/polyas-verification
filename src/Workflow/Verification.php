@@ -19,6 +19,7 @@ use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
 use Famoser\PolyasVerification\Crypto\POLYAS\QRCodeDecryption;
 use Famoser\PolyasVerification\Crypto\POLYAS\ZKPProofValidation;
+use Famoser\PolyasVerification\Storage;
 use GuzzleHttp\Exception\GuzzleException;
 
 readonly class Verification
@@ -26,12 +27,13 @@ readonly class Verification
     public const LOGIN_SUCCESSFUL = 'LOGIN_SUCCESSFUL';
     public const DEVICE_PARAMETERS_MATCH = 'DEVICE_PARAMETERS_MATCH';
     public const SIGNATURE_VALID = 'SIGNATURE_VALID';
+    public const RECEIPT_STORED = 'RECEIPT_STORED';
     public const QR_CODE_DECRYPTION = 'QR_CODE_DECRYPTION';
     public const CHALLENGE_SUCCESSFUL = 'CHALLENGE_SUCCESSFUL';
     public const ZKP_VALID = 'ZKP_VALID';
     public const BALLOT_DECODE = 'BALLOT_DECODE';
 
-    public function __construct(private string $deviceParametersJson, private ApiClient $apiClient)
+    public function __construct(private string $deviceParametersJson, private ApiClient $apiClient, private string $polyasElection)
     {
     }
 
@@ -97,6 +99,11 @@ readonly class Verification
 
         $ballotReceipt = new BallotReceipt($ballotDigestSignature, $loginResponse['ballotVoterId']);
         $validReceipt = $ballotReceipt->export();
+        if (!Storage::checkReceiptExists($validReceipt) && !Storage::storeReceipt($validReceipt, $this->polyasElection)) {
+            $failedCheck = self::RECEIPT_STORED;
+
+            return null;
+        }
 
         $qrCodeDecryption = new QRCodeDecryption($payload['payload'], $ballotDigest, $initialMessage['comSeed']);
         $randomCoinSeed = $qrCodeDecryption->decrypt();

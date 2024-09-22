@@ -20,7 +20,6 @@ use Famoser\PolyasVerification\Workflow\DownloadReceipt;
 use Famoser\PolyasVerification\Workflow\ElectionDetails;
 use Famoser\PolyasVerification\Workflow\Mock\DownloadReceiptMock;
 use Famoser\PolyasVerification\Workflow\Mock\VerificationMock;
-use Famoser\PolyasVerification\Workflow\StoreReceipt;
 use Famoser\PolyasVerification\Workflow\Verification;
 use Famoser\PolyasVerification\Workflow\VerifyReceipt;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -75,24 +74,6 @@ class RouteFactory
             return SlimExtensions::createStatusJsonResponse($request, $response, $result, $failedCheck, null, $validReceipt);
         });
 
-        $route->post('/receipt/store', function (Request $request, Response $response, array $args) {
-            $payload = SlimExtensions::parseJsonRequestBody($request);
-            RequestValidatorExtensions::checkReceipt($request, $payload);
-            /** @var array{
-             *     'fingerprint': string,
-             *      'signature': string,
-             *      'ballotVoterId': ?string,
-             * } $payload
-             */
-            $deviceParameters = self::getDeviceParameters();
-            $election = self::getElection();
-
-            $storeReceipt = new StoreReceipt($deviceParameters['verificationKey'], $election['polyasElection']);
-            $result = $storeReceipt->store($payload, $failedCheck);
-
-            return SlimExtensions::createStatusJsonResponse($request, $response, $result, $failedCheck);
-        });
-
         $route->post('/receipt/download', function (Request $request, Response $response, array $args) {
             $payload = SlimExtensions::parseJsonRequestBody($request);
             RequestValidatorExtensions::checkReceipt($request, $payload);
@@ -129,9 +110,10 @@ class RouteFactory
                 $result = VerificationMock::performMockVerification($payload, $failedCheck, $validReceipt);
             } else {
                 $deviceParametersJson = self::getDeviceParametersJson();
+                $election = self::getElection();
 
                 $apiClient = self::createPOLYASApiClient();
-                $verification = new Verification($deviceParametersJson, $apiClient);
+                $verification = new Verification($deviceParametersJson, $apiClient, $election['polyasElection']);
                 $challengeCommit = ChallengeCommit::createWithRandom();
                 $result = $verification->verify($payload, $challengeCommit, $failedCheck, $validReceipt);
             }
