@@ -30,7 +30,7 @@
       "download": "Wahl-Quittung herunterladen",
       "skip": "Schritt überpringen",
       "send_to_auditors": "Senden Sie die Wahl-Quittung an Auditoren, damit diese verifizieren können, dass Ihre Stimmabgabe im Resultat berücksichtigt wird.",
-      "send_to_auditors_guards_secrecy": "Die Wahl-Quittung enthält nur eine Referenz auf den verschlüsselten Stimmzettel. Dennoch kann damit validiert werden, ob der referenziert Stimmzettel im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde. Das Wahlgeheimnis wird durch diees Verifizierung nicht beeinträchtigt."
+      "send_to_auditors_guards_secrecy": "Die Wahl-Quittung enthält nur eine Referenz auf den verschlüsselten Stimmzettel. Dennoch kann damit validiert werden, ob der referenziert Stimmzettel im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde. Das Wahlgeheimnis wird durch diese Verifizierung nicht beeinträchtigt."
     },
     "verify_ballot_owner": {
       "question": "Ist dies Ihre anonymisierte Wahl-ID?",
@@ -45,19 +45,19 @@
   },
   "layout": {
     "header_jumbotron": {
-      "title": "POLYAS Verifizierung",
-      "description": "Hat der POLYAS Server Ihren Stimmzettel richtig registriert?"
+      "title": "Wahl-Verifizierung",
+      "description": "Hat der Wahl-Server Ihren Stimmzettel richtig registriert?"
     },
     "receipt_explanation": {
       "verification_target": {
         "question": "Was kann durch die Wahl-Quittung verifiziert werden?",
-        "verifies_received_at_server": "Die Wahl-Quittung enthält eine Signatur über den dazugehörigen verschlüsselten Stimmzettel. Damit kann bewiesen werden, dass der Stimmzettel vom POLYAS Server empfangen wurde.",
+        "verifies_received_at_server": "Die Wahl-Quittung enthält eine Signatur über den dazugehörigen verschlüsselten Stimmzettel. Damit kann bewiesen werden, dass der Stimmzettel vom Wahl-Server empfangen wurde.",
         "must_trust_device": "Die Wahl-Quittung erlaubt es aber nicht zu überprüfen, ob der dazugehörige verschlüsselte Stimmzettel wirklich dem Wunsch des Wählenden entspricht. Dazu muss dem Wahlgerät (mit dem der Stimmzettel abgegeben wurde) oder dem Zweitgerät (mit dem der Stimmzettel verifiziert wurde) vertraut werden.",
-        "must_trust_servers": "Die Wahl-Quittung alleine kann auch nicht festellen, ob der dazugehörige verschlüsselte Stimmzettel auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem POLYAS Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten."
+        "must_trust_servers": "Die Wahl-Quittung alleine kann auch nicht festellen, ob der dazugehörige verschlüsselte Stimmzettel auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem Wahl-Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten."
       },
       "verification_fails": {
         "question": "Was tun, wenn die Verifizierung hier fehlschlägt?",
-        "try_again_or_complain": "Stellen Sie sicher, dass Sie eine Wahl-Quittung der oben eingeblendeten Wahl verwenden, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an das Wahlkommitee."
+        "try_again_or_complain": "Stellen Sie sicher, dass Sie eine Wahl-Quittung der oben eingeblendeten Wahl verwenden, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an die Wahlorganisatoren."
       }
     },
     "verification_explanation": {
@@ -65,11 +65,11 @@
         "question": "Was kann hier verifiziert werden?",
         "shows_vote_unencrypted": "Hier wird der Stimmzettel noch einmal unverschlüsselt dargestellt. Dadurch kann überprüft werden, dass der Stimmzettel vom Wahlgerät richtig verschlüsselt wurde.",
         "must_trust_one_device": "Solange entweder das Wahlgerät oder das Verifizierungsgerät richtig funktioniert, können so Fehler bei der Stimmabgabe entdeckt werden.",
-        "must_trust_servers": "Hier kann aber nicht festgestellt werden, ob der Stimmzettel auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem POLYAS Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten."
+        "must_trust_servers": "Hier kann aber nicht festgestellt werden, ob der Stimmzettel auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem Wahl-Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten."
       },
       "verification_fails": {
         "question": "Was tun, wenn die Verifizierung hier fehlschlägt?",
-        "try_again_or_complain": "Stellen Sie sicher, dass Sie die oben eingeblendete Wahl korrekt ist, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an das Wahlkomitee."
+        "try_again_or_complain": "Stellen Sie sicher, dass Sie die oben eingeblendete Wahl korrekt ist, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an die Wahlorganisatoren."
       }
     }
   },
@@ -91,8 +91,8 @@
     },
     "receipt_app": {
       "title": "Wahl-Quittung überprüfen",
-      "description": "Mit einer Wahl-Quittung (.pdf) können Sie prüfen, ob Ihr Stimmzettel vom POLYAS Server registriert wurde.",
-      "receipt_valid": "Das Wahl-Quittung ist valid."
+      "description": "Mit einer Wahl-Quittung (.pdf) können Sie prüfen, ob Ihr Stimmzettel vom Whal-Server registriert wurde.",
+      "receipt_valid": "Die Wahl-Quittung ist valid."
     },
     "ballot": {
       "ballot_view": {
@@ -112,12 +112,6 @@
     }
   },
   "domain": {
-    "receipt_store_status": {
-      "RECEIPT_VALID": "Die Wahl-Quittung ist nicht valid.",
-      "RECEIPT_UNIQUE": "Die Wahl-Quittung wurde bereits gespeichert.",
-      "RECEIPT_STORED": "Die Wahl-Quittung konnte nicht gespeichert werden. Bewahren Sie es selbst auf.",
-      "success": "Wahl-Quittung gespeichert."
-    },
     "verification_step": {
       "INITIALIZE": {
         "title": "Initialisieren",
@@ -167,15 +161,15 @@
         "failed_hint": "Bitte versuchen Sie es erneut."
       },
       "RECEIPT_STORED": {
-        "title": "Rezept wird gespeichert",
-        "description": "Der verschlüsselte Stimmzettel und die Signatur wird gespeichert. In der Auszählphase wird dann überprüft, ob dieser Stimmzettel wirklich ausgezählt wird.",
-        "success": "Das Rezept ist gespeichert.",
-        "failed": "Die Rezept kann nicht gespeichert werden.",
+        "title": "Wahl-Quittung wird gespeichert",
+        "description": "Der verschlüsselte Stimmzettel und die Signatur, die zusammen die Wahl-Quittung bilden, wird vom Verifikationstool gespeichert. In der Auszählphase werden für alle vom Verifikationstool gespeicherten Wahl-Quittungen überprüft, ob der jeweilige Stimmzettel wirklich ausgezählt wird.",
+        "success": "Die Wahl-Quittung ist gespeichert.",
+        "failed": "Die Wahl-Quittung kann nicht gespeichert werden.",
         "failed_hint": "Bitte versuchen Sie es erneut."
       },
       "QR_CODE_DECRYPTION": {
         "title": "QR Code Inhalt entschlüsselt",
-        "description": "Entschlüsselt den Ciphertext der im QR Code enthalten ist.",
+        "description": "Entschlüsselt den Ciphertext, der im QR Code enthalten ist.",
         "success": "Erfolgreich entschlüsselt.",
         "failed": "Der Ciphertext konnte nicht entschlüsselt werden.",
         "failed_hint": "Bitte versuchen Sie es erneut."
