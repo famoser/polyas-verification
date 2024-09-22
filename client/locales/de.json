@@ -86,7 +86,8 @@
     },
     "verify_app": {
       "title": "Stimmabgabe überprüfen",
-      "description": "Mit dem QR Code, der nach der Wahl angezeigt wird, können Sie den Inhalt Ihrer Stimmzettels überprüfen."
+      "description": "Mit dem QR Code, der nach der Wahl angezeigt wird, können Sie den Inhalt Ihres Stimmzettels überprüfen.",
+      "verification_finished": "Stimmabgabe überprüft. Wenn alles gut gegangen ist, können Sie dieses Fenster nun schliessen."
     },
     "receipt_app": {
       "title": "Bestätigung der Stimmabgabe überprüfen",

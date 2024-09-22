@@ -141,6 +141,10 @@ const { t } = useI18n()
     </StepView>
   </div>
 
+  <p class="alert alert-info my-5" v-if="receiptDownloaded !== undefined">
+    {{ t('view.verify_app.verification_finished') }}
+  </p>
+
   <div class="my-5">
     <VerificationExplanation />
   </div>
