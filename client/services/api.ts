@@ -56,10 +56,6 @@ const api = {
     const response = await axios.post('/api/receipt', data)
     return JSON.parse(response.data) as Status
   },
-  postStoreReceipt: async function (receipt: Receipt) {
-    const response = await axios.post('/api/receipt/store', receipt)
-    return JSON.parse(response.data) as Status
-  },
   postDownloadReceipt: async function (receipt: Receipt) {
     const response = await axios.post('/api/receipt/download', receipt, { responseEncoding: 'binary', responseType: 'arraybuffer' })
     return response.data
