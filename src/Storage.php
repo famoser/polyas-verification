@@ -121,7 +121,7 @@ class Storage
         return $smt->fetchAll(); // @phpstan-ignore-line
     }
 
-    private static \PDO|null $pdo = null;
+    private static ?\PDO $pdo = null;
 
     private static function getDatabaseConnection(): \PDO
     {

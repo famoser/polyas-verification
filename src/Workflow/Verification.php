@@ -50,7 +50,7 @@ readonly class Verification
      *       'ballotVoterId': string,
      *  }|null $validReceipt
      */
-    public function verify(array $payload, ChallengeCommit $challengeCommit, ?string &$failedCheck = null, ?array &$validReceipt = null): string|null
+    public function verify(array $payload, ChallengeCommit $challengeCommit, ?string &$failedCheck = null, ?array &$validReceipt = null): ?string
     {
         $challengeCommitment = $challengeCommit->commit();
         $loginPayload = ['voterId' => $payload['voterId'], 'nonce' => $payload['nonce'], 'password' => $payload['password'], 'challengeCommitment' => $challengeCommitment];
