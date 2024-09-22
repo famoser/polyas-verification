@@ -25,15 +25,12 @@
       "one_time_password": "Das Einmalpasswort wird auf dem Wahlgerät angezeigt.",
       "verified_voter": "Verifizierung des Stimmzettels von"
     },
-    "store_receipt": {
-      "title": "Bestätigung der Stimmabgabe speichern",
-      "store": "Wir überprüfen dann, dass der referenzierte Stimmzettel im Wahlresultat berücksichtigt wurde.",
-      "privacy_is_safeguarded": "Die Bestätigung der Stimmabgabe enthält nur eine Referenz auf den verschlüsselten Stimmzettel. Dennoch kann damit validiert werden, ob der referenziert Stimmzettel im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde."
-    },
     "download_receipt": {
-      "title": "Bestätigung der Stimmabgabe herunterladen",
-      "for_validations": "Sie können damit selbst weitere Validierungen vornehmen.",
-      "possible_validations": "Mit der Bestätigung der Stimmabgabe können Sie Ihre Stimmabgabe weiteren Verifizierungstools beweisen. Diese können dann ebenfalls sicherstellen, dass der referenzierte Stimmzettel im Wahlresultat enthalten ist."
+      "question": "Möchten Sie die Wahl-Quittung herunterladen?",
+      "download": "Wahl-Quittung herunterladen",
+      "skip": "Schritt überpringen",
+      "send_to_auditors": "Senden Sie die Wahl-Quittung an Auditoren, damit diese verifizieren können, dass Ihre Stimmabgabe im Resultat berücksichtigt wird.",
+      "send_to_auditors_guards_secrecy": "Die Wahl-Quittung enthält nur eine Referenz auf den verschlüsselten Stimmzettel. Dennoch kann damit validiert werden, ob der referenziert Stimmzettel im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde. Das Wahlgeheimnis wird durch diees Verifizierung nicht beeinträchtigt."
     },
     "verify_ballot_owner": {
       "question": "Ist dies ihre Wahl-ID?",
@@ -140,19 +137,13 @@
       "VERIFY_BALLOT_CONTENT": {
         "title": "Stimmzettel überprüfen",
         "done": "Stimmzettel überprüft"
+      },
+      "STORE_RECEIPT": {
+        "title": "Wahl-Quittung speichern",
+        "done": "Wahl-Quittung speichern"
       }
     },
     "verification_status": {
-      "LINK_ENTERED": {
-        "title": "Identifikation ausgelesen",
-        "description": "Liest die Identifikation für den Login, sowie kryptographisches Material aus.",
-        "success": "Alle benötigten Informationen ausgelesen."
-      },
-      "PASSWORD_ENTERED": {
-        "title": "Einmalpasswort eingegeben",
-        "description": "Validiert das eingegebene Einmalpasswort.",
-        "success": "Der Einmalpasswort ist nummerisch und sechsstellig."
-      },
       "LOGIN_SUCCESSFUL": {
         "title": "Login erfolgreich",
         "description": "Logged sich mit dem bereitgestellem Zugangscode ein, und fordert vom Server kryptographisches Material für die weiteren Checks an.",
@@ -172,6 +163,13 @@
         "description": "Überprüft, ob der vom Server verschlüsselt gespeicherter Stimmzettel valid signiert wurde.",
         "success": "Die Signatur des verschlüsselten Stimmzettels ist valid.",
         "failed": "Die Signatur des verschlüsselten Stimmzettels ist invalid.",
+        "failed_hint": "Bitte versuchen Sie es erneut."
+      },
+      "RECEIPT_STORED": {
+        "title": "Rezept wird gespeichert",
+        "description": "Der verschlüsselte Stimmzettel und die Signatur wird gespeichert. In der Auszählphase wird dann überprüft, ob dieser Stimmzettel wirklich ausgezählt wird.",
+        "success": "Das Rezept ist gespeichert.",
+        "failed": "Die Rezept kann nicht gespeichert werden.",
         "failed_hint": "Bitte versuchen Sie es erneut."
       },
       "QR_CODE_DECRYPTION": {

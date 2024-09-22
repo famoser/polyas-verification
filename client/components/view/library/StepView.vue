@@ -8,19 +8,20 @@ const props = defineProps<{
   prefix: string
   entry: string
   done: boolean
-  success: boolean
+  success?: boolean
   forceClosedWhenDone?: boolean
 }>()
 
 const { t } = useI18n()
 const entryPrefix = `${props.prefix}.${props.entry}`
 const expanded = ref(false)
-const invertedExpandedForFail = computed(() => (props.success ? expanded.value : !expanded.value))
+// noinspection PointlessBooleanExpressionJS
+const invertedExpandedForFail = computed(() => (props.success === false ? !expanded.value : expanded.value))
 const showBody = computed(() => !props.done || (invertedExpandedForFail.value && (!props.forceClosedWhenDone || !props.done)))
 </script>
 
 <template>
-  <div class="card shadow-sm p-0" :class="{ 'border-warning': !done, 'border-success': done && success, 'border-danger': done && !success }" role="button">
+  <div class="card shadow-sm p-0" :class="{ 'border-warning': !done, 'border-success': done && success, 'border-danger': done && success === false }" role="button">
     <div class="card-header" :class="{ 'border-bottom-0': !showBody }" @click="expanded = !expanded">
       <div class="d-flex flex-row">
         <p class="mb-0">

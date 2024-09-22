@@ -6,18 +6,15 @@ import SetLink from '@/components/action/SetLink.vue'
 import { api } from '@/services/api'
 import SetPassword from '@/components/action/SetPassword.vue'
 import { useI18n } from 'vue-i18n'
-import CheckView from '@/components/view/library/CheckView.vue'
 import { VerificationErrors } from '@/components/domain/VerificationErrors'
 import ChecksView from '@/components/view/library/ChecksView.vue'
 import VerificationExplanation from '@/components/layout/VerificationExplanation.vue'
-import BallotsView from '@/components/view/BallotsView.vue'
 import ResetButton from '@/components/shared/ResetButton.vue'
-import ReceiptView from '@/components/view/ReceiptView.vue'
-import TextCheckView from '@/components/view/library/TextCheckView.vue'
 import { VerificationSteps } from '@/components/domain/VerificationSteps'
 import StepView from '@/components/view/library/StepView.vue'
 import VerifyBallotOwner from '@/components/action/VerifyBallotOwner.vue'
 import VerifyBallotContent from '@/components/action/VerifyBallotContent.vue'
+import DownloadReceipt from '@/components/action/DownloadReceipt.vue'
 
 const route = useRoute()
 const urlPayload = computed(() => {
@@ -42,6 +39,7 @@ const reset = () => {
   verificationResult.value = undefined
   ballotOwnerVerifiedResult.value = undefined
   ballotContentVerifiedResult.value = undefined
+  receiptDownloaded.value = undefined
   if (backVerify.value) {
     router.back()
   }
@@ -73,6 +71,7 @@ const errorOrder: VerificationErrors[] = [
   VerificationErrors.LOGIN_SUCCESSFUL,
   VerificationErrors.DEVICE_PARAMETERS_MATCH,
   VerificationErrors.SIGNATURE_VALID,
+  VerificationErrors.RECEIPT_STORED,
   VerificationErrors.QR_CODE_DECRYPTION,
   VerificationErrors.CHALLENGE_SUCCESSFUL,
   VerificationErrors.ZKP_VALID,
@@ -81,6 +80,7 @@ const errorOrder: VerificationErrors[] = [
 
 const ballotOwnerVerifiedResult = ref<boolean>()
 const ballotContentVerifiedResult = ref<boolean>()
+const receiptDownloaded = ref<boolean>()
 
 const { t } = useI18n()
 </script>
@@ -129,10 +129,16 @@ const { t } = useI18n()
     >
       <VerifyBallotContent :choice="verificationResult.result" @verified="ballotContentVerifiedResult = $event" :decision="ballotContentVerifiedResult" />
     </StepView>
-  </div>
 
-  <div class="my-5" v-if="!!(ballotContentVerifiedResult && verificationResult.receipt)">
-    <ReceiptView :receipt="verificationResult.receipt" />
+    <StepView
+      v-if="!!(ballotContentVerifiedResult && verificationResult?.receipt)"
+      prefix="domain.verification_step"
+      :entry="VerificationSteps.STORE_RECEIPT"
+      :done="receiptDownloaded !== undefined"
+      :success="receiptDownloaded ? true : undefined"
+    >
+      <DownloadReceipt :receipt="verificationResult.receipt" @downloaded="receiptDownloaded = $event" />
+    </StepView>
   </div>
 
   <div class="my-5">

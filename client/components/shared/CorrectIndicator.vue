@@ -8,7 +8,7 @@ defineProps<{ success?: boolean; loading?: boolean }>()
   <span>
     <FontAwesomeIcon v-if="loading" class="text-warning rotating" :icon="['fas', 'spinner']" />
     <FontAwesomeIcon v-else-if="success === true" class="text-success" :icon="['far', 'circle-check']" />
-    <FontAwesomeIcon v-else-if="success === undefined" class="text-warning" :icon="['far', 'circle-question']" />
+    <FontAwesomeIcon v-else-if="success === undefined" :icon="['far', 'circle']" />
     <FontAwesomeIcon v-else class="text-danger" :icon="['far', 'circle-xmark']" />
   </span>
 </template>
