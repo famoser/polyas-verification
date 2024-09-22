@@ -7,10 +7,10 @@
   },
   "action": {
     "upload_receipt": {
-      "title": "Bestätigung der Stimmabgabe hochladen",
-      "processing": "Bestätigung der Stimmabgabe wird verarbeitet...",
+      "title": "Wahl-Quittung hochladen",
+      "processing": "Wahl-Quittung wird verarbeitet...",
       "privacy_is_safeguarded": "Das Stimmgeheimnis bleibt dadurch gewahrt.",
-      "privacy_is_safeguarded_help": "Die Bestätigung der Stimmabgabe enthält nur eine Referenz auf die verschlüsselte Stimme."
+      "privacy_is_safeguarded_help": "Die Wahl-Quittung enthält nur eine Referenz auf die verschlüsselte Stimme."
     },
     "set_link": {
       "scan_qr_code": "QR Code scannen",
@@ -33,9 +33,9 @@
       "send_to_auditors_guards_secrecy": "Die Wahl-Quittung enthält nur eine Referenz auf den verschlüsselten Stimmzettel. Dennoch kann damit validiert werden, ob der referenziert Stimmzettel im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde. Das Wahlgeheimnis wird durch diees Verifizierung nicht beeinträchtigt."
     },
     "verify_ballot_owner": {
-      "question": "Ist dies ihre Wahl-ID?",
-      "successful": "Sie haben angegeben, dass dies Ihre Wahl-ID ist.",
-      "failed": "Sie haben angegeben, dass dies nicht Ihre Wahl-ID ist. Bitte nehmen Sie umgehend Kontakt mit den Wahlorganisatoren auf."
+      "question": "Ist dies Ihre anonymisierte Wahl-ID?",
+      "successful": "Sie haben angegeben, dass dies Ihre anonymisierte Wahl-ID ist.",
+      "failed": "Sie haben angegeben, dass dies nicht Ihre anonymisierte Wahl-ID ist. Bitte nehmen Sie umgehend Kontakt mit den Wahlorganisatoren auf."
     },
     "verify_ballot_content": {
       "question": "Entspricht dies Ihrem Stimmzettel?",
@@ -50,14 +50,14 @@
     },
     "receipt_explanation": {
       "verification_target": {
-        "question": "Was kann durch die Bestätigung der Stimmabgabe verifiziert werden?",
-        "verifies_received_at_server": "Die Bestätigung der Stimmabgabe enthält eine Signatur über den dazugehörigen verschlüsselten Stimmzettel. Damit kann bewiesen werden, dass der Stimmzettel vom POLYAS Server empfangen wurde.",
-        "must_trust_device": "Die Bestätigung der Stimmabgabe erlaubt es aber nicht zu überprüfen, ob der dazugehörige verschlüsselte Stimmzettel wirklich dem Wunsch des Wählenden entspricht. Dazu muss dem Wahlgerät (mit dem der Stimmzettel abgegeben wurde) oder dem Zweitgerät (mit dem der Stimmzettel verifiziert wurde) vertraut werden.",
-        "must_trust_servers": "Die Bestätigung der Stimmabgabe alleine kann auch nicht festellen, ob der dazugehörige verschlüsselte Stimmzettel auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem POLYAS Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten."
+        "question": "Was kann durch die Wahl-Quittung verifiziert werden?",
+        "verifies_received_at_server": "Die Wahl-Quittung enthält eine Signatur über den dazugehörigen verschlüsselten Stimmzettel. Damit kann bewiesen werden, dass der Stimmzettel vom POLYAS Server empfangen wurde.",
+        "must_trust_device": "Die Wahl-Quittung erlaubt es aber nicht zu überprüfen, ob der dazugehörige verschlüsselte Stimmzettel wirklich dem Wunsch des Wählenden entspricht. Dazu muss dem Wahlgerät (mit dem der Stimmzettel abgegeben wurde) oder dem Zweitgerät (mit dem der Stimmzettel verifiziert wurde) vertraut werden.",
+        "must_trust_servers": "Die Wahl-Quittung alleine kann auch nicht festellen, ob der dazugehörige verschlüsselte Stimmzettel auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem POLYAS Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten."
       },
       "verification_fails": {
         "question": "Was tun, wenn die Verifizierung hier fehlschlägt?",
-        "try_again_or_complain": "Stellen Sie sicher, dass Sie eine Bestätigung der Stimmabgabe der oben eingeblendeten Wahl verwenden, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an das Wahlkommitee."
+        "try_again_or_complain": "Stellen Sie sicher, dass Sie eine Wahl-Quittung der oben eingeblendeten Wahl verwenden, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an das Wahlkommitee."
       }
     },
     "verification_explanation": {
@@ -90,9 +90,9 @@
       "verification_finished": "Stimmabgabe überprüft. Wenn alles gut gegangen ist, können Sie dieses Fenster nun schliessen."
     },
     "receipt_app": {
-      "title": "Bestätigung der Stimmabgabe überprüfen",
-      "description": "Mit einer Bestätigung der Stimmabgabe (.pdf) können Sie prüfen, ob Ihr Stimmzettel vom POLYAS Server registriert wurde.",
-      "receipt_valid": "Das Bestätigung der Stimmabgabe ist valid."
+      "title": "Wahl-Quittung überprüfen",
+      "description": "Mit einer Wahl-Quittung (.pdf) können Sie prüfen, ob Ihr Stimmzettel vom POLYAS Server registriert wurde.",
+      "receipt_valid": "Das Wahl-Quittung ist valid."
     },
     "ballot": {
       "ballot_view": {
@@ -103,9 +103,9 @@
       }
     },
     "receipt_view": {
-      "receipt": "Bestätigung der Stimmabgabe",
-      "privacy_is_safeguarded": "Mit der Bestätigung der Stimmabgabe kann überprüft werden, ob der Stimmzettel wirklich ausgezählt wurde. Das Stimmgeheimnis bleibt dadurch gewahrt.",
-      "privacy_is_safeguarded_help": "Das Bestätigung der Stimmabgabe enthält nur eine Referenz auf die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob der referenzierte Stimmzettel im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde."
+      "receipt": "Wahl-Quittung",
+      "privacy_is_safeguarded": "Mit der Wahl-Quittung kann überprüft werden, ob der Stimmzettel wirklich ausgezählt wurde. Das Stimmgeheimnis bleibt dadurch gewahrt.",
+      "privacy_is_safeguarded_help": "Das Wahl-Quittung enthält nur eine Referenz auf die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob der referenzierte Stimmzettel im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde."
     },
     "verification_result_view": {
       "reset": "Ansicht zurücksetzen"
@@ -113,10 +113,10 @@
   },
   "domain": {
     "receipt_store_status": {
-      "RECEIPT_VALID": "Die Bestätigung der Stimmabgabe ist nicht valid.",
-      "RECEIPT_UNIQUE": "Die Bestätigung der Stimmabgabe wurde bereits gespeichert.",
-      "RECEIPT_STORED": "Die Bestätigung der Stimmabgabe konnte nicht gespeichert werden. Bewahren Sie es selbst auf.",
-      "success": "Bestätigung der Stimmabgabe gespeichert."
+      "RECEIPT_VALID": "Die Wahl-Quittung ist nicht valid.",
+      "RECEIPT_UNIQUE": "Die Wahl-Quittung wurde bereits gespeichert.",
+      "RECEIPT_STORED": "Die Wahl-Quittung konnte nicht gespeichert werden. Bewahren Sie es selbst auf.",
+      "success": "Wahl-Quittung gespeichert."
     },
     "verification_step": {
       "INITIALIZE": {
@@ -210,19 +210,19 @@
     },
     "receipt_status": {
       "RECEIPT_UPLOADED": {
-        "title": "Bestätigung der Stimmabgabe hochgeladen",
-        "description": "Die Bestätigung der Stimmabgabe (die .pdf Datei) wird für die Analyse auf den Server hochgeladen.",
-        "success": "Bestätigung der Stimmabgabe hochgeladen."
+        "title": "Wahl-Quittung hochgeladen",
+        "description": "Die Wahl-Quittung (die .pdf Datei) wird für die Analyse auf den Server hochgeladen.",
+        "success": "Wahl-Quittung hochgeladen."
       },
       "UNKNOWN": {
         "title": "Unbekanner Fehler",
-        "description": "Bei der Verifizierung ist ein ungekannter Fehler aufgetreten. Dies bedeutet, dass die Bestätigung der Stimmabgabe vermutlich ungültig ist.",
-        "failed": "Die Bestätigung der Stimmabgabe kann nicht validiert werden.",
+        "description": "Bei der Verifizierung ist ein ungekannter Fehler aufgetreten. Dies bedeutet, dass die Wahl-Quittung vermutlich ungültig ist.",
+        "failed": "Die Wahl-Quittung kann nicht validiert werden.",
         "failed_hint": "Bitte stellen Sie sicher, dass Sie die richtige Datei ausgewählt haben."
       },
       "RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE": {
         "title": "Referenz zum verschlüsselten Stimmzettel enthalten",
-        "description": "Durchsucht die Bestätigung der Stimmabgabe (die .pdf Datei) nach der Referenz zum verschlüsselten Stimmzettel und einer Signatur davon.",
+        "description": "Durchsucht die Wahl-Quittung (die .pdf Datei) nach der Referenz zum verschlüsselten Stimmzettel und einer Signatur davon.",
         "success": "Referenz zum verschlüsselten Stimmzettel und Signatur im Rezept gefunden.",
         "failed": "Referenz zum verschlüsselten Stimmzettel oder Signatur nicht im Rezept gefunden.",
         "failed_hint": "Bitte stellen Sie sicher, dass Sie die richtige Datei ausgewählt haben."
@@ -232,7 +232,7 @@
         "description": "Überprüft, ob die gefundene Signatur korrekt über die Referenz zum verschlüsselten Stimmzettel erstellt wurde.",
         "success": "Die Signatur der Referenz zum verschlüsselten Stimmzettel ist valid.",
         "failed": "Die Signatur der Referenz zum verschlüsselten Stimmzettel ist invalid.",
-        "failed_hint": "Bitte stellen Sie sicher, dass die Bestätigung der Stimmabgabe für die oben eingeblendete Wahl ausgestellt wurde."
+        "failed_hint": "Bitte stellen Sie sicher, dass die Wahl-Quittung für die oben eingeblendete Wahl ausgestellt wurde."
       }
     }
   }
