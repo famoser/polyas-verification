@@ -40,5 +40,5 @@ const successPerEntry = computed(() => {
 
 <template>
   <TextCheckView v-if="result && !result.status && !errorKnown" :entry="String(fallbackError)" :success="false" :prefix="prefix" />
-  <TextCheckView v-for="entry in errorOrder" :key="entry" :prefix="prefix" :entry="entry" :success="successPerEntry ? successPerEntry[entry] : undefined" />
+  <TextCheckView v-for="entry in errorOrder" :key="entry" :prefix="prefix" :entry="entry" :loading="!result" :success="successPerEntry ? successPerEntry[entry] : undefined" />
 </template>
