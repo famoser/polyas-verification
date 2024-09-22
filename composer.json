@@ -12,7 +12,7 @@
     "ext-zip": "*",
     "famoser/pdf-generator": "^0.5.0",
     "guzzlehttp/guzzle": "^7.0",
-    "mdanter/ecc": "^1.0",
+    "paragonie/ecc": "^2.0",
     "monolog/monolog": "^3.3",
     "slim/psr7": "^1.6",
     "slim/slim": "^4.11",
