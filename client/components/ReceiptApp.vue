@@ -3,13 +3,11 @@ import UploadReceipt from '@/components/action/UploadReceipt.vue'
 import { computed, ref } from 'vue'
 import type { Status } from '@/components/domain/Status'
 import ReceiptExplanation from '@/components/layout/ReceiptExplanation.vue'
-import CheckView from '@/components/view/library/CheckView.vue'
 import { ReceiptErrors } from '@/components/domain/ReceiptErrors'
 import { api } from '@/services/api'
 import ChecksView from '@/components/view/library/ChecksView.vue'
 import { useI18n } from 'vue-i18n'
 import ResetButton from '@/components/shared/ResetButton.vue'
-import StoreReceipt from '@/components/action/StoreReceipt.vue'
 import TextCheckView from '@/components/view/library/TextCheckView.vue'
 
 const receiptStatus = ref<Status>()
@@ -54,8 +52,6 @@ const { t } = useI18n()
   <p class="my-5 alert alert-success" v-if="checksShown && receiptStatus && receiptStatus.status">
     {{ t('view.receipt_app.receipt_valid') }}
   </p>
-
-  <StoreReceipt v-if="checksShown && receiptStatus && receiptStatus.status && receiptStatus.receipt" :receipt="receiptStatus.receipt" />
 
   <div class="my-5">
     <ReceiptExplanation />
