@@ -45,7 +45,7 @@
   },
   "layout": {
     "header_jumbotron": {
-      "title": "Wahl-Verifizierung",
+      "title": "Individuelle Verifizierung",
       "description": "Hat der Wahl-Server Ihren Stimmzettel richtig registriert?"
     },
     "receipt_explanation": {
@@ -91,7 +91,7 @@
     },
     "receipt_app": {
       "title": "Wahl-Quittung überprüfen",
-      "description": "Mit einer Wahl-Quittung (.pdf) können Sie prüfen, ob Ihr Stimmzettel vom Whal-Server registriert wurde.",
+      "description": "Mit einer Wahl-Quittung (.pdf) können Sie prüfen, ob Ihr Stimmzettel vom Wahl-Server registriert wurde.",
       "receipt_valid": "Die Wahl-Quittung ist valid."
     },
     "ballot": {
