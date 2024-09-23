@@ -147,6 +147,8 @@ class Storage
 
     public static function resetDb(): void
     {
+        self::$pdo = null;
+
         unlink(self::DB_PATH);
         unlink(self::VERSION_PATH);
     }
