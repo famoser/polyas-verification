@@ -121,7 +121,7 @@ const { t } = useI18n()
     </StepView>
 
     <StepView
-      v-if="!!(ballotOwnerVerifiedResult && verificationResult)"
+      v-if="!!(ballotOwnerVerifiedResult && verificationResult?.result)"
       prefix="domain.verification_step"
       :entry="VerificationSteps.VERIFY_BALLOT_CONTENT"
       :done="ballotContentVerifiedResult !== undefined"
