@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "42b3fe2cfcf3281d4f3a74d46db99cd6",
+    "content-hash": "160a25993e57277db0ba90cc19f54af5",
     "packages": [
         {
             "name": "famoser/agnes",
