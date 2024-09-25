@@ -60,13 +60,13 @@ class PDFGenerator
         $headerText = new TextStyle($headerFont, $normalText->getFontSize() * 1.6 * 2);
 
         $paragraph = new Paragraph();
-        $paragraph->add($headerText, 'Rezept');
+        $paragraph->add($headerText, 'Wahl-Quittung');
         $flow->addContent($paragraph);
 
-        $contentOfReceipt = 'Dieses Rezept enthält eine Referenz (ein "Fingerprint") einer verschlüsselten Stimme, sowie eine vom POLYAS Server ausgestellte gültige Signatur davon.';
+        $contentOfReceipt = 'Diese Wahl-Quittung enthält eine Referenz (ein "Fingerprint") einer verschlüsselten Stimme, sowie eine vom Wahl-Server ausgestellte gültige Signatur davon.';
 
-        $howToVerify = 'Stellen Sie das Rezept von Ihnen vertrauten Auditor:innen zu. Die Auditor:innen können damit überprüfen, ob die referenzierte Stimme im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde.';
-        $verificationIsPrivate = 'Durch die Verifizierung bleibt das Stimmgeheimnis gewahrt: Nur mit dem Rezept ist es nicht möglich, die Stimme wieder zu entschlüsseln (auch nicht für die Auditor:innen).';
+        $howToVerify = 'Stellen Sie die Wahl-Quittung Auditor:innen zu, denen Sie vertrauen. Die Auditor:innen können damit überprüfen, ob die referenzierte Stimme im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde.';
+        $verificationIsPrivate = 'Durch die Verifizierung bleibt das Stimmgeheimnis gewahrt: Nur mit der Wahl-Quittung ist es nicht möglich, die Stimme wieder zu entschlüsseln (auch nicht für die Auditor:innen).';
         $howTo = $howToVerify.' '.$verificationIsPrivate;
 
         foreach ([$contentOfReceipt, $howTo] as $text) {
@@ -105,10 +105,10 @@ class PDFGenerator
 
         $paragraph = new Paragraph();
         if ($ballotVoterId) {
-            $paragraph->add($normalText, 'Ballot Voter ID: '.$ballotVoterId."\n");
+            $paragraph->add($normalText, 'Anonymisierte Wahl-ID: '.$ballotVoterId."\n");
         }
         if ($polyasElection) {
-            $paragraph->add($normalText, 'Election: '.$polyasElection);
+            $paragraph->add($normalText, 'Wahl: '.$polyasElection);
         }
 
         $contentBlock = new ContentBlock($paragraph);
