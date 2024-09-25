@@ -34,6 +34,7 @@ scripts:
       - 'npm install'
       - 'npm run build'
       - 'rm -rf node_modules'
+      - 'sed -i "60d;61d;62d;63d;64d" ./vendor/paragonie/ecc/src/Curves/OpensslTrait.php'
 
 tasks:
   deploy_after_release:
