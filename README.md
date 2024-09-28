@@ -4,14 +4,14 @@
 [![PHP Composer](https://github.com/famoser/polyas-verification/actions/workflows/php.yml/badge.svg)](https://github.com/famoser/polyas-verification/actions/workflows/php.yml)
 [![Node.js Encore](https://github.com/famoser/polyas-verification/actions/workflows/node.js.yml/badge.svg)](https://github.com/famoser/polyas-verification/actions/workflows/node.js.yml)
 
-Allows to verify POLYAS 3.0 (Version 1.3.2, 31 July 2023), following the second device spec ([Version 1.2-SNAPSHOT](https://github.com/polyas-voting/core3-verifiable-doc/blob/a43a805ab89d95acb5acdecb87415dd7473168e2/cai/second-device-spec.md), 22. September 2024). You can find the specification in the folder [spec](./spec); this folder is excluded from the MIT license (the copyright remains at POLYAS).
+When voting over the internet, the voter needs to be able to verify that their vote was cast correctly. This avoids trusting their voting device fully. This project implements voter-side verification (also called individual verification) for POLYAS 3.0 (Version 1.3.2, 31 July 2023), following the second device spec ([Version 1.2-SNAPSHOT](https://github.com/polyas-voting/core3-verifiable-doc/blob/a43a805ab89d95acb5acdecb87415dd7473168e2/cai/second-device-spec.md), 22. September 2024). You can find the specification in the folder [spec](./spec); this folder is excluded from the MIT license (the copyright remains at POLYAS).
 
 <img src="assets/0_index.png?raw=true" alt="Screenshot start" width="30%">
 
+
 ## Verification UI
 
-After voting, the voter is presented with a QR code, to be able to enter a second device application.
-The second device application allows the user to verify their plain vote again, to check that the voting procedure finished with the expected vote.
+After voting in the main voting system, the voter is presented with a QR code. Using this QR code, the voter is able to initialize a second device application (such as this project). The second device application then downloads the cast vote from the server, and shows it to the voter again. The voter can then verify their vote has been cast correctly.
 
 <table>
     <tbody>
@@ -29,15 +29,19 @@ The second device application allows the user to verify their plain vote again, 
 <table>
     <tbody>
         <tr>
-            <td>Verification valid</td>
-            <td>Verification invalid</td>
+            <td>Verify ballot voter id (to check indeed verifying own vote)</td>
+            <td>Verify ballot content (to check cast correctly)</td>
         </tr>
         <tr>
-            <td><img src="assets/1_verify_2_success.png?raw=true" alt="Screenshot verification success"></td>
-            <td><img src="assets/1_verify_3_fail.png?raw=true" alt="Screenshot verification failed"></td>
+            <td><img src="assets/1_verify_2_ballot_voter_id.png?raw=true" alt="Screenshot ballot voter id verification"></td>
+            <td><img src="assets/1_verify_3_ballot_content.png?raw=true" alt="Screenshot ballot content verification"></td>
         </tr>
     </tbody>
 </table>
+
+After successful vote validation, there is an option to download the receipt or skip the step. An example of such a receipt is in `assets/generated_receipt.pdf`.
+
+<img src="assets/1_verify_4_receipt_store.png?raw=true" alt="Screenshot store receipt" width="50%">
 
 You can test this UI with the link as follows:
 - Enter the following link: http://localhost:5173/verify?c=7bgIHYQotKLc8tgCbWp5yuc83xSbN-JV4Vwpnb50qyIzNUj2tYDYzPInG80WJ1mf2tB8BstZXWH_b0y4&vid=voter3&nonce=f299af96450db626754147aa132237bbf5603df2eea8215a0859288df8015c85
@@ -45,18 +49,12 @@ You can test this UI with the link as follows:
 
 Then mock data client will kick in, which validates the vote.
 
-### Receipt
-
-After successful vote validation, there is an option to either store or download the receipt.
-
-<img src="assets/1_verify_4_receipt_store.png?raw=true" alt="Screenshot store receipt" width="50%">
-
-If the user chooses to store the receipt, the UI implies the server operator will verify the referenced vote is indeed part of the final voting result. If the user chooses to download the receipt, the server will generate them a .pdf file with the fingerprint & signature of the vote (example in `assets/generated_receipt.pdf`).
 
 ## Receipt UI
 
-The second device application outputs a receipt, which contains the fingerprint of the ballot, and a signature over said fingerprint. 
-This UI allows to verify that signature; thereby proving that the voting server must know the referenced ballot.
+The second device application outputs a receipt, which contains the fingerprint of the ballot, and a signature over said fingerprint. The receipt is typically sent to the auditors, which ensure then a ballot with this fingerprint is considered in the final voting result.
+
+This project also allows to verify that signature; thereby proving that the voting server must know the referenced ballot.
 
 <table>
     <tbody>
@@ -86,8 +84,6 @@ This UI allows to verify that signature; thereby proving that the voting server 
 
 You can test this UI with the receipt in `assets/test_vote_receipt.pdf`.
 
-If the receipt validates successfully, the user may choose to store the receipt on the server.
-
 ## Develop
 
 The backend is built using `php` (using the `slim` framework) and manages dependencies using `composer`. Quick start:
@@ -98,7 +94,7 @@ The frontend is built using `JavaScript` (using `vue` with `TypeScript`), manage
 - `npm install`
 - `npm run dev`
 
-Then open `localhost:8000` (pointing to the `php` server started by the `symfony` cli) to see the webpage. Note that in this local environment, the `php` server only responds to `api` calls; otherwise it forwards to the `vite` server. In the production environment, the `vite` server is not running, and `php` serves all files.
+Then open `localhost:5173` (pointing to the `vite` server started by `npm run dev`) to see the webpage. Note that only in this local environment, the `vite` server is running, in production `php` serves all files.
 
 ## Release & Deploy
 
