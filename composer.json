@@ -12,7 +12,7 @@
     "ext-zip": "*",
     "famoser/pdf-generator": "^0.5.0",
     "guzzlehttp/guzzle": "^7.0",
-    "paragonie/ecc": "v2.3.0",
+    "paragonie/ecc": "dev-master",
     "monolog/monolog": "^3.3",
     "slim/psr7": "^1.6",
     "slim/slim": "^4.11",
@@ -45,6 +45,12 @@
       "Famoser\\PolyasVerification\\Test\\": "tests/"
     }
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/famoser/phpecc.git"
+    }
+  ],
   "scripts": {
     "post-install-cmd": [
       "vendor/bin/cghooks update"
