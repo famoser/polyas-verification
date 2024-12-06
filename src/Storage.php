@@ -114,7 +114,7 @@ class Storage
     {
         $db = self::getDatabaseConnection();
 
-        $smt = $db->prepare('SELECT fingerprint, signature, ballot_voter_id as ballotVoterId, election_id as electionId FROM receipts WHERE election_id = :election_id OR election_id IS NULL');
+        $smt = $db->prepare('SELECT fingerprint, signature, ballot_voter_id as ballotVoterId, election_id as electionId FROM receipts WHERE election_id = :election_id');
         $smt->bindValue(':election_id', $electionId);
         $smt->execute();
 
