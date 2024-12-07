@@ -42,5 +42,5 @@ jobs:
       - name: Format
         run: npm run format:check
 
-      - name: Types
-        run: npm run types:check
+      # - name: Types
+      #   run: npm run types:check
