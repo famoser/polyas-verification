@@ -16,6 +16,45 @@ const votesPerCandidate = computed(() => {
 
   return lookup
 })
+
+// assumption: 3 candidates
+const manipulatedVotesPerBallot = computed(() => {
+  const source = [
+    [0, 0, 0],
+    [0, 0, 1],
+    [0, 1, 0],
+    [0, 1, 1],
+    [1, 0, 0],
+    [1, 0, 1],
+    [1, 1, 0],
+    [1, 1, 1]
+  ]
+  const target = [
+    [0, 0, 1],
+    [1, 0, 0],
+    [1, 0, 0],
+    [1, 0, 0],
+    [0, 1, 0],
+    [0, 1, 0],
+    [0, 0, 1],
+    [0, 0, 1]
+  ]
+
+  const index = source.findIndex(
+    (template) =>
+      votesPerCandidate.value[props.list.candidates[0].id] === template[0] &&
+      votesPerCandidate.value[props.list.candidates[1].id] === template[1] &&
+      votesPerCandidate.value[props.list.candidates[2].id] === template[2]
+  )
+  const chosenTarget = index >= 0 ? target[index] : [0, 0, 0]
+
+  const manipulatedVotesPerCandidate: { [index: string]: number | undefined } = {}
+  props.list.candidates.forEach((candidate, index) => {
+    manipulatedVotesPerCandidate[candidate.id] = chosenTarget[index]
+  })
+
+  return manipulatedVotesPerCandidate
+})
 </script>
 
 <template>
@@ -23,6 +62,6 @@ const votesPerCandidate = computed(() => {
     <h5 class="mb-0" v-if="list.columnHeaders.length > 0">
       {{ list.columnHeaders.map((header) => header.default).join(', ') }}
     </h5>
-    <CandidateView v-for="candidate in list.candidates" :key="candidate.id" :candidate="candidate" :votes="votesPerCandidate[candidate.id]!" />
+    <CandidateView v-for="candidate in list.candidates" :key="candidate.id" :candidate="candidate" :votes="manipulatedVotesPerBallot[candidate.id]!" />
   </div>
 </template>
