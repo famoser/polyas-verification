@@ -10,7 +10,7 @@ const props = defineProps<{
   ballot: Ballot
 }>()
 
-const invalidChoice = computed(() => props.choice.startsWith('01'))
+const invalidChoice = computed(() => 0)
 const choicePerList = computed(() => {
   const lookup: { [index: string]: string | undefined } = {}
   let activeIndex = 2 // first byte is just ballot validity
