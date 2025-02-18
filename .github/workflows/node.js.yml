@@ -31,7 +31,7 @@ jobs:
           npm install
 
       - name: Check dependencies
-        run: npm audit --groups dependencies
+        run: npm audit --omit dev
 
       - name: Build
         run: npm run build
