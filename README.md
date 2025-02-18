@@ -4,7 +4,9 @@
 [![PHP Composer](https://github.com/famoser/polyas-verification/actions/workflows/php.yml/badge.svg)](https://github.com/famoser/polyas-verification/actions/workflows/php.yml)
 [![Node.js Encore](https://github.com/famoser/polyas-verification/actions/workflows/node.js.yml/badge.svg)](https://github.com/famoser/polyas-verification/actions/workflows/node.js.yml)
 
-When voting over the internet, the voter needs to be able to verify that their vote was cast correctly. This avoids trusting their voting device fully. This project implements voter-side verification (also called individual verification) for POLYAS 3.0 (Version 1.3.2, 31 July 2023), following the second device spec ([Version 1.2-SNAPSHOT](https://github.com/polyas-voting/core3-verifiable-doc/blob/a43a805ab89d95acb5acdecb87415dd7473168e2/cai/second-device-spec.md), 22. September 2024). You can find the specification in the folder [spec](./spec); this folder is excluded from the MIT license (the copyright remains at POLYAS).
+When voting over the internet, the voter needs to be able to verify that their vote was cast correctly. This avoids trusting their voting device fully. This project implements voter-side verification (also called individual verification) for POLYAS 3.0 (Version 1.3.2, 31 July 2023), following the second device spec ([Version 1.2-SNAPSHOT](https://github.com/polyas-voting/core3-verifiable-doc/blob/a43a805ab89d95acb5acdecb87415dd7473168e2/cai/second-device-spec.md), 22. September 2024). You can find the specification in the folder [spec](./spec); this folder is excluded from the MIT license (the copyright remains at POLYAS). 
+
+This project has been developed for the [Gesellschaft für Informatik](https://gi.de/) (German) and has been supported by the Université de Lorraine, CNRS, Inria, and LORIA (Nancy, France). In collaboration with other researchers, a scientific publication documents the experience of implementing this verifier, and formulates recommendation for similar projects ([paper](https://inria.hal.science/hal-04663997)). 
 
 <img src="assets/0_index.png?raw=true" alt="Screenshot start" width="30%">
 
