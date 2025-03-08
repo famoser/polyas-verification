@@ -12,7 +12,7 @@
     "ext-zip": "*",
     "famoser/pdf-generator": "^0.5.0",
     "guzzlehttp/guzzle": "^7.0",
-    "paragonie/ecc": "dev-master",
+    "paragonie/ecc": "^2",
     "monolog/monolog": "^3.3",
     "slim/psr7": "^1.6",
     "slim/slim": "^4.11",
@@ -44,12 +44,6 @@
       "Famoser\\PolyasVerification\\Test\\": "tests/"
     }
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/famoser/phpecc.git"
-    }
-  ],
   "scripts": {
     "stan": "phpstan analyse --no-progress --ansi --xdebug",
     "test": "phpunit --configuration phpunit.xml --do-not-cache-result --colors=always --display-deprecations",
