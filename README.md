@@ -4,7 +4,7 @@
 [![PHP Composer](https://github.com/famoser/polyas-verification/actions/workflows/php.yml/badge.svg)](https://github.com/famoser/polyas-verification/actions/workflows/php.yml)
 [![Node.js Encore](https://github.com/famoser/polyas-verification/actions/workflows/node.js.yml/badge.svg)](https://github.com/famoser/polyas-verification/actions/workflows/node.js.yml)
 
-When voting over the internet, the voter needs to be able to verify that their vote was cast correctly. This avoids trusting their voting device fully. This project implements voter-side verification (also called individual verification) for POLYAS 3.0 (Version 1.3.2, 31 July 2023), following the second device spec ([Version 1.2-SNAPSHOT](https://github.com/polyas-voting/core3-verifiable-doc/blob/a43a805ab89d95acb5acdecb87415dd7473168e2/cai/second-device-spec.md), 22. September 2024). You can find the specification in the folder [spec](./spec); this folder is excluded from the MIT license (the copyright remains at POLYAS). 
+When voting over the internet, the voter needs to be able to verify that their vote was cast correctly. This avoids trusting their voting device fully. This project implements voter-side verification (also called individual verification) for POLYAS 3.0 (Version 1.3.2, 31 July 2023), following the second device spec ([Version 1.2-SNAPSHOT](https://github.com/polyas-voting/core3-verifiable-doc/blob/a43a805ab89d95acb5acdecb87415dd7473168e2/cai/second-device-spec.md), 22. September 2024). You can find the specification in the folder [spec](./spec); this folder is excluded from the MIT license (the copyright remains at POLYAS). Note that the POLYAS system does only publish part of their specification (and notably no code and no formal proofs of the full system).
 
 This project has been developed for the [Gesellschaft für Informatik](https://gi.de/) (German) and has been supported by the Université de Lorraine, CNRS, Inria, and LORIA (Nancy, France). In collaboration with other researchers, a scientific publication documents the experience of implementing this verifier (and others), and formulates recommendation for similar projects ([paper](https://inria.hal.science/hal-04663997)). 
 
@@ -110,5 +110,7 @@ The server needs to fulfil requirements specified in `composer.json`.
 
 ## Future functionality
 
-The following features would be nice-to-haves:
-- Check whether uploaded receipts are contained on the bulletin board of the POLYAS server
+The following changes should be tackled:
+- Describe clearly what IV is for, as users are likely not aware (see https://publikationen.bibliothek.kit.edu/1000175514/155244080)
+- Use https://github.com/famoser/elliptic/ as a cryptography backend
+- Ask POLYAS how to check that uploaded receipts are contained on the bulletin board of the POLYAS server
