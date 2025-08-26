@@ -11,25 +11,26 @@
 
 namespace Famoser\PolyasVerification\Crypto\PEDERSON;
 
-use Mdanter\Ecc\Primitives\PointInterface;
+use Famoser\Elliptic\Math\MathInterface;
+use Famoser\Elliptic\Primitives\Point;
 
 readonly class PedersonCommit
 {
-    public function __construct(private PointInterface $generatorG, private PointInterface $generatorH)
+    public function __construct(private Point $generatorG, private Point $generatorH)
     {
     }
 
-    public function commit(\GMP $randomR, \GMP $messageM): PointInterface
+    public function commit(MathInterface $math, \GMP $randomR, \GMP $messageM): Point
     {
-        $left = $this->generatorG->mul($randomR);
-        $right = $this->generatorH->mul($messageM);
+        $left = $math->mul($this->generatorG, $randomR);
+        $right = $math->mul($this->generatorH, $messageM);
 
-        return $left->add($right);
+        return $math->add($left, $right);
     }
 
-    public function verify(PointInterface $commitment, \GMP $randomR, \GMP $messageM): bool
+    public function verify(MathInterface $math, Point $commitment, \GMP $randomR, \GMP $messageM): bool
     {
-        $expectedCommit = $this->commit($randomR, $messageM);
+        $expectedCommit = $this->commit($math, $randomR, $messageM);
 
         return $expectedCommit->equals($commitment);
     }

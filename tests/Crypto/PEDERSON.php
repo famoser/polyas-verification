@@ -2,25 +2,38 @@
 
 namespace Famoser\PolyasVerification\Test\Crypto;
 
+use Famoser\Elliptic\Curves\CurveRepository;
+use Famoser\Elliptic\Math\MathFactory;
+use Famoser\PolyasVerification\Crypto\Elliptic\RandomnessGenerator;
 use Famoser\PolyasVerification\Crypto\PEDERSON\PedersonCommit;
-use Mdanter\Ecc\EccFactory;
-use Mdanter\Ecc\Random\RandomGeneratorFactory;
 use PHPUnit\Framework\TestCase;
 
 class PEDERSON extends TestCase
 {
     public function testCommitAndVerify(): void
     {
-        $generatorG = EccFactory::getSecgCurves()->generator256k1();
-        $generatorH = $generatorG->createPrivateKey()->getPoint();
+        $repository = new CurveRepository();
+        $curve = $repository->findByName('secp256k1');
+        if (!$curve) {
+            $this->fail('Curve not found');
+        }
 
-        $random = RandomGeneratorFactory::getRandomGenerator();
-        $randomR = $random->generate($generatorG->getOrder());
-        $randomM = $random->generate($generatorG->getOrder());
+        $factory = new MathFactory($repository);
+        $math = $factory->createHardenedMath($curve);
+        if (!$math) {
+            $this->fail('Math not found');
+        }
+
+        $randomGenerator = new RandomnessGenerator($math);
+        $generatorG = $randomGenerator->point();
+        $generatorH = $randomGenerator->point();
+
+        $randomR = $randomGenerator->scalar();
+        $randomM = $randomGenerator->scalar();
 
         $commitment = new PedersonCommit($generatorG, $generatorH);
-        $commitmentMessage = $commitment->commit($randomR, $randomM);
+        $commitmentMessage = $commitment->commit($math, $randomR, $randomM);
 
-        $this->assertTrue($commitment->verify($commitmentMessage, $randomR, $randomM));
+        $this->assertTrue($commitment->verify($math, $commitmentMessage, $randomR, $randomM));
     }
 }

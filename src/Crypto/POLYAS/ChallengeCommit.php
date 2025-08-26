@@ -11,6 +11,7 @@
 
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
+use Famoser\Elliptic\Primitives\Curve;
 use Famoser\PolyasVerification\Crypto\PEDERSON\PedersonCommit;
 use Famoser\PolyasVerification\Crypto\SECP256K1;
 use Mdanter\Ecc\EccFactory;
@@ -19,16 +20,15 @@ use Mdanter\Ecc\Random\RandomGeneratorFactory;
 
 readonly class ChallengeCommit
 {
-    public function __construct(private \GMP $e, private \GMP $r)
+    public function __construct(private Curve $curve, private \GMP $e, private \GMP $r)
     {
     }
 
-    public static function createWithRandom(): self
+    public static function createWithRandom(Curve $curve): self
     {
-        $generatorG = EccFactory::getSecgCurves()->generator256k1();
         $random = RandomGeneratorFactory::getRandomGenerator();
-        $randomE = $random->generate($generatorG->getOrder());
-        $randomR = $random->generate($generatorG->getOrder());
+        $randomE = $random->generate($curve->getN());
+        $randomR = $random->generate($curve->getN());
 
         return new self($randomE, $randomR);
     }
