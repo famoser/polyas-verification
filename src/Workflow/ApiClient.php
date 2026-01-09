@@ -49,12 +49,12 @@ class ApiClient
      *     'challengeCommitment': string,
      * } $payload
      *
-     * @return null|array{
+     * @return array{
      *      'token': string,
      *      'ballotVoterId': string,
      *      'publicLabel': string,
      *      'initialMessage': string
-     * }
+     * }|null
      *
      * @throws GuzzleException
      */
@@ -71,9 +71,9 @@ class ApiClient
      *     'challengeRandomCoin': string,
      * } $payload
      *
-     * @return null|array{
+     * @return array{
      *      'z': string[]
-     * }
+     * }|null
      *
      * @throws GuzzleException
      */
