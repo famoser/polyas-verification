@@ -18,8 +18,8 @@ readonly class BallotDigest
      *     'publicCredential': string,
      *     'ballot': array{
      *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
-     *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
-     *          'proofOfKnowledgeOfPrivateCredential': array{'c': string, 'f': string},
+     *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': numeric-string, 'f': numeric-string}},
+     *          'proofOfKnowledgeOfPrivateCredential': array{'c': numeric-string, 'f': numeric-string},
      *      }
      *     } $content
      */

@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 class BallotDigestTest extends TestCase
 {
     /**
-     * @return string[][]
+     * @return array{numeric-string, string}[]
      */
     public static function bcdecProvider(): array
     {
@@ -38,6 +38,9 @@ class BallotDigestTest extends TestCase
         ];
     }
 
+    /**
+     * @param numeric-string $dec
+     */
     #[DataProvider('bcdecProvider')]
     public function testBallotDigestBCDEC(string $dec, string $hex): void
     {
@@ -88,8 +91,8 @@ class BallotDigestTest extends TestCase
          *     'voterId': string,
          *     'ballot': array{
          *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
-         *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': string, 'f': string}},
-         *          'proofOfKnowledgeOfPrivateCredential': array{'c': string, 'f': string},
+         *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': numeric-string, 'f': numeric-string}},
+         *          'proofOfKnowledgeOfPrivateCredential': array{'c': numeric-string, 'f': numeric-string},
          *      }
          *     } $ballotDigestContent
          */
