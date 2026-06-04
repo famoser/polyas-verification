@@ -75,7 +75,7 @@ class VerificationMock
      * 'ballotVoterId': string,
      * }|null $validReceipt
      */
-    public static function performMockVerification(array $payload, ?string &$failedCheck = null, ?array &$validReceipt = null): ?string
+    public static function performMockVerification(array $payload, ?string &$failedCheck = null, ?array &$validReceipt = null, ?string &$hexBallot = null): bool
     {
         $apiClient = new VerificationMockApiClient();
         $verification = new Verification(self::DEVICE_PARAMETERS_JSON, $apiClient, self::ELECTION);
@@ -84,6 +84,6 @@ class VerificationMock
         $challengeRandomCoin = gmp_init(self::CHALLENGE_RANDOM_COIN, 10);
         $challengeCommit = new ChallengeCommit($challenge, $challengeRandomCoin);
 
-        return $verification->verify($payload, $challengeCommit, $failedCheck, $validReceipt);
+        return $verification->verify($payload, $challengeCommit, $validReceipt, $hexBallot, $failedCheck);
     }
 }

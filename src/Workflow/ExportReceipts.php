@@ -16,7 +16,7 @@ use Famoser\PolyasVerification\Storage;
 
 class ExportReceipts
 {
-    public const PDF_GENERATION_FAILED = 'PDF_GENERATION_FAILED';
+    public const string PDF_GENERATION_FAILED = 'PDF_GENERATION_FAILED';
 
     public function __construct(private string $polyasElection)
     {
@@ -24,6 +24,9 @@ class ExportReceipts
 
     /**
      * @param string[] $pdfs
+     *
+     * @phpstan-assert-if-false string $error
+     * @phpstan-assert-if-true string[] $pdfs
      */
     public function exportAll(?array &$pdfs = null, ?string &$error = null): bool
     {

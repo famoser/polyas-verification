@@ -29,6 +29,9 @@ readonly class DownloadReceipt
      *  'signature': string,
      *  'ballotVoterId': string,
      * } $receipt
+     *
+     * @phpstan-assert-if-false string $failedCheck
+     * @phpstan-assert-if-true string $pdf
      */
     public function store(array $receipt, ?string &$pdf = null, ?string &$failedCheck = null): bool
     {

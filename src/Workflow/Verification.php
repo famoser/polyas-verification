@@ -22,6 +22,13 @@ use Famoser\PolyasVerification\Crypto\POLYAS\ZKPProofValidation;
 use Famoser\PolyasVerification\Storage;
 use GuzzleHttp\Exception\GuzzleException;
 
+/**
+ * @phpstan-type ValidReceipt array{
+ *     fingerprint: string,
+ *     signature: string,
+ *     ballotVoterId: string,
+ * }
+ */
 readonly class Verification
 {
     public const string LOGIN_SUCCESSFUL = 'LOGIN_SUCCESSFUL';
@@ -44,13 +51,13 @@ readonly class Verification
      *     'nonce': string,
      *     'password': string,
      * } $payload
-     * @param array{
-     *      'fingerprint': string,
-     *       'signature': string,
-     *       'ballotVoterId': string,
-     *  }|null $validReceipt
+     * @param ValidReceipt|null $validReceipt
+     *
+     * @phpstan-assert-if-false string $failedCheck
+     * @phpstan-assert-if-true ValidReceipt $validReceipt
+     * @phpstan-assert-if-true string $hexBallot
      */
-    public function verify(array $payload, ChallengeCommit $challengeCommit, ?string &$failedCheck = null, ?array &$validReceipt = null): ?string
+    public function verify(array $payload, ChallengeCommit $challengeCommit, ?array &$validReceipt = null, ?string &$hexBallot = null, ?string &$failedCheck = null): bool
     {
         $challengeCommitment = $challengeCommit->commit();
         $loginPayload = ['voterId' => $payload['voterId'], 'nonce' => $payload['nonce'], 'password' => $payload['password'], 'challengeCommitment' => $challengeCommitment];
@@ -62,7 +69,7 @@ readonly class Verification
         if (!$loginResponse) {
             $failedCheck = self::LOGIN_SUCCESSFUL;
 
-            return null;
+            return true;
         }
 
         /** @var array{
@@ -86,7 +93,7 @@ readonly class Verification
         if (!$deviceParameters->compareDeviceParameters($initialMessage['secondDeviceParametersJson'])) {
             $failedCheck = self::DEVICE_PARAMETERS_MATCH;
 
-            return null;
+            return true;
         }
 
         $ballotDigest = new BallotDigest($initialMessage, $loginResponse['publicLabel'], $loginResponse['ballotVoterId']);
@@ -94,7 +101,7 @@ readonly class Verification
         if (!$ballotDigestSignature->verify()) {
             $failedCheck = self::SIGNATURE_VALID;
 
-            return null;
+            return true;
         }
 
         $ballotReceipt = new BallotReceipt($ballotDigestSignature, $loginResponse['ballotVoterId']);
@@ -102,7 +109,7 @@ readonly class Verification
         if (!Storage::checkReceiptExists($validReceipt) && !Storage::storeReceipt($validReceipt, $this->polyasElection)) {
             $failedCheck = self::RECEIPT_STORED;
 
-            return null;
+            return true;
         }
 
         $qrCodeDecryption = new QRCodeDecryption($payload['payload'], $ballotDigest, $initialMessage['comSeed']);
@@ -110,7 +117,7 @@ readonly class Verification
         if (!$randomCoinSeed) {
             $failedCheck = self::QR_CODE_DECRYPTION;
 
-            return null;
+            return true;
         }
 
         $challengePayload = ['challenge' => $challengeCommit->getEString(), 'challengeRandomCoin' => $challengeCommit->getRString()];
@@ -123,14 +130,14 @@ readonly class Verification
         if (!$challengeResponse) {
             $failedCheck = self::CHALLENGE_SUCCESSFUL;
 
-            return null;
+            return true;
         }
 
         $zkpProofValidation = new ZKPProofValidation($initialMessage, $challengeCommit->getE(), $challengeResponse['z'], $deviceParameters->getPublicKey(), $randomCoinSeed);
         if (!$zkpProofValidation->validate()) {
             $failedCheck = self::ZKP_VALID;
 
-            return null;
+            return true;
         }
 
         $ballotDecoding = new BallotDecode($initialMessage, $deviceParameters->getPublicKey(), $randomCoinSeed);
@@ -138,9 +145,11 @@ readonly class Verification
         if (!$decodedBallot) {
             $failedCheck = self::BALLOT_DECODE;
 
-            return null;
+            return true;
         }
 
-        return bin2hex($decodedBallot);
+        $hexBallot = bin2hex($decodedBallot);
+
+        return true;
     }
 }
