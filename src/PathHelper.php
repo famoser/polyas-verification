@@ -17,5 +17,5 @@ class PathHelper
     public const string VAR_TRANSIENT_DIR = self::VAR_DIR . '/transient';
     public const string VAR_PERSISTENT_DIR = self::VAR_DIR . '/persistent';
     public const string ELECTION_JSON_FILE = self::VAR_DIR . '/config/election.json';
-    public const string DEVICE_PARAMETERS_JSON_FILE = self::VAR_DIR . '/config/deviceParameters.json';
+    public const string PARAMETERS_WITH_FINGERPRINT_JSON_FILE = self::VAR_DIR . '/config/secondDeviceParametersFingerprint.json';
 }

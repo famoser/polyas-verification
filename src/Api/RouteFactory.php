@@ -36,17 +36,16 @@ class RouteFactory
      */
     public static function addRoutes(RouteCollectorProxy $route): void
     {
-        $route->get('/election', function (Request $request, Response $response, array $args) {
+        $route->get('/election', function (Request $request, Response $response) {
             $election = self::getElection();
 
-            $deviceParametersJson = self::getDeviceParametersJson();
-            $deviceParameters = new DeviceParameters($deviceParametersJson);
+            $deviceParameters = self::getDeviceParameters();
             $election['deviceParametersFingerprint'] = $deviceParameters->createFingerprint();
 
             return SlimExtensions::createJsonResponse($request, $response, $election);
         });
 
-        $route->get('/electionDetails', function (Request $request, Response $response, array $args) {
+        $route->get('/electionDetails', function (Request $request, Response $response) {
             $apiClient = self::createPOLYASApiClient();
             $electionDetails = new ElectionDetails($apiClient);
             $election = $electionDetails->get();
@@ -54,13 +53,13 @@ class RouteFactory
             return SlimExtensions::createJsonResponse($request, $response, $election);
         });
 
-        $route->get('/ballots', function (Request $request, Response $response, array $args) {
+        $route->get('/ballots', function (Request $request, Response $response) {
             $deviceParameters = self::getDeviceParameters();
 
-            return SlimExtensions::createJsonResponse($request, $response, $deviceParameters['ballots']);
+            return SlimExtensions::createJsonResponse($request, $response, $deviceParameters->getBallots());
         });
 
-        $route->post('/receipt', function (Request $request, Response $response, array $args) {
+        $route->post('/receipt', function (Request $request, Response $response) {
             /** @var UploadedFile|false $file */
             $file = current($request->getUploadedFiles());
             if (!$file) {
@@ -71,14 +70,14 @@ class RouteFactory
 
             $deviceParameters = self::getDeviceParameters();
 
-            $receipt = new VerifyReceipt($deviceParameters['verificationKey']);
+            $receipt = new VerifyReceipt($deviceParameters->getVerificationKey());
             $result = $receipt->verify($path, $validReceipt, $failedCheck);
             Storage::removeFile($path);
 
             return SlimExtensions::createStatusJsonResponse($request, $response, $result, $failedCheck, null, $validReceipt);
         });
 
-        $route->post('/receipt/download', function (Request $request, Response $response, array $args) {
+        $route->post('/receipt/download', function (Request $request, Response $response) {
             $payload = SlimExtensions::parseJsonRequestBody($request);
             RequestValidatorExtensions::checkReceipt($request, $payload);
             /** @var array{
@@ -93,14 +92,14 @@ class RouteFactory
                 $deviceParameters = self::getDeviceParameters();
                 $election = self::getElection();
 
-                $storeReceipt = new DownloadReceipt($deviceParameters['verificationKey'], $election['polyasElection']);
+                $storeReceipt = new DownloadReceipt($deviceParameters->getVerificationKey(), $election['polyasElection']);
                 $result = $storeReceipt->store($payload, $pdf);
             }
 
             return SlimExtensions::createPdfFileResponse($response, $result, 'receipt.pdf', $pdf);
         });
 
-        $route->post('/verification', function (Request $request, Response $response, array $args) {
+        $route->post('/verification', function (Request $request, Response $response) {
             $payload = SlimExtensions::parseJsonRequestBody($request);
             RequestValidatorExtensions::checkVerification($request, $payload);
             /** @var array{
@@ -113,11 +112,11 @@ class RouteFactory
             if (VerificationMock::isMockPayload($payload)) {
                 $status = VerificationMock::performMockVerification($payload, $failedCheck, $validReceipt, $hexBallot);
             } else {
-                $deviceParametersJson = self::getDeviceParametersJson();
+                $deviceParameters = self::getDeviceParameters();
                 $election = self::getElection();
 
                 $apiClient = self::createPOLYASApiClient();
-                $verification = new Verification($deviceParametersJson, $apiClient, $election['polyasElection']);
+                $verification = new Verification($deviceParameters, $apiClient, $election['polyasElection']);
                 $challengeCommit = ChallengeCommit::createWithRandom();
                 $status = $verification->verify($payload, $challengeCommit, $validReceipt, $hexBallot, $failedCheck);
             }
@@ -126,29 +125,12 @@ class RouteFactory
         });
     }
 
-    /**
-     * @throws \Exception
-     */
-    private static function getDeviceParametersJson(): string
+    private static function getDeviceParameters(): DeviceParameters
     {
-        $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
+        $deviceParametersPath = PathHelper::PARAMETERS_WITH_FINGERPRINT_JSON_FILE;
         $deviceParametersJson = Storage::readFile($deviceParametersPath);
 
-        return trim($deviceParametersJson);
-    }
-
-    /**
-     * @return array{
-     *      'publicKey': string,
-     *      'verificationKey': string,
-     *     'ballots': mixed
-     * }
-     */
-    private static function getDeviceParameters(): array
-    {
-        $deviceParametersPath = PathHelper::DEVICE_PARAMETERS_JSON_FILE;
-
-        return Storage::readJsonFile($deviceParametersPath); // @phpstan-ignore-line
+        return DeviceParameters::createFromFingerprintedJson($deviceParametersJson);
     }
 
     /**

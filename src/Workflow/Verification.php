@@ -40,7 +40,7 @@ readonly class Verification
     public const string ZKP_VALID = 'ZKP_VALID';
     public const string BALLOT_DECODE = 'BALLOT_DECODE';
 
-    public function __construct(private string $deviceParametersJson, private ApiClient $apiClient, private string $polyasElection)
+    public function __construct(private DeviceParameters $deviceParameters, private ApiClient $apiClient, private string $polyasElection)
     {
     }
 
@@ -89,15 +89,14 @@ readonly class Verification
          * } $initialMessage
          */
         $initialMessage = json_decode($loginResponse['initialMessage'], true);
-        $deviceParameters = new DeviceParameters($this->deviceParametersJson);
-        if (!$deviceParameters->compareDeviceParameters($initialMessage['secondDeviceParametersJson'])) {
+        if (!$this->deviceParameters->compareDeviceParameters($initialMessage['secondDeviceParametersJson'])) {
             $failedCheck = self::DEVICE_PARAMETERS_MATCH;
 
             return true;
         }
 
         $ballotDigest = new BallotDigest($initialMessage, $loginResponse['publicLabel'], $loginResponse['ballotVoterId']);
-        $ballotDigestSignature = BallotDigestSignature::createFromBallotDigest($ballotDigest, $initialMessage['signatureHex'], $deviceParameters->getVerificationKey());
+        $ballotDigestSignature = BallotDigestSignature::createFromBallotDigest($ballotDigest, $initialMessage['signatureHex'], $this->deviceParameters->getVerificationKey());
         if (!$ballotDigestSignature->verify()) {
             $failedCheck = self::SIGNATURE_VALID;
 
@@ -133,14 +132,14 @@ readonly class Verification
             return true;
         }
 
-        $zkpProofValidation = new ZKPProofValidation($initialMessage, $challengeCommit->getE(), $challengeResponse['z'], $deviceParameters->getPublicKey(), $randomCoinSeed);
+        $zkpProofValidation = new ZKPProofValidation($initialMessage, $challengeCommit->getE(), $challengeResponse['z'], $this->deviceParameters->getPublicKey(), $randomCoinSeed);
         if (!$zkpProofValidation->validate()) {
             $failedCheck = self::ZKP_VALID;
 
             return true;
         }
 
-        $ballotDecoding = new BallotDecode($initialMessage, $deviceParameters->getPublicKey(), $randomCoinSeed);
+        $ballotDecoding = new BallotDecode($initialMessage, $this->deviceParameters->getPublicKey(), $randomCoinSeed);
         $decodedBallot = $ballotDecoding->decode();
         if (!$decodedBallot) {
             $failedCheck = self::BALLOT_DECODE;
