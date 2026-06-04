@@ -15,21 +15,27 @@ use Famoser\PolyasVerification\Crypto\PEM\Decoder;
 use Famoser\PolyasVerification\Crypto\PEM\Payload;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigestSignature;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotReceipt;
-
+/**
+ * @phpstan-type ValidReceipt array{
+ *     fingerprint: string,
+ *     signature: string,
+ *     ballotVoterId: string,
+ * }
+ */
 readonly class VerifyReceipt
 {
-    public const RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE = 'RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE';
-    public const SIGNATURE_VALID = 'SIGNATURE_VALID';
+    public const string RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE = 'RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE';
+    public const string SIGNATURE_VALID = 'SIGNATURE_VALID';
 
     public function __construct(private string $verificationKeyX509Hex)
     {
     }
 
     /**
-     * @param array{
-     * 'fingerprint': string,
-     * 'signature': string,
-     * }|null $validReceipt
+     * @param ValidReceipt|null $validReceipt
+     *
+     * @phpstan-assert-if-false string $failedCheck
+     * @phpstan-assert-if-true ValidReceipt $validReceipt
      */
     public function verify(string $path, ?string &$failedCheck = null, ?array &$validReceipt = null): bool
     {
@@ -56,6 +62,10 @@ readonly class VerifyReceipt
         return true;
     }
 
+    /**
+     * @phpstan-assert-if-true string $fingerprint
+     * @phpstan-assert-if-true string $signature
+     */
     public function getFingerprintAndSignature(string $path, ?string &$fingerprint, ?string &$signature): bool
     {
         $content = file_get_contents($path);
@@ -71,6 +81,10 @@ readonly class VerifyReceipt
         return $this->parseDecodedPEM($payloads, $fingerprint, $signature);
     }
 
+    /**
+     * @phpstan-assert-if-true string $fingerprint
+     * @phpstan-assert-if-true string $signature
+     */
     private function getFingerprintAndSignatureRaw(string $content, ?string &$fingerprint, ?string &$signature): bool
     {
         // \(([A-Z-0-9 a-f]+)\)( *(Tj)|')
@@ -91,20 +105,32 @@ readonly class VerifyReceipt
 
     /**
      * @param Payload[] $payloads
+     *
+     * @phpstan-assert-if-true string $fingerprint
+     * @phpstan-assert-if-true string $signature
      */
     private function parseDecodedPEM(array $payloads, ?string &$fingerprint, ?string &$signature): bool
     {
+        $fingerprintRaw = false;
+        $signatureRaw = false;
         foreach ($payloads as $payload) {
             switch ($payload->getLabel()) {
                 case 'FINGERPRINT':
-                    $fingerprint = hex2bin($payload->getRawPayload());
+                    $fingerprintRaw = hex2bin($payload->getRawPayload());
                     break;
                 case 'SIGNATURE':
-                    $signature = hex2bin($payload->getRawPayload());
+                    $signatureRaw = hex2bin($payload->getRawPayload());
                     break;
             }
         }
 
-        return $fingerprint && $signature;
+        if (!$fingerprintRaw || !$signatureRaw) {
+            return false;
+        }
+
+        $signature = $signatureRaw;
+        $fingerprint = $fingerprintRaw;
+
+        return true;
     }
 }

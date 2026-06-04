@@ -22,7 +22,7 @@ class ReceiptTest extends TestCase
         $deviceParameters = $this->getDeviceParameters();
 
         $receipt = new VerifyReceipt($deviceParameters['verificationKey']);
-        $result = $receipt->verify($receiptPath, $failedCheck);
+        $result = $receipt->verify($receiptPath, $failedCheck, $validReceipt);
         $this->assertTrue($result);
         $this->assertNull($failedCheck);
     }

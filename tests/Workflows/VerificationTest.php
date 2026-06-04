@@ -46,7 +46,7 @@ class VerificationTest extends TestCase
         $verification = new Verification($deviceParametersJson, $apiClient, $election);  // @phpstan-ignore-line
         $validationResult = $verification->verify($input, $commit, $error, $validReceipt);
         $this->assertNull($error);
-        $this->assertEquals($validationResult, '00000001');
+        $this->assertEquals('00000001', $validationResult);
         $this->assertTrue(Storage::checkReceiptExists($validReceipt));
 
         // download receipt
