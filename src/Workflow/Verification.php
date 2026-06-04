@@ -24,14 +24,14 @@ use GuzzleHttp\Exception\GuzzleException;
 
 readonly class Verification
 {
-    public const LOGIN_SUCCESSFUL = 'LOGIN_SUCCESSFUL';
-    public const DEVICE_PARAMETERS_MATCH = 'DEVICE_PARAMETERS_MATCH';
-    public const SIGNATURE_VALID = 'SIGNATURE_VALID';
-    public const RECEIPT_STORED = 'RECEIPT_STORED';
-    public const QR_CODE_DECRYPTION = 'QR_CODE_DECRYPTION';
-    public const CHALLENGE_SUCCESSFUL = 'CHALLENGE_SUCCESSFUL';
-    public const ZKP_VALID = 'ZKP_VALID';
-    public const BALLOT_DECODE = 'BALLOT_DECODE';
+    public const string LOGIN_SUCCESSFUL = 'LOGIN_SUCCESSFUL';
+    public const string DEVICE_PARAMETERS_MATCH = 'DEVICE_PARAMETERS_MATCH';
+    public const string SIGNATURE_VALID = 'SIGNATURE_VALID';
+    public const string RECEIPT_STORED = 'RECEIPT_STORED';
+    public const string QR_CODE_DECRYPTION = 'QR_CODE_DECRYPTION';
+    public const string CHALLENGE_SUCCESSFUL = 'CHALLENGE_SUCCESSFUL';
+    public const string ZKP_VALID = 'ZKP_VALID';
+    public const string BALLOT_DECODE = 'BALLOT_DECODE';
 
     public function __construct(private string $deviceParametersJson, private ApiClient $apiClient, private string $polyasElection)
     {
