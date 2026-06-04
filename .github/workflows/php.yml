@@ -26,6 +26,14 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
+          extensions: bcmath, gmp, openssl, pdo, zip
+
+      - name: Print PHP config
+        run: |
+          php -v
+          php --ini
+          php -m
+          php -i
 
       - name: Validate composer.json and composer.lock
         run: composer validate
