@@ -37,7 +37,7 @@ readonly class VerifyReceipt
      * @phpstan-assert-if-false string $failedCheck
      * @phpstan-assert-if-true ValidReceipt $validReceipt
      */
-    public function verify(string $path, ?string &$failedCheck = null, ?array &$validReceipt = null): bool
+    public function verify(string $path, ?array &$validReceipt = null, ?string &$failedCheck = null): bool
     {
         if (!self::getFingerprintAndSignature($path, $fingerprint, $signature)) {
             $failedCheck = self::RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE;

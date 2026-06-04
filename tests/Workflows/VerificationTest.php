@@ -44,9 +44,10 @@ class VerificationTest extends TestCase
 
         Storage::resetDb();
         $verification = new Verification($deviceParametersJson, $apiClient, $election);  // @phpstan-ignore-line
-        $validationResult = $verification->verify($input, $commit, $error, $validReceipt);
+        $status = $verification->verify($input, $commit, $validReceipt, $hexBallot, $error);
+        $this->assertTrue($status);
         $this->assertNull($error);
-        $this->assertEquals('00000001', $validationResult);
+        $this->assertEquals('00000001', $hexBallot);
         $this->assertTrue(Storage::checkReceiptExists($validReceipt));
 
         // download receipt
@@ -61,14 +62,16 @@ class VerificationTest extends TestCase
         $path = 'pdf.pdf';
         file_put_contents($path, $pdf);
         $receipt = new VerifyReceipt($verificationKey);
-        $result = $receipt->verify($path, $failedCheck);
-        $this->assertTrue($result);
+        $status = $receipt->verify($path, $validReceipt, $failedCheck);
+        $this->assertTrue($status);
         $this->assertNull($failedCheck);
+        $this->assertNotNull($validReceipt);
         unlink($path);
 
         // export receipt
         $exportReceipt = new ExportReceipts($election);
-        $exportReceipt->exportAll($pdfs, $exportError);
+        $status = $exportReceipt->exportAll($pdfs, $exportError);
+        $this->assertTrue($status);
         $this->assertNull($exportError);
         $this->assertNotNull($pdfs);
         $this->assertCount(1, $pdfs);
