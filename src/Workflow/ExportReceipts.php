@@ -14,7 +14,7 @@ namespace Famoser\PolyasVerification\Workflow;
 use Famoser\PolyasVerification\PDFGenerator;
 use Famoser\PolyasVerification\Storage;
 
-class ExportReceipts
+readonly class ExportReceipts
 {
     public const string PDF_GENERATION_FAILED = 'PDF_GENERATION_FAILED';
 

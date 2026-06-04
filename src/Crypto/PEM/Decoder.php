@@ -17,9 +17,9 @@ namespace Famoser\PolyasVerification\Crypto\PEM;
  */
 class Decoder
 {
-    private const ENCAPSULATION_BOUNDARY_MARKER = '-----';
-    private const BEGIN_MARKER = self::ENCAPSULATION_BOUNDARY_MARKER . 'BEGIN ';
-    private const END_MARKER = self::ENCAPSULATION_BOUNDARY_MARKER . 'END ';
+    private const string ENCAPSULATION_BOUNDARY_MARKER = '-----';
+    private const string BEGIN_MARKER = self::ENCAPSULATION_BOUNDARY_MARKER . 'BEGIN ';
+    private const string END_MARKER = self::ENCAPSULATION_BOUNDARY_MARKER . 'END ';
 
     /**
      * @return Payload[]

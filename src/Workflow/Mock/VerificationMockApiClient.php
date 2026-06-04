@@ -16,7 +16,7 @@ use Famoser\PolyasVerification\Workflow\ApiClient;
 /**
  * Used to test the verification procedure without needing an active election.
  */
-class VerificationMockApiClient extends ApiClient
+readonly class VerificationMockApiClient extends ApiClient
 {
     public function __construct()
     {

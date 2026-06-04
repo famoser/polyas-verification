@@ -11,15 +11,10 @@
 
 namespace Famoser\PolyasVerification\Crypto\DER;
 
-class RSAPublicKey
+readonly class RSAPublicKey
 {
-    private string $n;
-    private string $e;
-
-    public function __construct(string $n, string $e)
+    public function __construct(private string $n, private string $e)
     {
-        $this->n = $n;
-        $this->e = $e;
     }
 
     public function getN(): string

@@ -17,7 +17,7 @@ use Slim\Exception\HttpInternalServerErrorException;
 
 class SlimExtensions
 {
-    public const STATUS_OK = 200;
+    public const int STATUS_OK = 200;
 
     /**
      * @return string[]

@@ -15,8 +15,8 @@ use Slim\Psr7\UploadedFile;
 
 class Storage
 {
-    private const DB_PATH = PathHelper::VAR_PERSISTENT_DIR . DIRECTORY_SEPARATOR . 'receipts.sqlite';
-    private const VERSION_PATH = self::DB_PATH . '.version';
+    private const string DB_PATH = PathHelper::VAR_PERSISTENT_DIR . DIRECTORY_SEPARATOR . 'receipts.sqlite';
+    private const string VERSION_PATH = self::DB_PATH . '.version';
 
     public static function writeUploadedFile(string $dir, UploadedFile $file): string
     {
@@ -32,9 +32,6 @@ class Storage
         return $path;
     }
 
-    /**
-     * @throws \Exception
-     */
     public static function readFile(string $path): string
     {
         $content = file_get_contents($path);
@@ -47,8 +44,6 @@ class Storage
 
     /**
      * @return string[]
-     *
-     * @throws \Exception
      */
     public static function readJsonFile(string $path): array
     {

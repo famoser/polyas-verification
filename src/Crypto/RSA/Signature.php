@@ -17,8 +17,8 @@ class Signature
      * Error is OK; fix will be released with next 8.3 version of php
      * https://github.com/php/php-src/issues/11054
      */
-    private const ERROR_PEM_PARSING = 'error:0480006C:PEM routines::no start line';
-    private const ERROR_PEM_PARSING_2 = 'error:0909006C:PEM routines:get_name:no start line';
+    private const string ERROR_PEM_PARSING = 'error:0480006C:PEM routines::no start line';
+    private const string ERROR_PEM_PARSING_2 = 'error:0909006C:PEM routines:get_name:no start line';
 
     public static function verifySHA256(string $data, string $signature, string $publicKey): bool
     {

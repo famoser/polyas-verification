@@ -34,6 +34,7 @@ class Encoder
 
         $curve = EccFactory::getSecgCurves()->curve256k1();
         $generator = EccFactory::getSecgCurves()->generator256k1();
+        /** @noinspection PhpSuspiciousNameCombinationInspection */
         $y = $curve->recoverYfromX($wasOdd, $x);
 
         return $curve->getPoint($x, $y, $generator->getOrder());

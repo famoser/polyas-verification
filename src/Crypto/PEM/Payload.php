@@ -11,15 +11,10 @@
 
 namespace Famoser\PolyasVerification\Crypto\PEM;
 
-class Payload
+readonly class Payload
 {
-    private string $label;
-    private string $payload;
-
-    public function __construct(string $label, string $payload)
+    public function __construct(private string $label, private string $payload)
     {
-        $this->label = $label;
-        $this->payload = $payload;
     }
 
     public function getLabel(): string
