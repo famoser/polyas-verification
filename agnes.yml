@@ -23,7 +23,7 @@ data:
       required: true
     - path: var/config/election.json
       required: true
-    - path: var/config/deviceParameters.json
+    - path: var/config/secondDeviceParametersFingerprint.json
       required: true
 
 scripts:

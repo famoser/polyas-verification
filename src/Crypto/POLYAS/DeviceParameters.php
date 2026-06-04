@@ -23,7 +23,17 @@ readonly class DeviceParameters
 
     public function __construct(private string $deviceParametersJson)
     {
-        $this->deviceParameters = json_decode($this->deviceParametersJson, true);
+        $deviceParametersDecoded = json_decode($this->deviceParametersJson, true);
+        $this->deviceParameters = $deviceParametersDecoded;
+    }
+
+    public static function createFromFingerprintedJson(string $deviceParametersJson): self
+    {
+        $deviceParametersJson = json_decode($deviceParametersJson, true);
+        $self = new self($deviceParametersJson['secondDeviceParametersJson']);
+        assert($self->createFingerprint(), $deviceParametersJson['fingerprint']);
+
+        return $self;
     }
 
     public function compareDeviceParameters(string $deviceParametersJson): bool
@@ -47,5 +57,10 @@ readonly class DeviceParameters
     public function getPublicKey(): string
     {
         return $this->deviceParameters['publicKey'];
+    }
+
+    public function getBallots(): mixed
+    {
+        return $this->deviceParameters['ballots'];
     }
 }
