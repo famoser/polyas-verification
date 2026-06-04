@@ -50,6 +50,8 @@ class PDFGenerator
      *   'signature': string,
      *   'ballotVoterId': string,
      *  } $receipt
+     *
+     * @phpstan-assert-if-true string $pdf
      */
     public function generate(array $receipt, ?string $polyasElection, ?string &$pdf = null): bool
     {
