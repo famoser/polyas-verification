@@ -30,7 +30,7 @@ class Encoder
         $xHex = substr($point, 2);
 
         $wasOdd = '03' === $prefix;
-        $x = gmp_init('0x'.$xHex, 16);
+        $x = gmp_init('0x' . $xHex, 16);
 
         $curve = EccFactory::getSecgCurves()->curve256k1();
         $generator = EccFactory::getSecgCurves()->generator256k1();
@@ -53,6 +53,6 @@ class Encoder
         $odd = $math->equals($math->mod($point->getY(), gmp_init(2, 10)), gmp_init(1));
         $suffix = $odd ? '03' : '02';
 
-        return $suffix.$xStringPadded;
+        return $suffix . $xStringPadded;
     }
 }

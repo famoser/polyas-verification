@@ -53,7 +53,7 @@ class SlimExtensions
         return $response
             ->withStatus($status ? 200 : 500)
             ->withHeader('Content-Type', 'application/pdf')
-            ->withHeader('Content-Disposition', 'attachment; filename="'.$filename.'"');
+            ->withHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 
     public static function createJsonResponse(Request $request, Response $response, mixed $body, int $statusCode = self::STATUS_OK): Response

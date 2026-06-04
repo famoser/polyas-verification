@@ -26,7 +26,7 @@ class VerificationMockApiClient extends ApiClient
     public function postLogin(array $payload): ?array
     {
         /** @var string $json */
-        $json = file_get_contents(__DIR__.'/loginResponse.json');
+        $json = file_get_contents(__DIR__ . '/loginResponse.json');
 
         return json_decode($json, true);
     }
@@ -34,7 +34,7 @@ class VerificationMockApiClient extends ApiClient
     public function postChallenge(array $payload, string $authenticationToken): ?array
     {
         /** @var string $json */
-        $json = file_get_contents(__DIR__.'/challengeResponse.json');
+        $json = file_get_contents(__DIR__ . '/challengeResponse.json');
 
         return json_decode($json, true);
     }

@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 class BCMATHTest extends TestCase
 {
     /**
-     * @return string[][]
+     * @return array{string, numeric-string}[]
      */
     public static function hexDecProvider(): array
     {
@@ -32,6 +32,10 @@ class BCMATHTest extends TestCase
         ];
     }
 
+    /**
+     * @param string $hex
+     * @param numeric-string $dec
+     */
     #[DataProvider('hexDecProvider')]
     public function testExtractPayloadsPublicKeyPem(string $hex, string $dec): void
     {

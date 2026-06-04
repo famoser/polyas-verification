@@ -43,7 +43,7 @@ readonly class BallotDigest
         $ballotVoterId = $this->ballotVoterId;
 
         $content = Utils\Serialization::getStringHexWithLength($publicLabel);
-        $content .= Utils\Serialization::getBytesHexLength4Bytes($publicCredential).$publicCredential;
+        $content .= Utils\Serialization::getBytesHexLength4Bytes($publicCredential) . $publicCredential;
         $content .= Utils\Serialization::getStringHexWithLength($ballotVoterId);
 
         $content .= $this->createNormalizedHex();
@@ -66,8 +66,8 @@ readonly class BallotDigest
         $ciphertexts = $ballot['encryptedChoice']['ciphertexts'];
         $content = Utils\Serialization::getCollectionHexLength4Bytes($ciphertexts);
         foreach ($ciphertexts as $ciphertext) {
-            $content .= Utils\Serialization::getBytesHexLength4Bytes($ciphertext['x']).$ciphertext['x'];
-            $content .= Utils\Serialization::getBytesHexLength4Bytes($ciphertext['y']).$ciphertext['y'];
+            $content .= Utils\Serialization::getBytesHexLength4Bytes($ciphertext['x']) . $ciphertext['x'];
+            $content .= Utils\Serialization::getBytesHexLength4Bytes($ciphertext['y']) . $ciphertext['y'];
         }
 
         $proofOfKnowledgeOfEncryptionCoins = $ballot['proofOfKnowledgeOfEncryptionCoins'];
@@ -76,16 +76,16 @@ readonly class BallotDigest
             $cBytes = Utils\Serialization::bcdechexFixed($proofOfKnowledgeOfEncryptionCoin['c']);
             $fBytes = Utils\Serialization::bcdechexFixed($proofOfKnowledgeOfEncryptionCoin['f']);
 
-            $content .= Utils\Serialization::getBytesHexLength4Bytes($cBytes).$cBytes;
-            $content .= Utils\Serialization::getBytesHexLength4Bytes($fBytes).$fBytes;
+            $content .= Utils\Serialization::getBytesHexLength4Bytes($cBytes) . $cBytes;
+            $content .= Utils\Serialization::getBytesHexLength4Bytes($fBytes) . $fBytes;
         }
 
         $proofOfKnowledgeOfPrivateCredential = $ballot['proofOfKnowledgeOfPrivateCredential'];
         $cBytes = Utils\Serialization::bcdechexFixed($proofOfKnowledgeOfPrivateCredential['c']);
         $fBytes = Utils\Serialization::bcdechexFixed($proofOfKnowledgeOfPrivateCredential['f']);
 
-        $content .= Utils\Serialization::getBytesHexLength4Bytes($cBytes).$cBytes;
-        $content .= Utils\Serialization::getBytesHexLength4Bytes($fBytes).$fBytes;
+        $content .= Utils\Serialization::getBytesHexLength4Bytes($cBytes) . $cBytes;
+        $content .= Utils\Serialization::getBytesHexLength4Bytes($fBytes) . $fBytes;
 
         return $content;
     }

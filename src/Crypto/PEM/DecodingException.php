@@ -16,7 +16,7 @@ class DecodingException extends \RuntimeException
     public function __construct(string $message, ?int $line = null)
     {
         if (null !== $line) {
-            $message = 'line '.$line.': '.$message;
+            $message = 'line ' . $line . ': ' . $message;
         }
         parent::__construct($message);
     }

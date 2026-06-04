@@ -31,6 +31,6 @@ class Base64UrlEncoding
         $correctCharacters = str_replace(self::REPLACE, self::SEARCH, $base64);
         $padding = str_repeat('=', strlen($correctCharacters) % 4);
 
-        return $correctCharacters.$padding;
+        return $correctCharacters . $padding;
     }
 }

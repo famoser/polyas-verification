@@ -65,7 +65,7 @@ class AESTest extends TestCase
         $tag = '';
         $actualCiphtertext = AES\Encryption::encryptGCM($data, $key, $iv, $tag);
 
-        $actualCiphtextextBase64 = base64_encode($iv.$tag.$actualCiphtertext);
+        $actualCiphtextextBase64 = base64_encode($iv . $tag . $actualCiphtertext);
         $this->assertEquals(bin2hex(base64_decode($expectedBase64Ciphertext)), bin2hex(base64_decode($actualCiphtextextBase64)));
         $this->assertEquals($expectedBase64Ciphertext, $actualCiphtextextBase64);
     }

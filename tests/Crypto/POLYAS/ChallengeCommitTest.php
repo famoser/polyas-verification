@@ -53,7 +53,7 @@ class ChallengeCommitTest extends TestCase
     private function getTraceLoginRequest(): array
     {
         /** @var string $json */
-        $json = file_get_contents(__DIR__.'/resources/ballot1/trace/1_LoginRequest.json');
+        $json = file_get_contents(__DIR__ . '/resources/ballot1/trace/1_LoginRequest.json');
 
         return json_decode($json, true);
     }
@@ -67,7 +67,7 @@ class ChallengeCommitTest extends TestCase
     private function getTraceChallengeRequest(): array
     {
         /** @var string $json */
-        $json = file_get_contents(__DIR__.'/resources/ballot1/trace/3_ChallengeRequest.json');
+        $json = file_get_contents(__DIR__ . '/resources/ballot1/trace/3_ChallengeRequest.json');
 
         return json_decode($json, true);
     }

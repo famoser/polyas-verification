@@ -3,7 +3,7 @@
 use Famoser\PolyasVerification\Crypto\RSA;
 use Famoser\PolyasVerification\Test\Crypto\RSATest;
 
-require dirname(__DIR__).'/vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 // required for GitHub CI on which first key generation fails
 try {

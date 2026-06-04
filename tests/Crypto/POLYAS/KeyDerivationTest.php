@@ -21,7 +21,7 @@ class KeyDerivationTest extends TestCase
     private function getKeyDerivationResultHex(): string
     {
         /** @var string $fileContent */
-        $fileContent = file_get_contents(__DIR__.'/resources/keyDerivationResult.hex');
+        $fileContent = file_get_contents(__DIR__ . '/resources/keyDerivationResult.hex');
 
         /** @var string $noWhitespace */
         $noWhitespace = preg_replace('/\s+/', '', $fileContent);

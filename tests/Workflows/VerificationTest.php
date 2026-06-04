@@ -25,16 +25,16 @@ class VerificationTest extends TestCase
     public function testReceiptVerify(): void
     {
         $election = 'electionId';
-        $input = json_decode(file_get_contents(__DIR__.'/resources/ballot0/0_QRcode.json'), true); // @phpstan-ignore-line
-        $deviceParametersJson = file_get_contents(__DIR__.'/resources/ballot0/deviceParameters.json');
+        $input = json_decode(file_get_contents(__DIR__ . '/resources/ballot0/0_QRcode.json'), true); // @phpstan-ignore-line
+        $deviceParametersJson = file_get_contents(__DIR__ . '/resources/ballot0/deviceParameters.json');
 
         $apiClient = \Mockery::mock(ApiClient::class);
-        $loginRequest = json_decode(file_get_contents(__DIR__.'/resources/ballot0/1_LoginRequest.json'), true); // @phpstan-ignore-line
-        $loginResponse = json_decode(file_get_contents(__DIR__.'/resources/ballot0/2_LoginResponse.json'), true); // @phpstan-ignore-line
+        $loginRequest = json_decode(file_get_contents(__DIR__ . '/resources/ballot0/1_LoginRequest.json'), true); // @phpstan-ignore-line
+        $loginResponse = json_decode(file_get_contents(__DIR__ . '/resources/ballot0/2_LoginResponse.json'), true); // @phpstan-ignore-line
         $apiClient->shouldReceive('postLogin')->with($loginRequest)->andReturn($loginResponse); // @phpstan-ignore-line
 
-        $challengeRequest = json_decode(file_get_contents(__DIR__.'/resources/ballot0/3_ChallengeRequest.json'), true); // @phpstan-ignore-line
-        $challengeResponse = json_decode(file_get_contents(__DIR__.'/resources/ballot0/4_ChallengeResponse.json'), true); // @phpstan-ignore-line
+        $challengeRequest = json_decode(file_get_contents(__DIR__ . '/resources/ballot0/3_ChallengeRequest.json'), true); // @phpstan-ignore-line
+        $challengeResponse = json_decode(file_get_contents(__DIR__ . '/resources/ballot0/4_ChallengeResponse.json'), true); // @phpstan-ignore-line
         $token = 'MDIwNWJmMmUxNDQ5NmY2OGMwZjg2ZjZiMzEzZjIxMGE5MzkzZWRiMDgzODIxZGNjNGY5OTE0Y2FiOWM1MWM5ZjJl.UjVXYXRxTlRzdk12QWRwOA==';
         $apiClient->shouldReceive('postChallenge')->with($challengeRequest, $token)->andReturn($challengeResponse); // @phpstan-ignore-line
 

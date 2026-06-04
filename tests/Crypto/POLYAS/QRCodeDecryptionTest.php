@@ -71,25 +71,25 @@ class QRCodeDecryptionTest extends TestCase
     private function getTraceSecondDeviceInitialMsg(): array
     {
         /** @var string $json */
-        $json = file_get_contents(__DIR__.'/resources/ballot1/trace/2_LoginResponse_initialMessage.json');
+        $json = file_get_contents(__DIR__ . '/resources/ballot1/trace/2_LoginResponse_initialMessage.json');
 
         return json_decode($json, true);
     }
 
     private function getComKeyHex(): string
     {
-        return trim(file_get_contents(__DIR__.'/resources/ballot1/comKey.hex')); // @phpstan-ignore-line
+        return trim(file_get_contents(__DIR__ . '/resources/ballot1/comKey.hex')); // @phpstan-ignore-line
     }
 
     private function getQRCodeDecryptedHex(): string
     {
-        return trim(file_get_contents(__DIR__.'/resources/ballot1/QRCodeDecrypted.hex')); // @phpstan-ignore-line
+        return trim(file_get_contents(__DIR__ . '/resources/ballot1/QRCodeDecrypted.hex')); // @phpstan-ignore-line
     }
 
     private function getBallotDigest(): BallotDigest
     {
         /** @var string $ballotDigestJson */
-        $ballotDigestJson = file_get_contents(__DIR__.'/resources/ballot1/ballotEntry.json');
+        $ballotDigestJson = file_get_contents(__DIR__ . '/resources/ballot1/ballotEntry.json');
 
         /** @var array{
          *     'publicLabel': string,
@@ -110,7 +110,7 @@ class QRCodeDecryptionTest extends TestCase
     private function getQRCodePayload(): string
     {
         /** @var string $qrCodeJson */
-        $qrCodeJson = file_get_contents(__DIR__.'/resources/ballot1/trace/0_QRcode.json');
+        $qrCodeJson = file_get_contents(__DIR__ . '/resources/ballot1/trace/0_QRcode.json');
 
         /** @var array{
          *     'c': string,

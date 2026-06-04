@@ -102,7 +102,7 @@ class ZKPProofValidationTest extends TestCase
     private function getTraceSecondDeviceInitialMsg(): array
     {
         /** @var string $json */
-        $json = file_get_contents(__DIR__.'/resources/ballot1/trace/2_LoginResponse_initialMessage.json');
+        $json = file_get_contents(__DIR__ . '/resources/ballot1/trace/2_LoginResponse_initialMessage.json');
 
         return json_decode($json, true);
     }
@@ -116,7 +116,7 @@ class ZKPProofValidationTest extends TestCase
     private function getTraceChallengeRequest(): array
     {
         /** @var string $json */
-        $json = file_get_contents(__DIR__.'/resources/ballot1/trace/3_ChallengeRequest.json');
+        $json = file_get_contents(__DIR__ . '/resources/ballot1/trace/3_ChallengeRequest.json');
 
         return json_decode($json, true);
     }
@@ -129,7 +129,7 @@ class ZKPProofValidationTest extends TestCase
     private function getTraceChallengeResponseValue(): array
     {
         /** @var string $json */
-        $json = file_get_contents(__DIR__.'/resources/ballot1/trace/4_ChallengeResponse_value.json');
+        $json = file_get_contents(__DIR__ . '/resources/ballot1/trace/4_ChallengeResponse_value.json');
 
         return json_decode($json, true);
     }
