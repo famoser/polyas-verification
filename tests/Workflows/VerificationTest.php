@@ -73,10 +73,13 @@ class VerificationTest extends TestCase
         $this->assertNotNull($pdfs);
         $this->assertCount(1, $pdfs);
 
-        // check content is equal up to the creation date
+        // check content is equal up to the creation date & the document id
         $creationDatePattern = '#/CreationDate \(D:[0-9]+\+00\'00\)#';
-        $originalPDF = preg_replace($creationDatePattern, '', $pdf);
-        $exportedPDF = preg_replace($creationDatePattern, '', $pdfs[0]);
+        $originalPDF = preg_replace($creationDatePattern, '', $pdf) ?? "";
+        $exportedPDF = preg_replace($creationDatePattern, '', $pdfs[0]) ?? "";
+        $documentIdPattern = '#<xmpMM:(InstanceID|DocumentID)>[a-zA-Z0-9]+</xmpMM:(InstanceID|DocumentID)>#';
+        $originalPDF = preg_replace($documentIdPattern, '', $originalPDF);
+        $exportedPDF = preg_replace($documentIdPattern, '', $exportedPDF);
         $this->assertEquals($originalPDF, $exportedPDF);
     }
 }
