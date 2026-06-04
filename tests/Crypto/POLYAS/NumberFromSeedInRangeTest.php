@@ -37,8 +37,8 @@ class NumberFromSeedInRangeTest extends TestCase
     public function testNumber(string $seed, string $maxNumber, array $results): void
     {
         $maxNumberGmp = gmp_init($maxNumber);
-        $numbersFromSeedInRange = new NumbersFromSeedInRange(count($results), $seed, $maxNumberGmp);
-        $numbers = $numbersFromSeedInRange->numbers();
+        $numbersFromSeedInRange = new NumbersFromSeedInRange($seed, $maxNumberGmp);
+        $numbers = $numbersFromSeedInRange->get(count($results));
 
         for ($i = 0; $i < count($results); ++$i) {
             $result = $results[$i];

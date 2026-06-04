@@ -20,8 +20,8 @@ readonly class UniformHash
     public function hash(): \GMP
     {
         $h = hash('sha512', $this->input, true);
-        $numbersFromSeed = new NumbersFromSeedInRange(1, $h, $this->q);
+        $numbersFromSeed = new NumbersFromSeedInRange($h, $this->q);
 
-        return $numbersFromSeed->numbers()[0];
+        return $numbersFromSeed->get(1)[0];
     }
 }
