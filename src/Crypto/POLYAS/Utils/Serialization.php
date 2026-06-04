@@ -15,6 +15,9 @@ use Famoser\PolyasVerification\Crypto\BCMATH\Hex;
 
 class Serialization
 {
+    /**
+     * @param numeric-string $dec
+     */
     public static function bcdechexFixed(string $dec): string
     {
         $hex = Hex::bcdechex($dec);
