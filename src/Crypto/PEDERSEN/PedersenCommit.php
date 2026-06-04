@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Famoser\PolyasVerification\Crypto\PEDERSON;
+namespace Famoser\PolyasVerification\Crypto\PEDERSEN;
 
 use Mdanter\Ecc\Primitives\PointInterface;
 
-readonly class PedersonCommit
+readonly class PedersenCommit
 {
     public function __construct(private PointInterface $generatorG, private PointInterface $generatorH)
     {

@@ -2,7 +2,7 @@
 
 namespace Famoser\PolyasVerification\Test\Crypto;
 
-use Famoser\PolyasVerification\Crypto\PEDERSON\PedersonCommit;
+use Famoser\PolyasVerification\Crypto\PEDERSEN\PedersenCommit;
 use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Random\RandomGeneratorFactory;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +18,7 @@ class PEDERSON extends TestCase
         $randomR = $random->generate($generatorG->getOrder());
         $randomM = $random->generate($generatorG->getOrder());
 
-        $commitment = new PedersonCommit($generatorG, $generatorH);
+        $commitment = new PedersenCommit($generatorG, $generatorH);
         $commitmentMessage = $commitment->commit($randomR, $randomM);
 
         $this->assertTrue($commitment->verify($commitmentMessage, $randomR, $randomM));

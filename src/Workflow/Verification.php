@@ -11,6 +11,7 @@
 
 namespace Famoser\PolyasVerification\Workflow;
 
+use Famoser\PolyasVerification\Crypto\POLYAS\BallotAssociation;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDecode;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigest;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigestSignature;
@@ -33,6 +34,7 @@ readonly class Verification
 {
     public const string LOGIN_SUCCESSFUL = 'LOGIN_SUCCESSFUL';
     public const string DEVICE_PARAMETERS_MATCH = 'DEVICE_PARAMETERS_MATCH';
+    public const string ASSOCIATION_VALID = 'ASSOCIATION_VALID';
     public const string SIGNATURE_VALID = 'SIGNATURE_VALID';
     public const string RECEIPT_STORED = 'RECEIPT_STORED';
     public const string QR_CODE_DECRYPTION = 'QR_CODE_DECRYPTION';
@@ -46,21 +48,21 @@ readonly class Verification
 
     /**
      * @param array{
-     *     'payload': string,
-     *     'voterId': string,
-     *     'nonce': string,
-     *     'password': string,
-     * } $payload
+     *    'encC': string,
+     *    'encD': string,
+     *    'vid': string,
+     *    'nonce': string
+     *   } $payload
      * @param ValidReceipt|null $validReceipt
      *
      * @phpstan-assert-if-false string $failedCheck
      * @phpstan-assert-if-true ValidReceipt $validReceipt
      * @phpstan-assert-if-true string $hexBallot
      */
-    public function verify(array $payload, ChallengeCommit $challengeCommit, ?array &$validReceipt = null, ?string &$hexBallot = null, ?string &$failedCheck = null): bool
+    public function verify(array $payload, string $password, ChallengeCommit $challengeCommit, ?array &$validReceipt = null, ?string &$hexBallot = null, ?string &$failedCheck = null): bool
     {
         $challengeCommitment = $challengeCommit->commit();
-        $loginPayload = ['voterId' => $payload['voterId'], 'nonce' => $payload['nonce'], 'password' => $payload['password'], 'challengeCommitment' => $challengeCommitment];
+        $loginPayload = ['voterId' => $payload['vid'], 'ballotReference' => $payload['encD'], 'nonce' => $payload['nonce'], 'password' => $password, 'challengeCommitment' => $challengeCommitment];
         try {
             $loginResponse = $this->apiClient->postLogin($loginPayload);
         } catch (GuzzleException) {
@@ -74,14 +76,15 @@ readonly class Verification
 
         /** @var array{
          * 'secondDeviceParametersJson': string,
-         * 'comSeed': string,
-         * 'publicCredential': string,
+         *  'comSeed': string,
          * 'ballot': array{
          *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
          *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': numeric-string, 'f': numeric-string}},
          *          'proofOfKnowledgeOfPrivateCredential': array{'c': numeric-string, 'f': numeric-string},
          *      },
-         * 'signatureHex': string,
+         *   'publicLabel': string,
+         *   'reference': string,
+         *  'signatureHex': string,
          * 'factorX': string[],
          * 'factorY': string[],
          * 'factorA': string[],
@@ -91,6 +94,20 @@ readonly class Verification
         $initialMessage = json_decode($loginResponse['initialMessage'], true);
         if (!$this->deviceParameters->compareDeviceParameters($initialMessage['secondDeviceParametersJson'])) {
             $failedCheck = self::DEVICE_PARAMETERS_MATCH;
+
+            return true;
+        }
+
+        $qrCodeDecryption = new QRCodeDecryption($payload['encC'], $payload['encD'], $initialMessage['comSeed']);
+        if (!$qrCodeDecryption->decrypt($randomCoinSeed, $referenceCoin)) {
+            $failedCheck = self::QR_CODE_DECRYPTION;
+
+            return true;
+        }
+
+        $ballotAssociation = new BallotAssociation($initialMessage['reference'], $referenceCoin, $payload['vid']);
+        if (!$ballotAssociation->verify()) {
+            $failedCheck = self::ASSOCIATION_VALID;
 
             return true;
         }
@@ -107,14 +124,6 @@ readonly class Verification
         $validReceipt = $ballotReceipt->export();
         if (!Storage::checkReceiptExists($validReceipt) && !Storage::storeReceipt($validReceipt, $this->polyasElection)) {
             $failedCheck = self::RECEIPT_STORED;
-
-            return true;
-        }
-
-        $qrCodeDecryption = new QRCodeDecryption($payload['payload'], $ballotDigest, $initialMessage['comSeed']);
-        $randomCoinSeed = $qrCodeDecryption->decrypt();
-        if (!$randomCoinSeed) {
-            $failedCheck = self::QR_CODE_DECRYPTION;
 
             return true;
         }
