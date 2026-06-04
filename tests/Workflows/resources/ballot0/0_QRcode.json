@@ -1,6 +1,6 @@
 {
-  "payload": "vtWXj-YxxTV2ektefJ5pk7AWc9saoPbu6wJZUZ9R1t8ekU89x7SCYLcg8ODi3fHST4BTmAK97XN3XqWc",
-  "voterId":"voter8",
-  "nonce": "4bf8cecf3fb4c4b4372005e13a53dce705123fab5b9e9288461e6d8fbf9644ea",
-  "password": "196308"
+  "encC": "J8kdvzMZHPQBHbVoNx+JrstXlgbhOqDIikjbOGOL9HvWVdRPWuw/Xbvq/nKS/mqH/h2FJjCYbozkJiq7",
+  "encD":"/EhRgDjIA+scXsSyfSXvqPCHsvbf/UozQicLbNd4bjkps8aP4ZXdo3R+KuvYX/ZM8NeAJcGrZbeb3wm8fgnby1gQJGqJwMY+eN6qXN83b0i5pNaej1WrMglE4KIXpDc8Bn00stxsvy0qlw==",
+  "vid": "voter7",
+  "nonce": "e552502592f5bec54e4750c769ae9a3ec913c69a7cd828ce0226201476a2f833"
 }
