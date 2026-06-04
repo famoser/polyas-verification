@@ -11,7 +11,8 @@
 
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
-use Famoser\PolyasVerification\Crypto\PEDERSON\PedersonCommit;
+use Famoser\PolyasVerification\Crypto\PEDERSEN\PedersenCommit;
+use Famoser\PolyasVerification\Crypto\POLYAS\Utils\PedersenFactory;
 use Famoser\PolyasVerification\Crypto\SECP256K1;
 use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Primitives\PointInterface;
@@ -49,10 +50,7 @@ readonly class ChallengeCommit
 
     private function commitPoint(): PointInterface
     {
-        $generatorG = EccFactory::getSecgCurves()->generator256k1();
-        $generatorH = SECP256K1\Encoder::parseCompressedPoint(GlobalParameters::getPOLYASCommitmentGeneratorH());
-
-        $commitment = new PedersonCommit($generatorG, $generatorH);
+        $commitment = PedersenFactory::createPedersen();
 
         return $commitment->commit($this->e, $this->r);
     }

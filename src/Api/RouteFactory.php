@@ -103,14 +103,15 @@ class RouteFactory
             $payload = SlimExtensions::parseJsonRequestBody($request);
             RequestValidatorExtensions::checkVerification($request, $payload);
             /** @var array{
-             *     'payload': string,
-             *     'voterId': string,
-             *     'nonce': string,
-             *     'password': string,
+             * 'encC': string,
+             * 'encD': string,
+             * 'vid': string,
+             * 'nonce': string,
+             * 'password': string,
              * } $payload
              */
             if (VerificationMock::isMockPayload($payload)) {
-                $status = VerificationMock::performMockVerification($payload, $failedCheck, $validReceipt, $hexBallot);
+                $status = VerificationMock::performMockVerification($payload, $payload['password'], $failedCheck, $validReceipt, $hexBallot);
             } else {
                 $deviceParameters = self::getDeviceParameters();
                 $election = self::getElection();
@@ -118,7 +119,7 @@ class RouteFactory
                 $apiClient = self::createPOLYASApiClient();
                 $verification = new Verification($deviceParameters, $apiClient, $election['polyasElection']);
                 $challengeCommit = ChallengeCommit::createWithRandom();
-                $status = $verification->verify($payload, $challengeCommit, $validReceipt, $hexBallot, $failedCheck);
+                $status = $verification->verify($payload, $payload['password'], $challengeCommit, $validReceipt, $hexBallot, $failedCheck);
             }
 
             return SlimExtensions::createStatusJsonResponse($request, $response, $status, $failedCheck, $hexBallot, $validReceipt);

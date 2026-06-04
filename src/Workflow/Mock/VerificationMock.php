@@ -12,6 +12,7 @@
 namespace Famoser\PolyasVerification\Workflow\Mock;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
+use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
 use Famoser\PolyasVerification\Workflow\Verification;
 
 /**
@@ -19,9 +20,10 @@ use Famoser\PolyasVerification\Workflow\Verification;
  */
 readonly class VerificationMock
 {
-    private const string PAYLOAD = '7bgIHYQotKLc8tgCbWp5yuc83xSbN-JV4Vwpnb50qyIzNUj2tYDYzPInG80WJ1mf2tB8BstZXWH_b0y4';
-    private const string VOTER_ID = 'voter3';
-    private const string NONCE = 'f299af96450db626754147aa132237bbf5603df2eea8215a0859288df8015c85';
+    private const string ENC_C = 'J8kdvzMZHPQBHbVoNx+JrstXlgbhOqDIikjbOGOL9HvWVdRPWuw/Xbvq/nKS/mqH/h2FJjCYbozkJiq7';
+    private const string ENC_D = '/EhRgDjIA+scXsSyfSXvqPCHsvbf/UozQicLbNd4bjkps8aP4ZXdo3R+KuvYX/ZM8NeAJcGrZbeb3wm8fgnby1gQJGqJwMY+eN6qXN83b0i5pNaej1WrMglE4KIXpDc8Bn00stxsvy0qlw==';
+    private const string VOTER_ID = 'voter7';
+    private const string NONCE = 'e552502592f5bec54e4750c769ae9a3ec913c69a7cd828ce0226201476a2f833';
     private const string PASSWORD = '123456';
     private const string CHALLENGE = '96915244934611756885814581302818582006089481594800375652902059530399338848463';
     private const string CHALLENGE_RANDOM_COIN = '56527814749137956895630027000199810756343224065985652099532394141657865428867';
@@ -30,17 +32,19 @@ readonly class VerificationMock
 
     /**
      * @return array{
-     *      'payload': string,
-     *      'voterId': string,
-     *      'nonce': string,
+     *      'encC': string,
+     *      'encD': string,
+     *       'vid': string,
+     *       'nonce': string,
      *      'password': string,
      *  }
      */
     public static function createMockPayload(): array
     {
         return [
-            'payload' => self::PAYLOAD,
-            'voterId' => self::VOTER_ID,
+            'encC' => self::ENC_C,
+            'encD' => self::ENC_D,
+            'vid' => self::VOTER_ID,
             'nonce' => self::NONCE,
             'password' => self::PASSWORD,
         ];
@@ -48,26 +52,28 @@ readonly class VerificationMock
 
     /**
      * @param array{
-     *     'payload': string,
-     *     'voterId': string,
-     *     'nonce': string,
+     *  'encC': string,
+     *  'encD': string,
+     *  'vid': string,
+     *  'nonce': string,
      *     'password': string,
      * } $payload
      */
     public static function isMockPayload(array $payload): bool
     {
-        return self::PAYLOAD === $payload['payload']
-            && self::VOTER_ID === $payload['voterId']
+        return self::ENC_C === $payload['encC']
+            && self::ENC_D === $payload['encD']
+            && self::VOTER_ID === $payload['vid']
             && self::NONCE === $payload['nonce']
             && self::PASSWORD === $payload['password'];
     }
 
     /**
      * @param array{
-     * 'payload': string,
-     * 'voterId': string,
-     * 'nonce': string,
-     * 'password': string,
+     *     'encC': string,
+     *     'encD': string,
+     *     'vid': string,
+     *     'nonce': string
      * } $payload
      * @param array{
      * 'fingerprint': string,
@@ -75,15 +81,16 @@ readonly class VerificationMock
      * 'ballotVoterId': string,
      * }|null $validReceipt
      */
-    public static function performMockVerification(array $payload, ?string &$failedCheck = null, ?array &$validReceipt = null, ?string &$hexBallot = null): bool
+    public static function performMockVerification(array $payload, string $password, ?string &$failedCheck = null, ?array &$validReceipt = null, ?string &$hexBallot = null): bool
     {
         $apiClient = new VerificationMockApiClient();
-        $verification = new Verification(self::DEVICE_PARAMETERS_JSON, $apiClient, self::ELECTION);
+        $deviceParameters = new DeviceParameters(self::DEVICE_PARAMETERS_JSON);
+        $verification = new Verification($deviceParameters, $apiClient, self::ELECTION);
 
         $challenge = gmp_init(self::CHALLENGE, 10);
         $challengeRandomCoin = gmp_init(self::CHALLENGE_RANDOM_COIN, 10);
         $challengeCommit = new ChallengeCommit($challenge, $challengeRandomCoin);
 
-        return $verification->verify($payload, $challengeCommit, $validReceipt, $hexBallot, $failedCheck);
+        return $verification->verify($payload, $password, $challengeCommit, $validReceipt, $hexBallot, $failedCheck);
     }
 }

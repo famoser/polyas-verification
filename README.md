@@ -114,6 +114,20 @@ WIP:
 - Discuss receipt workflow
 - Get access to test election
 
+feedback:
+- missing comKey (0x1949d15227f4f73a9cf4e2dab50983373c63dfd7a4a8f22bad14310df4f666b1)
+- wrong kdf length: it is 32 bytes of length, not 16 bytes
+- base64 encoding not specified; used to be base64url
+- align terminology: referenceCoin, linking token, linking label
+- in login-response, both signature and signatureHex; why?
+- example 2 of algorithm 4: what does n refer to?
+- intermediate values for example 1 algorithm 4; h in hex
+- algorithm 4 does not specify that the seed passed to algorithm 3 must be in hex format
+
+changelog to v1:
+- B.4 QR-code decryption: KDF no longer needs ballot digest; GCM now stores tag at the end of the ciphertext; now standard base64 encoding (used to be base64url)
+- 
+
 The following changes should be tackled:
 - Describe clearly what IV is for, as users are likely not aware (see https://publikationen.bibliothek.kit.edu/1000175514/155244080)
 - Use https://github.com/famoser/elliptic/ as a cryptography backend

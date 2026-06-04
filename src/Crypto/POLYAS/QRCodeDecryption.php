@@ -16,39 +16,41 @@ use Famoser\PolyasVerification\Crypto\RSA\OpenSSLException;
 
 readonly class QRCodeDecryption
 {
-    public function __construct(private string $payload, private BallotDigest $ballotDigest, private string $comSeed)
+    public function __construct(private string $encC, private string $encD, private string $comSeed)
     {
     }
 
-    public function decrypt(): ?string
+    /**
+     * @phpstan-assert-if-true string $randomCoinSeed
+     * @phpstan-assert-if-true string $referenceCoin
+     */
+    public function decrypt(?string &$randomCoinSeed = null, ?string &$referenceCoin = null): bool
     {
         $comKey = $this->createComKey();
 
         try {
-            return $this->performDecryption($comKey);
+            $randomCoinSeed = $this->decryptValue($comKey, $this->encC);
+            $referenceCoin = $this->decryptValue($comKey, $this->encD);
+
+            return true;
         } catch (OpenSSLException) {
-            return null;
+            return false;
         }
     }
 
     public function createComKey(): string
     {
-        $hashBallot = $this->ballotDigest->createNorm();
-        $comSeed = $this->comSeed;
-
-        $keyDerivationKey = $comSeed . $hashBallot;
-        $keyDerivation = new KeyDerivation($keyDerivationKey, 32, '', '');
+        $keyDerivation = new KeyDerivation($this->comSeed, 32, '', '');
 
         return $keyDerivation->derive();
     }
 
-    public function performDecryption(string $comKey): string
+    public static function decryptValue(string $comKey, string $value): string
     {
-        $base64 = Base64UrlEncoding::decode($this->payload);
-        $data = base64_decode($base64);
+        $data = base64_decode($value);
         $iv = substr($data, 0, 12);
-        $tag = substr($data, 12, 16);
-        $ciphertext = substr($data, 28);
+        $ciphertext = substr($data, 12, -16);
+        $tag = substr($data, strlen($data) - 16);
 
         return AES\Encryption::decryptGCM($ciphertext, $comKey, $iv, $tag);
     }

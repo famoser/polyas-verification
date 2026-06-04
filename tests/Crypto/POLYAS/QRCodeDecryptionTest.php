@@ -11,114 +11,49 @@
 
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
-use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigest;
 use Famoser\PolyasVerification\Crypto\POLYAS\QRCodeDecryption;
+use Famoser\PolyasVerification\Test\resources\ballot0\Ballot0;
 use PHPUnit\Framework\TestCase;
 
 class QRCodeDecryptionTest extends TestCase
 {
-    public function testDecrypt(): void
-    {
-        $QRCodeDecryptedHex = $this->getQRCodeDecryptedHex();
-        $qrCodeDecryption = $this->getQRCodeDecryption();
-
-        $actualQRCodeDecrypted = $qrCodeDecryption->decrypt();
-
-        $this->assertNotNull($actualQRCodeDecrypted);
-        $this->assertEquals($QRCodeDecryptedHex, bin2hex($actualQRCodeDecrypted));
-    }
-
     public function testCreateComKey(): void
     {
-        $comKeyHex = $this->getComKeyHex();
-        $qrCodeDecryption = $this->getQRCodeDecryption();
+        $comSeed = Ballot0::getComSeed();
+        $qrCode = Ballot0::getQRCode();
+
+        $qrCodeDecryption = new QRCodeDecryption($qrCode['encC'], $qrCode['encD'], $comSeed);
 
         $actualComKey = $qrCodeDecryption->createComKey();
-
         $actualComKeyHex = bin2hex($actualComKey);
-        $this->assertEquals($comKeyHex, $actualComKeyHex);
+        $this->assertEquals('1949d15227f4f73a9cf4e2dab50983373c63dfd7a4a8f22bad14310df4f666b1', $actualComKeyHex);
     }
 
-    public function testPerformDecryption(): void
+    public function testDecryptValue(): void
     {
-        $comKeyHex = $this->getComKeyHex();
-        /** @var string $comKey */
-        $comKey = hex2bin($comKeyHex);
+        $comSeed = Ballot0::getComSeed();
+        $qrCode = Ballot0::getQRCode();
+        $qrCodeDecrypted = Ballot0::getQRCodeDecrypted();
 
-        $QRCodeDecryptedHex = $this->getQRCodeDecryptedHex();
-        $qrCodeDecryption = $this->getQRCodeDecryption();
+        $qrCodeDecryption = new QRCodeDecryption($qrCode['encC'], $qrCode['encD'], $comSeed);
 
-        $actualQRCodeDecrypted = $qrCodeDecryption->performDecryption($comKey);
-
-        $actualQRCodeDecryptedHex = bin2hex($actualQRCodeDecrypted);
-        $this->assertEquals($QRCodeDecryptedHex, $actualQRCodeDecryptedHex);
+        $comKey = $qrCodeDecryption->createComKey();
+        $actualEncC = QRCodeDecryption::decryptValue($comKey, $qrCode['encC']);
+        $this->assertEquals($qrCodeDecrypted['randomCoinSeed'], bin2hex($actualEncC));
+        $actualEncD = QRCodeDecryption::decryptValue($comKey, $qrCode['encD']);
+        $this->assertEquals($qrCodeDecrypted['referenceCoin'], $actualEncD);
     }
 
-    private function getQRCodeDecryption(): QRCodeDecryption
+    public function testDecrypt(): void
     {
-        $qrCodePayload = $this->getQRCodePayload();
-        $ballotDigest = $this->getBallotDigest();
-        $comSeed = $this->getTraceSecondDeviceInitialMsg()['comSeed'];
+        $comSeed = Ballot0::getComSeed();
+        $qrCode = Ballot0::getQRCode();
+        $qrCodeDecrypted = Ballot0::getQRCodeDecrypted();
 
-        return new QRCodeDecryption($qrCodePayload, $ballotDigest, $comSeed);
-    }
-
-    /**
-     * @return array{
-     *     'comSeed': string,
-     * }
-     */
-    private function getTraceSecondDeviceInitialMsg(): array
-    {
-        /** @var string $json */
-        $json = file_get_contents(__DIR__ . '/resources/ballot1/trace/2_LoginResponse_initialMessage.json');
-
-        return json_decode($json, true);
-    }
-
-    private function getComKeyHex(): string
-    {
-        return trim(file_get_contents(__DIR__ . '/resources/ballot1/comKey.hex')); // @phpstan-ignore-line
-    }
-
-    private function getQRCodeDecryptedHex(): string
-    {
-        return trim(file_get_contents(__DIR__ . '/resources/ballot1/QRCodeDecrypted.hex')); // @phpstan-ignore-line
-    }
-
-    private function getBallotDigest(): BallotDigest
-    {
-        /** @var string $ballotDigestJson */
-        $ballotDigestJson = file_get_contents(__DIR__ . '/resources/ballot1/ballotEntry.json');
-
-        /** @var array{
-         *     'publicLabel': string,
-         *     'publicCredential': string,
-         *     'voterId': string,
-         *     'ballot': array{
-         *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
-         *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': numeric-string, 'f': numeric-string}},
-         *          'proofOfKnowledgeOfPrivateCredential': array{'c': numeric-string, 'f': numeric-string},
-         *      }
-         *     } $ballotDigestContent
-         */
-        $ballotDigestContent = json_decode($ballotDigestJson, true);
-
-        return new BallotDigest($ballotDigestContent, $ballotDigestContent['publicLabel'], $ballotDigestContent['voterId']);
-    }
-
-    private function getQRCodePayload(): string
-    {
-        /** @var string $qrCodeJson */
-        $qrCodeJson = file_get_contents(__DIR__ . '/resources/ballot1/trace/0_QRcode.json');
-
-        /** @var array{
-         *     'c': string,
-         *     'vid': string,
-         *     'nonce': string
-         *     } $content */
-        $content = json_decode($qrCodeJson, true);
-
-        return $content['c'];
+        $qrCodeDecryption = new QRCodeDecryption($qrCode['encC'], $qrCode['encD'], $comSeed);
+        $status = $qrCodeDecryption->decrypt($randomCoinSeed, $referenceCoin);
+        $this->assertTrue($status);
+        $this->assertEquals($qrCodeDecrypted['randomCoinSeed'], bin2hex($randomCoinSeed));
+        $this->assertEquals($qrCodeDecrypted['referenceCoin'], $referenceCoin);
     }
 }
