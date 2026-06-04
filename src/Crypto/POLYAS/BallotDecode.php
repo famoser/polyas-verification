@@ -34,8 +34,8 @@ readonly class BallotDecode
     {
         $ciphertextCount = count($this->payload['ballot']['encryptedChoice']['ciphertexts']);
         $order = EccFactory::getSecgCurves()->generator256k1()->getOrder();
-        $randomCoinGenerator = new NumbersFromSeedInRange($ciphertextCount, $this->randomCoinSeed, $order);
-        $randomCoins = $randomCoinGenerator->numbers();
+        $randomCoinGenerator = new NumbersFromSeedInRange($this->randomCoinSeed, $order);
+        $randomCoins = $randomCoinGenerator->get($ciphertextCount);
 
         /** @var \GMP[] $decodedGroupElements */
         $decodedGroupElements = [];
@@ -73,8 +73,8 @@ readonly class BallotDecode
     {
         $ciphertextCount = count($this->payload['ballot']['encryptedChoice']['ciphertexts']);
         $order = EccFactory::getSecgCurves()->generator256k1()->getOrder();
-        $randomCoinGenerator = new NumbersFromSeedInRange($ciphertextCount, $this->randomCoinSeed, $order);
+        $randomCoinGenerator = new NumbersFromSeedInRange($this->randomCoinSeed, $order);
 
-        return $randomCoinGenerator->numbers();
+        return $randomCoinGenerator->get($ciphertextCount);
     }
 }

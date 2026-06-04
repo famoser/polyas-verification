@@ -123,6 +123,7 @@ feedback:
 - example 2 of algorithm 4: what does n refer to?
 - intermediate values for example 1 algorithm 4; h in hex
 - algorithm 4 does not specify that the seed passed to algorithm 3 must be in hex format
+- input data specification page 23 is not programming language agnostic
 
 changelog to v1:
 - B.4 QR-code decryption: KDF no longer needs ballot digest; GCM now stores tag at the end of the ciphertext; now standard base64 encoding (used to be base64url)

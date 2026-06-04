@@ -13,29 +13,42 @@ namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
 readonly class NumbersFromSeedInRange
 {
-    public function __construct(private int $size, private string $seed, private \GMP $maxNumber, private int $startIteration = 1)
+    public function __construct(private string $seed, private \GMP $maxNumber, private int $startIteration = 1)
     {
+    }
+
+    /**
+     * @return \Iterator<\GMP>
+     */
+    public function getIterator(): \Iterator
+    {
+        $bitLength = strlen(gmp_strval($this->maxNumber, 2));
+        $numbersFromSeed = new NumberFromSeed($this->seed, $bitLength, $this->startIteration);
+
+        while (true) {
+            $number = $numbersFromSeed->number();
+            if ($number < $this->maxNumber) {
+                yield $number;
+            }
+
+            $numbersFromSeed = $numbersFromSeed->iterate();
+        }
     }
 
     /**
      * @return \GMP[]
      */
-    public function numbers(): array
+    public function get(int $size): array
     {
-        $bitLength = strlen(gmp_strval($this->maxNumber, 2));
-        $numbersFromSeed = new NumberFromSeed($this->seed, $bitLength, $this->startIteration);
-        /** @var \GMP[] $result */
-        $result = [];
+        $numbers = [];
+        foreach ($this->getIterator() as $number) {
+            $numbers[] = $number;
 
-        while (count($result) < $this->size) {
-            $number = $numbersFromSeed->number();
-            if ($number < $this->maxNumber) {
-                $result[] = $number;
+            if (count($numbers) === $size) {
+                break;
             }
-
-            $numbersFromSeed = $numbersFromSeed->iterate();
         }
 
-        return $result;
+        return $numbers;
     }
 }
