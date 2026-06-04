@@ -1,7 +1,7 @@
 # IDE
 .idea
 .code
-.php-cs-fixer.cache
+.phpcs-cache
 .phpunit.cache
 
 # deployment
