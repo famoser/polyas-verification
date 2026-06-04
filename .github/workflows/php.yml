@@ -27,6 +27,7 @@ jobs:
         with:
           php-version: '8.4'
           extensions: bcmath, gmp, openssl, pdo, zip
+          ini-values: display_errors=On
 
       - name: Print PHP config
         run: |
