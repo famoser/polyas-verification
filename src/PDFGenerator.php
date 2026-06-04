@@ -11,16 +11,38 @@
 
 namespace Famoser\PolyasVerification;
 
+use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
+use Famoser\PdfGenerator\Frontend\Document;
+use Famoser\PdfGenerator\Frontend\Layout\Flow;
+use Famoser\PdfGenerator\Frontend\Layout\Style\FlowDirection;
+use Famoser\PdfGenerator\Frontend\Layout\Text;
+use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PolyasVerification\Crypto\PEM\Encoder;
-use PdfGenerator\Frontend\Content\Paragraph;
-use PdfGenerator\Frontend\Content\Style\TextStyle;
-use PdfGenerator\Frontend\Layout\ContentBlock;
-use PdfGenerator\Frontend\Layout\Flow;
-use PdfGenerator\Frontend\LinearDocument;
-use PdfGenerator\Frontend\Resource\Font;
 
 class PDFGenerator
 {
+    private readonly TextStyle $normalText;
+    private readonly TextStyle $codeText;
+    private readonly TextStyle $headerText;
+
+    private readonly float $normalFontSize;
+    private readonly float $headerFontSize;
+    private readonly float $metaFontSize;
+
+    public function __construct() {
+        $normalFont = Font::createFromDefault();
+        $this->normalText = new TextStyle($normalFont);
+        $this->normalFontSize = 8.0;
+
+        $headerFont = Font::createFromDefault(Font\FontFamily::Helvetica, Font\FontWeight::Bold);
+        $this->headerText = new TextStyle($headerFont);
+        $this->headerFontSize = $this->normalFontSize * 1.6 * 2;
+
+        $codeFont = Font::createFromDefault(Font\FontFamily::Courier);
+        $this->codeText =  new TextStyle($codeFont);
+
+        $this->metaFontSize = $this->normalFontSize / 1.6;
+    }
     /**
      * @param array{
      *  'fingerprint': string,
@@ -28,19 +50,19 @@ class PDFGenerator
      *   'ballotVoterId': string,
      *  } $receipt
      */
-    public static function generate(array $receipt, ?string $polyasElection, ?string &$pdf = null): bool
+    public function generate(array $receipt, ?string $polyasElection, ?string &$pdf = null): bool
     {
         $fingerprint = Encoder::encodeRaw('FINGERPRINT', $receipt['fingerprint']);
         $signature = Encoder::encodeRaw('SIGNATURE', $receipt['signature']);
         $ballotVoterId = $receipt['ballotVoterId'];
 
         try {
-            $document = new LinearDocument();
-            $flow = new Flow(Flow::DIRECTION_COLUMN);
+            $document = new Document();
+            $flow = new Flow(FlowDirection::COLUMN);
 
-            self::addIntroduction($flow);
-            self::addFingerprintAndSignature($flow, $fingerprint, $signature);
-            self::addMeta($flow, $ballotVoterId, $polyasElection);
+            $this->addIntroduction($flow);
+            $this->addFingerprintAndSignature($flow, $fingerprint, $signature);
+            $this->addMeta($flow, $ballotVoterId, $polyasElection);
 
             $document->add($flow);
             $pdf = $document->save();
@@ -51,17 +73,11 @@ class PDFGenerator
         }
     }
 
-    private static function addIntroduction(Flow $flow): void
+    private function addIntroduction(Flow $flow): void
     {
-        $normalFont = Font::createFromDefault();
-        $normalText = new TextStyle($normalFont);
-
-        $headerFont = Font::createFromDefault(Font\FontFamily::Helvetica, Font\FontWeight::Bold);
-        $headerText = new TextStyle($headerFont, $normalText->getFontSize() * 1.6 * 2);
-
-        $paragraph = new Paragraph();
-        $paragraph->add($headerText, 'Wahl-Quittung');
-        $flow->addContent($paragraph);
+        $paragraph = new Text();
+        $paragraph->addSpan('Wahl-Quittung', $this->headerText, $this->headerFontSize);
+        $flow->add($paragraph);
 
         $contentOfReceipt = 'Diese Wahl-Quittung enthält eine Referenz (ein "Fingerprint") einer verschlüsselten Stimme, sowie eine vom Wahl-Server ausgestellte gültige Signatur davon.';
 
@@ -70,50 +86,38 @@ class PDFGenerator
         $howTo = $howToVerify.' '.$verificationIsPrivate;
 
         foreach ([$contentOfReceipt, $howTo] as $text) {
-            $paragraph = new Paragraph();
-            $paragraph->add($normalText, $text);
+            $paragraph = new Text();
+            $paragraph->addSpan($text, $this->normalText, $this->normalFontSize);
+            $paragraph->setMargin([0, $this->normalFontSize * 1.6, 0, 0]);
 
-            $contentBlock = new ContentBlock($paragraph);
-            $contentBlock->setMargin([0, $normalText->getLineHeight() * 1.6, 0, 0]);
-
-            $flow->add($contentBlock);
+            $flow->add($paragraph);
         }
     }
 
-    private static function addFingerprintAndSignature(Flow $flow, string $fingerprint, string $signature): void
+    private function addFingerprintAndSignature(Flow $flow, string $fingerprint, string $signature): void
     {
-        $codeFont = Font::createFromDefault(Font\FontFamily::Courier);
-        $normalText = new TextStyle($codeFont);
+        $paragraph = new Text();
+        $paragraph->addSpan($fingerprint.$signature, $this->codeText, $this->normalFontSize);
+        $paragraph->setMargin([0, $this->normalFontSize * 1.6 * 4, 0, 0]);
 
-        $paragraph = new Paragraph();
-        $paragraph->add($normalText, $fingerprint.$signature);
-
-        $contentBlock = new ContentBlock($paragraph);
-        $contentBlock->setMargin([0, $normalText->getLineHeight() * 1.6 * 4, 0, 0]);
-
-        $flow->add($contentBlock);
+        $flow->add($paragraph);
     }
 
-    private static function addMeta(Flow $flow, string $ballotVoterId, ?string $polyasElection): void
+    private function addMeta(Flow $flow, string $ballotVoterId, ?string $polyasElection): void
     {
         if (!$ballotVoterId && !$polyasElection) {
             return;
         }
 
-        $codeFont = Font::createFromDefault(Font\FontFamily::Courier);
-        $normalText = new TextStyle($codeFont, 3.8 / 1.6);
-
-        $paragraph = new Paragraph();
+        $paragraph = new Text();
         if ($ballotVoterId) {
-            $paragraph->add($normalText, 'Anonymisierte Wahl-ID: '.$ballotVoterId."\n");
+            $paragraph->addSpan('Anonymisierte Wahl-ID: '.$ballotVoterId."\n", $this->codeText, $this->metaFontSize);
         }
         if ($polyasElection) {
-            $paragraph->add($normalText, 'Wahl: '.$polyasElection);
+            $paragraph->addSpan('Wahl: '.$polyasElection, $this->codeText, $this->metaFontSize);
         }
+        $paragraph->setMargin([0, $this->normalFontSize * 2, 0, 0]);
 
-        $contentBlock = new ContentBlock($paragraph);
-        $contentBlock->setMargin([0, $normalText->getLineHeight() * 1.6 * 2, 0, 0]);
-
-        $flow->add($contentBlock);
+        $flow->add($paragraph);
     }
 }

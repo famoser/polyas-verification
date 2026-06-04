@@ -39,7 +39,8 @@ readonly class DownloadReceipt
             return false;
         }
 
-        if (!PDFGenerator::generate($receipt, $this->polyasElection, $pdf)) {
+        $generator = new PDFGenerator();
+        if (!$generator->generate($receipt, $this->polyasElection, $pdf)) {
             $failedCheck = self::PDF_GENERATED;
 
             return false;

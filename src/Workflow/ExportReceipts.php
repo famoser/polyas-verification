@@ -30,8 +30,9 @@ class ExportReceipts
         $pdfs = [];
 
         $receipts = Storage::getReceipts($this->polyasElection);
+        $generator = new PDFGenerator();
         foreach ($receipts as $receipt) {
-            if (!PDFGenerator::generate($receipt, $receipt['electionId'], $pdf)) {
+            if (!$generator->generate($receipt, $receipt['electionId'], $pdf)) {
                 $error = self::PDF_GENERATION_FAILED;
 
                 return false;
