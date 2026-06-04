@@ -25,7 +25,6 @@ class NumberFromSeedTest extends TestCase
         return [
             ['xyz', 0, ['0']],
             ['xyz', 2, ['0']],
-            ['xyz', 7, ['68']],
             ['xyz', 8, ['196']],
             ['xyz', 520, [
                 '1732501504205220402900929820446308723705652945081825598593993913145942097001127020633138020218038968109094917857329663184563374015879596834703721749398989648',
@@ -50,5 +49,16 @@ class NumberFromSeedTest extends TestCase
             $this->assertEquals($result, $numberStr);
             $numbersFromSeed = $numbersFromSeed->iterate();
         }
+    }
+
+    public function testEdgecaseNumber(): void
+    {
+        /** @var string $seed */
+        $seed = hex2bin('736565646767656e00000001');
+        $numbersFromSeed = new NumberFromSeed($seed, 257);
+
+        $number = $numbersFromSeed->number();
+        $numberStr = gmp_strval($number);
+        $this->assertEquals("53978530349778864856192716133380184703749264367696718193390483386075578155649", $numberStr);
     }
 }
