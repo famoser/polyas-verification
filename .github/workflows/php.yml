@@ -29,13 +29,6 @@ jobs:
           extensions: bcmath, gmp, openssl, pdo, zip
           ini-values: display_errors=On
 
-      - name: Print PHP config
-        run: |
-          php -v
-          php --ini
-          php -m
-          php -i
-
       - name: Validate composer.json and composer.lock
         run: composer validate
 
