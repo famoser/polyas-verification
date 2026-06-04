@@ -23,7 +23,7 @@ class RSATest extends TestCase
      */
     private function createValidSignature(string $data): array
     {
-        $key = RSA\KeyFactory::generateRSAKey(self::TEST_RSA_KEY_BITS);
+        $key = RSA\KeyFactory::generateRSAKey(self::TEST_RSA_KEY_BITS, true);
         $publicKey = RSA\KeyFactory::getPublicKeyPem($key);
 
         $signature = RSA\Signature::signSha256($data, $key);
