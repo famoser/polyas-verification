@@ -19,15 +19,15 @@ use Famoser\PdfGenerator\Frontend\Layout\Text;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PolyasVerification\Crypto\PEM\Encoder;
 
-class PDFGenerator
+readonly class PDFGenerator
 {
-    private readonly TextStyle $normalText;
-    private readonly TextStyle $codeText;
-    private readonly TextStyle $headerText;
+    private TextStyle $normalText;
+    private TextStyle $codeText;
+    private TextStyle $headerText;
 
-    private readonly float $normalFontSize;
-    private readonly float $headerFontSize;
-    private readonly float $metaFontSize;
+    private float $normalFontSize;
+    private float $headerFontSize;
+    private float $metaFontSize;
 
     public function __construct()
     {

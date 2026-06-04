@@ -16,8 +16,8 @@ use Famoser\PolyasVerification\PDFGenerator;
 
 readonly class DownloadReceipt
 {
-    public const RECEIPT_VALID = 'RECEIPT_VALID';
-    public const PDF_GENERATED = 'PDF_GENERATED';
+    public const string RECEIPT_VALID = 'RECEIPT_VALID';
+    public const string PDF_GENERATED = 'PDF_GENERATED';
 
     public function __construct(private string $verificationKeyX509Hex, private string $polyasElection)
     {

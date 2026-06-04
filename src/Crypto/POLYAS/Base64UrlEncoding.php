@@ -13,8 +13,8 @@ namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
 class Base64UrlEncoding
 {
-    private const SEARCH = ['/', '+'];
-    private const REPLACE = ['_', '-'];
+    private const array SEARCH = ['/', '+'];
+    private const array REPLACE = ['_', '-'];
 
     /**
      * likely motivated by https://base64.guru/standards/base64url.

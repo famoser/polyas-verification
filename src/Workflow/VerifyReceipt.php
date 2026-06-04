@@ -15,6 +15,7 @@ use Famoser\PolyasVerification\Crypto\PEM\Decoder;
 use Famoser\PolyasVerification\Crypto\PEM\Payload;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigestSignature;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotReceipt;
+
 /**
  * @phpstan-type ValidReceipt array{
  *     fingerprint: string,

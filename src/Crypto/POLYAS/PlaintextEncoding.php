@@ -20,7 +20,7 @@ use Mdanter\Ecc\Primitives\PointInterface;
 
 class PlaintextEncoding
 {
-    private const MAX_COUNTER = 80;
+    private const int MAX_COUNTER = 80;
 
     public static function encode(\GMP $value): PointInterface
     {
@@ -33,6 +33,7 @@ class PlaintextEncoding
         do {
             try {
                 $xPoint = gmp_mod(gmp_add($currentValue, 1), $order);
+                /** @noinspection PhpSuspiciousNameCombinationInspection */
                 $yPoint = $curve->recoverYfromX(false, $xPoint);
 
                 return $curve->getPoint($xPoint, $yPoint);
