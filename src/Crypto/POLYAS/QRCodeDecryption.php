@@ -36,7 +36,7 @@ readonly class QRCodeDecryption
         $hashBallot = $this->ballotDigest->createNorm();
         $comSeed = $this->comSeed;
 
-        $keyDerivationKey = $comSeed.$hashBallot;
+        $keyDerivationKey = $comSeed . $hashBallot;
         $keyDerivation = new KeyDerivation($keyDerivationKey, 32, '', '');
 
         return $keyDerivation->derive();

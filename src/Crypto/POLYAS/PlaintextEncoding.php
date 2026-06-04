@@ -61,7 +61,7 @@ class PlaintextEncoding
         $paddingSize = ($blockSize - ((strlen($message) + 2) % $blockSize)) % $blockSize;
         $zeroPadding = str_repeat("\0", $paddingSize);
         $paddingSizePrefix = pack('n', $paddingSize);
-        $paddedMessage = $paddingSizePrefix.$message.$zeroPadding;
+        $paddedMessage = $paddingSizePrefix . $message . $zeroPadding;
 
         /** @var \GMP[] $result */
         $result = [];

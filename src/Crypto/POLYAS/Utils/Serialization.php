@@ -21,14 +21,14 @@ class Serialization
 
         // align to byte length
         if (1 === strlen($hex) % 2) {
-            $hex = '0'.$hex;
+            $hex = '0' . $hex;
         }
 
         // align byte length to java implementation of BigInteger.toByteArray()
         $bitLength = strlen(gmp_strval($dec, 2));
         $expectedByteLength = $bitLength / 8 + 1;
         if (strlen($hex) / 2 === $expectedByteLength - 1) {
-            $hex = '00'.$hex;
+            $hex = '00' . $hex;
         }
 
         return $hex;
@@ -38,7 +38,7 @@ class Serialization
     {
         $content = bin2hex($content);
 
-        return self::getHexLength4Bytes((int) (strlen($content) / 2)).$content;
+        return self::getHexLength4Bytes((int) (strlen($content) / 2)) . $content;
     }
 
     /**

@@ -22,7 +22,7 @@ class ApiClient
     public function __construct(string $baseUrl)
     {
         $this->client = new Client([
-            'base_uri' => $baseUrl.'/ssd/rest/',
+            'base_uri' => $baseUrl . '/ssd/rest/',
             'headers' => ['User-Agent' => 'famoser-polyas-verification/1.0'],
         ]);
     }

@@ -72,7 +72,7 @@ class BallotDigestSignatureTest extends TestCase
 
     private function getBallotDigest(): BallotDigest
     {
-        $ballotDigestJson = file_get_contents(__DIR__.'/resources/ballot1/ballotEntry.json');
+        $ballotDigestJson = file_get_contents(__DIR__ . '/resources/ballot1/ballotEntry.json');
 
         /** @var array{
          *     'publicLabel': string,
@@ -93,7 +93,7 @@ class BallotDigestSignatureTest extends TestCase
     private function getDeviceParameters(): DeviceParameters
     {
         /** @var string $deviceParametersJson */
-        $deviceParametersJson = file_get_contents(__DIR__.'/resources/ballot1/deviceParameters/deviceParameters.json');
+        $deviceParametersJson = file_get_contents(__DIR__ . '/resources/ballot1/deviceParameters/deviceParameters.json');
 
         return new DeviceParameters($deviceParametersJson);
     }
@@ -105,7 +105,7 @@ class BallotDigestSignatureTest extends TestCase
      */
     private function getTraceSecondDeviceInitialMsg(): array
     {
-        $json = file_get_contents(__DIR__.'/resources/ballot1/trace/2_LoginResponse_initialMessage.json');
+        $json = file_get_contents(__DIR__ . '/resources/ballot1/trace/2_LoginResponse_initialMessage.json');
 
         return json_decode($json, true); // @phpstan-ignore-line
     }

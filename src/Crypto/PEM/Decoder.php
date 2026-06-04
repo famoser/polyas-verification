@@ -18,8 +18,8 @@ namespace Famoser\PolyasVerification\Crypto\PEM;
 class Decoder
 {
     private const ENCAPSULATION_BOUNDARY_MARKER = '-----';
-    private const BEGIN_MARKER = self::ENCAPSULATION_BOUNDARY_MARKER.'BEGIN ';
-    private const END_MARKER = self::ENCAPSULATION_BOUNDARY_MARKER.'END ';
+    private const BEGIN_MARKER = self::ENCAPSULATION_BOUNDARY_MARKER . 'BEGIN ';
+    private const END_MARKER = self::ENCAPSULATION_BOUNDARY_MARKER . 'END ';
 
     /**
      * @return Payload[]
@@ -39,7 +39,7 @@ class Decoder
             $line = $lines[$i];
             if (str_starts_with($line, self::BEGIN_MARKER)) {
                 if (!str_ends_with($line, self::ENCAPSULATION_BOUNDARY_MARKER)) {
-                    throw new DecodingException('Start marker does not end with '.self::ENCAPSULATION_BOUNDARY_MARKER, $i);
+                    throw new DecodingException('Start marker does not end with ' . self::ENCAPSULATION_BOUNDARY_MARKER, $i);
                 }
 
                 $activeMarker = substr($line, strlen(self::BEGIN_MARKER));
@@ -48,9 +48,9 @@ class Decoder
 
             if (str_starts_with($line, self::END_MARKER) && $activeMarker) {
                 // RFC: Generators MUST put the same label on the "-----END " line (post-encapsulation boundary) as the corresponding "-----BEGIN " line.
-                $expectedEnd = self::END_MARKER.$activeMarker;
+                $expectedEnd = self::END_MARKER . $activeMarker;
                 if ($expectedEnd !== $line) {
-                    throw new DecodingException('End marker is not exactly '.$expectedEnd, $i);
+                    throw new DecodingException('End marker is not exactly ' . $expectedEnd, $i);
                 }
 
                 $label = substr($activeMarker, 0, strlen($activeMarker) - strlen(self::ENCAPSULATION_BOUNDARY_MARKER));
@@ -70,7 +70,7 @@ class Decoder
         }
 
         if ($activeMarker) {
-            throw new DecodingException('Expected end marker '.self::END_MARKER.$activeMarker.' not found.');
+            throw new DecodingException('Expected end marker ' . self::END_MARKER . $activeMarker . ' not found.');
         }
 
         return $payloads;

@@ -29,7 +29,7 @@ class Decoder
         // expect object identifier to be 1.2.840.113549.1.1.1 (see https://www.rfc-editor.org/rfc/rfc3279#section-2.3.1)
         $objectIdentifier = $algorithmIdentifier->at(0)->asObjectIdentifier();
         if ('1.2.840.113549.1.1.1' !== $objectIdentifier->oid()) {
-            throw new DecodingException('Object identifier does not match RSA public key: '.$objectIdentifier->oid());
+            throw new DecodingException('Object identifier does not match RSA public key: ' . $objectIdentifier->oid());
         }
 
         // expect to be of null type (see https://www.rfc-editor.org/rfc/rfc3279#section-2.3.1)

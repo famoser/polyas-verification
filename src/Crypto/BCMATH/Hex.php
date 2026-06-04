@@ -13,18 +13,24 @@ namespace Famoser\PolyasVerification\Crypto\BCMATH;
 
 class Hex
 {
+    /**
+     * @param numeric-string $dec
+     */
     public static function bcdechex(string $dec): string
     {
         $hex = '';
         do {
             $last = (int) bcmod($dec, '16');
-            $hex = dechex($last).$hex;
+            $hex = dechex($last) . $hex;
             $dec = bcdiv(bcsub($dec, (string) $last), '16');
         } while ($dec > 0);
 
         return $hex;
     }
 
+    /**
+     * @return numeric-string
+     */
     public static function bchexdec(string $hex): string
     {
         $number = '0';

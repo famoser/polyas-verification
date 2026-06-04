@@ -18,8 +18,8 @@ namespace Famoser\PolyasVerification\Crypto\PEM;
 class Encoder
 {
     private const ENCAPSULATION_BOUNDARY_MARKER = '-----';
-    private const BEGIN_MARKER = self::ENCAPSULATION_BOUNDARY_MARKER.'BEGIN ';
-    private const END_MARKER = self::ENCAPSULATION_BOUNDARY_MARKER.'END ';
+    private const BEGIN_MARKER = self::ENCAPSULATION_BOUNDARY_MARKER . 'BEGIN ';
+    private const END_MARKER = self::ENCAPSULATION_BOUNDARY_MARKER . 'END ';
 
     public static function encode(string $label, string $payload): string
     {
@@ -30,10 +30,10 @@ class Encoder
 
     public static function encodeRaw(string $label, string $encodedPayload): string
     {
-        $begin = self::BEGIN_MARKER.$label.self::ENCAPSULATION_BOUNDARY_MARKER;
-        $end = self::END_MARKER.$label.self::ENCAPSULATION_BOUNDARY_MARKER;
+        $begin = self::BEGIN_MARKER . $label . self::ENCAPSULATION_BOUNDARY_MARKER;
+        $end = self::END_MARKER . $label . self::ENCAPSULATION_BOUNDARY_MARKER;
         $content = chunk_split($encodedPayload, 64, PHP_EOL);
 
-        return $begin.PHP_EOL.$content.$end.PHP_EOL;
+        return $begin . PHP_EOL . $content . $end . PHP_EOL;
     }
 }

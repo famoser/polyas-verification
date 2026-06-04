@@ -23,12 +23,12 @@ readonly class NumberFromSeed
             return gmp_init(0);
         }
 
-        $keyDerivationKey = $this->seed.pack('N', $this->iteration);
+        $keyDerivationKey = $this->seed . pack('N', $this->iteration);
         $byteLength = (int) ceil($this->bitLength / 8.0);
         $keyDerivation = new KeyDerivation($keyDerivationKey, $byteLength, 'generator', 'Polyas');
 
         $key = $keyDerivation->derive();
-        $positiveKey = "\0".$key;
+        $positiveKey = "\0" . $key;
 
         // cut off top bits if necessary
         if ($this->bitLength % 8 > 0) {
@@ -40,7 +40,7 @@ readonly class NumberFromSeed
             $firstNumberWithClearedBits = $firstNumber ^ ($bitsToClear << $keepBits);
 
             $clearedFirstByte = pack('n', $firstNumberWithClearedBits);
-            $positiveKey = $clearedFirstByte.substr($key, 2);
+            $positiveKey = $clearedFirstByte . substr($key, 2);
         }
 
         return gmp_import($positiveKey);

@@ -80,7 +80,7 @@ class BallotDigestTest extends TestCase
 
     private function getBallotDigest(string $ballot): BallotDigest
     {
-        $ballotDigestJson = file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json');
+        $ballotDigestJson = file_get_contents(__DIR__ . '/resources/' . $ballot . '/ballotEntry.json');
 
         /** @var array{
          *     'publicLabel': string,
@@ -100,7 +100,7 @@ class BallotDigestTest extends TestCase
     private function getBallotDigestDigest(string $ballot): string
     {
         /** @var string $fileContent */
-        $fileContent = file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json.bytesDigest');
+        $fileContent = file_get_contents(__DIR__ . '/resources/' . $ballot . '/ballotEntry.json.bytesDigest');
         $singleLine = str_replace("\n", '', $fileContent);
 
         return trim($singleLine);
@@ -108,6 +108,6 @@ class BallotDigestTest extends TestCase
 
     private function getBallotDigestFingerprint(string $ballot): string
     {
-        return trim(file_get_contents(__DIR__.'/resources/'.$ballot.'/ballotEntry.json.fingerprint')); // @phpstan-ignore-line
+        return trim(file_get_contents(__DIR__ . '/resources/' . $ballot . '/ballotEntry.json.fingerprint')); // @phpstan-ignore-line
     }
 }

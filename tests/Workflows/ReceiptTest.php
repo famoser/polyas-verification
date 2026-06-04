@@ -44,7 +44,7 @@ class ReceiptTest extends TestCase
      */
     private function getDeviceParameters(): array
     {
-        return json_decode(file_get_contents(__DIR__.'/resources/ballot0/deviceParameters.json'), true); // @phpstan-ignore-line
+        return json_decode(file_get_contents(__DIR__ . '/resources/ballot0/deviceParameters.json'), true); // @phpstan-ignore-line
     }
 
     private function getReceiptPath(): string

@@ -24,7 +24,7 @@ class RequestValidatorExtensions
         }
 
         if (UPLOAD_ERR_OK !== $file->getError()) {
-            throw new HttpBadRequestException($request, 'file upload failed with code '.$file->getError().'.');
+            throw new HttpBadRequestException($request, 'file upload failed with code ' . $file->getError() . '.');
         }
 
         if ($file->getClientFilename() && !str_ends_with($file->getClientFilename(), 'pdf')) {
@@ -56,13 +56,13 @@ class RequestValidatorExtensions
     {
         foreach ($requiredKeys as $key) {
             if (!key_exists($key, $array)) {
-                throw new HttpBadRequestException($request, 'key '.$key.' expected, but not provided.');
+                throw new HttpBadRequestException($request, 'key ' . $key . ' expected, but not provided.');
             }
         }
 
         foreach (array_keys($array) as $key) {
             if (!in_array($key, $requiredKeys, true)) {
-                throw new HttpBadRequestException($request, 'the key '.$key.' is invalid.');
+                throw new HttpBadRequestException($request, 'the key ' . $key . ' is invalid.');
             }
         }
     }

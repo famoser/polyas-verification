@@ -29,7 +29,8 @@ class PDFGenerator
     private readonly float $headerFontSize;
     private readonly float $metaFontSize;
 
-    public function __construct() {
+    public function __construct()
+    {
         $normalFont = Font::createFromDefault();
         $this->normalText = new TextStyle($normalFont);
         $this->normalFontSize = 8.0;
@@ -83,7 +84,7 @@ class PDFGenerator
 
         $howToVerify = 'Stellen Sie die Wahl-Quittung Auditor:innen zu, denen Sie vertrauen. Die Auditor:innen können damit überprüfen, ob die referenzierte Stimme im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde.';
         $verificationIsPrivate = 'Durch die Verifizierung bleibt das Stimmgeheimnis gewahrt: Nur mit der Wahl-Quittung ist es nicht möglich, die Stimme wieder zu entschlüsseln (auch nicht für die Auditor:innen).';
-        $howTo = $howToVerify.' '.$verificationIsPrivate;
+        $howTo = $howToVerify . ' ' . $verificationIsPrivate;
 
         foreach ([$contentOfReceipt, $howTo] as $text) {
             $paragraph = new Text();
@@ -97,7 +98,7 @@ class PDFGenerator
     private function addFingerprintAndSignature(Flow $flow, string $fingerprint, string $signature): void
     {
         $paragraph = new Text();
-        $paragraph->addSpan($fingerprint.$signature, $this->codeText, $this->normalFontSize);
+        $paragraph->addSpan($fingerprint . $signature, $this->codeText, $this->normalFontSize);
         $paragraph->setMargin([0, $this->normalFontSize * 1.6 * 4, 0, 0]);
 
         $flow->add($paragraph);
@@ -111,10 +112,10 @@ class PDFGenerator
 
         $paragraph = new Text();
         if ($ballotVoterId) {
-            $paragraph->addSpan('Anonymisierte Wahl-ID: '.$ballotVoterId."\n", $this->codeText, $this->metaFontSize);
+            $paragraph->addSpan('Anonymisierte Wahl-ID: ' . $ballotVoterId . "\n", $this->codeText, $this->metaFontSize);
         }
         if ($polyasElection) {
-            $paragraph->addSpan('Wahl: '.$polyasElection, $this->codeText, $this->metaFontSize);
+            $paragraph->addSpan('Wahl: ' . $polyasElection, $this->codeText, $this->metaFontSize);
         }
         $paragraph->setMargin([0, $this->normalFontSize * 2, 0, 0]);
 

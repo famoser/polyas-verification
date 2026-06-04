@@ -15,8 +15,8 @@ use Slim\Psr7\UploadedFile;
 
 class Storage
 {
-    private const DB_PATH = PathHelper::VAR_PERSISTENT_DIR.DIRECTORY_SEPARATOR.'receipts.sqlite';
-    private const VERSION_PATH = self::DB_PATH.'.version';
+    private const DB_PATH = PathHelper::VAR_PERSISTENT_DIR . DIRECTORY_SEPARATOR . 'receipts.sqlite';
+    private const VERSION_PATH = self::DB_PATH . '.version';
 
     public static function writeUploadedFile(string $dir, UploadedFile $file): string
     {
@@ -24,8 +24,8 @@ class Storage
             mkdir($dir, 0777, true);
         }
 
-        $filename = uniqid().'.pdf';
-        $path = $dir.DIRECTORY_SEPARATOR.$filename;
+        $filename = uniqid() . '.pdf';
+        $path = $dir . DIRECTORY_SEPARATOR . $filename;
 
         $file->moveTo($path);
 
@@ -129,7 +129,7 @@ class Storage
             $dbExists = file_exists(self::DB_PATH);
             $version = file_exists(self::VERSION_PATH) ? file_get_contents(self::VERSION_PATH) : '';
 
-            self::$pdo = new \PDO('sqlite:'.self::DB_PATH);
+            self::$pdo = new \PDO('sqlite:' . self::DB_PATH);
             if (!$dbExists || '' === $version) {
                 self::$pdo->exec('CREATE TABLE receipts (fingerprint TEXT NOT NULL, signature TEXT NOT NULL, ballot_voter_id TEXT NOT NULL, election_id TEXT NOT NULL, UNIQUE(fingerprint,signature))');
             }
