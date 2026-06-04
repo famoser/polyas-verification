@@ -28,21 +28,21 @@ readonly class NumberFromSeed
         $keyDerivation = new KeyDerivation($keyDerivationKey, $byteLength, 'generator', 'Polyas');
 
         $key = $keyDerivation->derive();
-        $positiveKey = "\0" . $key;
 
         // cut off top bits if necessary
         if ($this->bitLength % 8 > 0) {
-            $firstByte = substr($positiveKey, 0, 2);
+            $firstByte = substr($key, 0, 2);
             $firstNumber = (int) unpack('n', $firstByte)[1]; // @phpstan-ignore-line
 
             $keepBits = $this->bitLength % 8;
-            $bitsToClear = $firstNumber >> $keepBits;
-            $firstNumberWithClearedBits = $firstNumber ^ ($bitsToClear << $keepBits);
+            $mask = 0xffff >> (8 - $keepBits);
+            $firstNumberWithClearedBits = $firstNumber & $mask;
 
             $clearedFirstByte = pack('n', $firstNumberWithClearedBits);
-            $positiveKey = $clearedFirstByte . substr($key, 2);
+            $key = $clearedFirstByte . substr($key, 2);
         }
 
+        $positiveKey = "\0" . $key; // prefix with 0-byte to ensure it is interpreted as positive number
         return gmp_import($positiveKey);
     }
 
