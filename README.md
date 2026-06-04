@@ -110,7 +110,10 @@ The server needs to fulfil requirements specified in `composer.json`.
 
 ## Future functionality
 
+WIP:
+- Discuss receipt workflow
+- Get access to test election
+
 The following changes should be tackled:
 - Describe clearly what IV is for, as users are likely not aware (see https://publikationen.bibliothek.kit.edu/1000175514/155244080)
 - Use https://github.com/famoser/elliptic/ as a cryptography backend
-- Ask POLYAS how to check that uploaded receipts are contained on the bulletin board of the POLYAS server
