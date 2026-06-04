@@ -45,5 +45,12 @@ class NumberFromSeedInRangeTest extends TestCase
             $numberStr = gmp_strval($numbers[$i]);
             $this->assertEquals($result, $numberStr);
         }
+
+        foreach ($numbersFromSeedInRange->getIterator() as $i => $item) {
+            $this->assertEquals($numbers[$i], $item);
+            if ($i === count($numbers) - 1) {
+                break;
+            }
+        }
     }
 }
