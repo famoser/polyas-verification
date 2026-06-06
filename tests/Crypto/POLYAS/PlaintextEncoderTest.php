@@ -19,20 +19,6 @@ use PHPUnit\Framework\TestCase;
 
 class PlaintextEncoderTest extends TestCase
 {
-    use IncompleteTestTrait;
-
-    public function testEncode(): void
-    {
-        $this->markTestIncompleteNS('Encoding probably wrong specified.');
-
-        $value = $this->getValue();
-        $point = $this->getPoint();
-
-        $encoded = PlaintextEncoding::encode($value);
-
-        $this->assertTrue($point->equals($encoded));
-    }
-
     public function testEncodeMultiPlaintext(): void
     {
         $message = 'hi mom';

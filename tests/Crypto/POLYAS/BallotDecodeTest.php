@@ -14,6 +14,7 @@ namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDecode;
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
 use Famoser\PolyasVerification\Crypto\SECP256K1;
+use Famoser\PolyasVerification\Test\resources\ballot0\Ballot0;
 use Mdanter\Ecc\Primitives\PointInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -22,7 +23,7 @@ class BallotDecodeTest extends TestCase
     public function testBallotDigestDigestedBytes(): void
     {
         $ballotDecode = $this->getBallotDecode();
-        $expectedPlaintextHex = $this->getExpectedPlaintextHex();
+        $expectedPlaintextHex = '00000001';
 
         $message = $ballotDecode->decode();
         $this->assertNotNull($message);
@@ -41,9 +42,9 @@ class BallotDecodeTest extends TestCase
 
     public function testGetGroupElement(): void
     {
-        $payload = $this->getTraceSecondDeviceInitialMsg();
+        $payload = Ballot0::getLoginResponseInitialMessage();
         $ballotDecode = $this->getBallotDecode();
-        $expectedGroupElement = $this->getExpectedGroupElement();
+        $expectedGroupElement = SECP256K1\Encoder::parseCompressedPoint('020007d00000005000000000000000000000000000000000000000000000000003');
 
         $ciphertexts = $payload['ballot']['encryptedChoice']['ciphertexts'];
         $decodeRandomCoins = $ballotDecode->getDecodeRandomCoins();
@@ -54,53 +55,10 @@ class BallotDecodeTest extends TestCase
 
     private function getBallotDecode(): BallotDecode
     {
-        $payload = $this->getTraceSecondDeviceInitialMsg();
-        $deviceParameters = $this->getDeviceParameters();
-        $randomCoinSeed = $this->getRandomCoinSeed();
+        $payload = Ballot0::getLoginResponseInitialMessage();
+        $deviceParameters = Ballot0::getDeviceParameters();
+        $randomCoinSeed = Ballot0::getQRCodeDecrypted()['randomCoinSeed'];
 
         return new BallotDecode($payload, $deviceParameters->getPublicKey(), $randomCoinSeed);
-    }
-
-    /**
-     * @return array{
-     *     'secondDeviceParametersJson': string,
-     *     'factorY': string[],
-     *     'ballot': array{
-     *          'encryptedChoice': array{'ciphertexts': array{array{'y': string}}}
-     *      }
-     *     }
-     */
-    private function getTraceSecondDeviceInitialMsg(): array
-    {
-        /** @var string $json */
-        $json = file_get_contents(__DIR__ . '/resources/ballot1/trace/2_LoginResponse_initialMessage.json');
-
-        return json_decode($json, true);
-    }
-
-    private function getDeviceParameters(): DeviceParameters
-    {
-        $deviceParametersPayload = $this->getTraceSecondDeviceInitialMsg();
-        $deviceParametersJson = $deviceParametersPayload['secondDeviceParametersJson'];
-
-        return new DeviceParameters($deviceParametersJson);
-    }
-
-    private function getRandomCoinSeed(): string
-    {
-        /** @var string $randomCoinSeed */
-        $randomCoinSeed = hex2bin('1e89b5f95deae82f6f823b52709117405f057783eda018d72cbd83141d394fbd');
-
-        return $randomCoinSeed;
-    }
-
-    public function getExpectedPlaintextHex(): string
-    {
-        return '00000001';
-    }
-
-    public function getExpectedGroupElement(): PointInterface
-    {
-        return SECP256K1\Encoder::parseCompressedPoint('020007d00000005000000000000000000000000000000000000000000000000003');
     }
 }

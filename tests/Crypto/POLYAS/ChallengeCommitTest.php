@@ -12,18 +12,23 @@
 namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
+use Famoser\PolyasVerification\Crypto\SECP256K1\Encoder;
+use Famoser\PolyasVerification\Test\resources\ballot0\Ballot0;
 use PHPUnit\Framework\TestCase;
 
 class ChallengeCommitTest extends TestCase
 {
     public function testValidateFromSampleData(): void
     {
-        $challengeCommitment = $this->getTraceLoginRequest()['challengeCommitment'];
-        $challengeCommit = $this->getChallengeCommit();
+        $request = Ballot0::getChallengeRequest();
+        $challenge = gmp_init($request['challenge'], 10);
+        $challengeRandomCoin = gmp_init($request['challengeRandomCoin'], 10);
 
+        $challengeCommit = new ChallengeCommit($challenge, $challengeRandomCoin);
         $commit = $challengeCommit->commit();
 
-        $this->assertEquals($challengeCommitment, $commit);
+        $expectedCommit = Ballot0::getLoginRequest()['challengeCommitment'];
+        $this->assertEquals($expectedCommit, $commit);
     }
 
     public function testValidateWithFreshRandomness(): void
@@ -33,42 +38,5 @@ class ChallengeCommitTest extends TestCase
         $commit = $challengeCommit->commit();
 
         $this->assertTrue($challengeCommit->verify($commit));
-    }
-
-    private function getChallengeCommit(): ChallengeCommit
-    {
-        $request = $this->getTraceChallengeRequest();
-
-        $challenge = gmp_init($request['challenge'], 10);
-        $challengeRandomCoin = gmp_init($request['challengeRandomCoin'], 10);
-
-        return new ChallengeCommit($challenge, $challengeRandomCoin);
-    }
-
-    /**
-     * @return array{
-     *     'challengeCommitment': string,
-     * }
-     */
-    private function getTraceLoginRequest(): array
-    {
-        /** @var string $json */
-        $json = file_get_contents(__DIR__ . '/resources/ballot1/trace/1_LoginRequest.json');
-
-        return json_decode($json, true);
-    }
-
-    /**
-     * @return array{
-     *     'challenge': string,
-     *     'challengeRandomCoin': string,
-     * }
-     */
-    private function getTraceChallengeRequest(): array
-    {
-        /** @var string $json */
-        $json = file_get_contents(__DIR__ . '/resources/ballot1/trace/3_ChallengeRequest.json');
-
-        return json_decode($json, true);
     }
 }
