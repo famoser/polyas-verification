@@ -13,6 +13,7 @@ namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigest;
 use Famoser\PolyasVerification\Crypto\POLYAS\Utils\Serialization;
+use Famoser\PolyasVerification\Test\resources\ballot0\Ballot0;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -48,69 +49,14 @@ class BallotDigestTest extends TestCase
         $this->assertEquals($hex, $actualHex);
     }
 
-    /**
-     * @return string[][]
-     */
-    public static function ballotProvider(): array
+    public function testBallotDigestDigestedBytes(): void
     {
-        return [
-            ['ballot0'],
-            ['ballot1'],
-        ];
-    }
+        $message = Ballot0::getLoginResponseInitialMessage();
+        $ballotDigest = new BallotDigest($message['ballot']);
 
-    #[DataProvider('ballotProvider')]
-    public function testBallotDigestDigestedBytes(string $ballot): void
-    {
-        $ballotDigest = $this->getBallotDigest($ballot);
-        $expectedDigest = $this->getBallotDigestDigest($ballot);
+        $digest = $ballotDigest->createNormalizedHex();
 
-        $digest = $ballotDigest->createDigestHex();
+        $expectedDigest = Ballot0::getBallotDigest();
         $this->assertEquals($expectedDigest, $digest);
-    }
-
-    #[DataProvider('ballotProvider')]
-    public function testBallotDigestFingerprint(string $ballot): void
-    {
-        $ballotDigest = $this->getBallotDigest($ballot);
-        $expectedFingerprint = $this->getBallotDigestFingerprint($ballot);
-
-        $fingerprint = $ballotDigest->createFingerprint();
-
-        $fingerprintHex = bin2hex($fingerprint);
-        $this->assertEquals($expectedFingerprint, $fingerprintHex);
-    }
-
-    private function getBallotDigest(string $ballot): BallotDigest
-    {
-        $ballotDigestJson = file_get_contents(__DIR__ . '/resources/' . $ballot . '/ballotEntry.json');
-
-        /** @var array{
-         *     'publicLabel': string,
-         *     'publicCredential': string,
-         *     'voterId': string,
-         *     'ballot': array{
-         *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
-         *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': numeric-string, 'f': numeric-string}},
-         *          'proofOfKnowledgeOfPrivateCredential': array{'c': numeric-string, 'f': numeric-string},
-         *      }
-         *     } $ballotDigestContent
-         */
-        $ballotDigestContent = json_decode($ballotDigestJson, true); // @phpstan-ignore-line
-        return new BallotDigest($ballotDigestContent, $ballotDigestContent['publicLabel'], $ballotDigestContent['voterId']);
-    }
-
-    private function getBallotDigestDigest(string $ballot): string
-    {
-        /** @var string $fileContent */
-        $fileContent = file_get_contents(__DIR__ . '/resources/' . $ballot . '/ballotEntry.json.bytesDigest');
-        $singleLine = str_replace("\n", '', $fileContent);
-
-        return trim($singleLine);
-    }
-
-    private function getBallotDigestFingerprint(string $ballot): string
-    {
-        return trim(file_get_contents(__DIR__ . '/resources/' . $ballot . '/ballotEntry.json.fingerprint')); // @phpstan-ignore-line
     }
 }

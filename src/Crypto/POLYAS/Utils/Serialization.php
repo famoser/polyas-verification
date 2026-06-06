@@ -45,6 +45,15 @@ class Serialization
     }
 
     /**
+     * @param numeric-string $dec
+     */
+    public static function getNumericStringHexWithLength(string $dec): string
+    {
+        $bytes = self::bcdechexFixed($dec);
+        return self::getBytesHexLength4Bytes($bytes) . $bytes;
+    }
+
+    /**
      * @param mixed[] $collection
      */
     public static function getCollectionHexLength4Bytes(array $collection): string

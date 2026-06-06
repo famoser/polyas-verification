@@ -76,15 +76,15 @@ readonly class Verification
 
         /** @var array{
          * 'secondDeviceParametersJson': string,
-         *  'comSeed': string,
+         * 'comSeed': string,
          * 'ballot': array{
-         *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
-         *          'proofOfKnowledgeOfEncryptionCoins': array{array{'c': numeric-string, 'f': numeric-string}},
-         *          'proofOfKnowledgeOfPrivateCredential': array{'c': numeric-string, 'f': numeric-string},
-         *      },
-         *   'publicLabel': string,
-         *   'reference': string,
-         *  'signatureHex': string,
+         *    'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
+         *    'zkp': array{array{'c': numeric-string, 'f': numeric-string}},
+         *    'publicLabel': string,
+         *    'reference': string,
+         *    'signature': array{'c': numeric-string, 'f': numeric-string},
+         * },
+         * 'signatureHex': string,
          * 'factorX': string[],
          * 'factorY': string[],
          * 'factorA': string[],
@@ -105,14 +105,14 @@ readonly class Verification
             return true;
         }
 
-        $ballotAssociation = new BallotAssociation($initialMessage['reference'], $referenceCoin, $payload['vid']);
+        $ballotAssociation = new BallotAssociation($initialMessage['ballot']['reference'], $referenceCoin, $payload['vid']);
         if (!$ballotAssociation->verify()) {
             $failedCheck = self::ASSOCIATION_VALID;
 
             return true;
         }
 
-        $ballotDigest = new BallotDigest($initialMessage, $loginResponse['publicLabel'], $loginResponse['ballotVoterId']);
+        $ballotDigest = new BallotDigest($initialMessage['ballot']);
         $ballotDigestSignature = BallotDigestSignature::createFromBallotDigest($ballotDigest, $initialMessage['signatureHex'], $this->deviceParameters->getVerificationKey());
         if (!$ballotDigestSignature->verify()) {
             $failedCheck = self::SIGNATURE_VALID;
