@@ -5,7 +5,22 @@ namespace Famoser\PolyasVerification\Test\resources\ballot0;
 class Ballot0
 {
     /**
-     * @return array{comSeed: string, 'ballot': array{encryptedChoice: mixed, zkp: mixed, reference: string, publicLabel: string}}
+     * @return array{
+     *  'secondDeviceParametersJson': string,
+     *  'comSeed': string,
+     *  'ballot': array{
+     *     'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
+     *     'zkp': array{array{'c': numeric-string, 'f': numeric-string}},
+     *     'publicLabel': string,
+     *     'reference': string,
+     *     'signature': array{'c': numeric-string, 'f': numeric-string},
+     *  },
+     *  'signatureHex': string,
+     *  'factorX': string[],
+     *  'factorY': string[],
+     *  'factorA': string[],
+     *  'factorB': string[],
+     * }
      */
     public static function getLoginResponseInitialMessage(): array
     {
@@ -52,5 +67,10 @@ class Ballot0
         $json = file_get_contents(__DIR__ . '/0_QRcode_decrypted.json');
 
         return json_decode($json, true);
+    }
+
+    public static function getBallotDigest(): string
+    {
+        return trim(file_get_contents(__DIR__ . '/ballot.digest'));
     }
 }

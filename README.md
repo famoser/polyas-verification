@@ -114,6 +114,9 @@ WIP:
 - Discuss receipt workflow
 - Get access to test election
 
+Issues:
+- lab / ref variable names inconsistent
+
 changelog to v1:
 - B.4 QR-code decryption: KDF no longer needs ballot digest; GCM now stores tag at the end of the ciphertext; now standard base64 encoding (used to be base64url)
 - 
