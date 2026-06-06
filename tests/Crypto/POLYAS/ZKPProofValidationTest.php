@@ -45,21 +45,6 @@ class ZKPProofValidationTest extends TestCase
         $this->assertTrue($checkReEncryption);
     }
 
-    public function testCheckReEncryption(): void
-    {
-        $ZKPProofValidation = $this->getZKPProofValidation();
-        $payload = Ballot0::getLoginResponseInitialMessage();
-        $ciphertexts = $payload['ballot']['encryptedChoice']['ciphertexts'];
-        $factorX = $payload['factorX'];
-        $ballotDecode = $this->getBallotDecode();
-        $randomCoins = $ballotDecode->getDecodeRandomCoins();
-        $this->assertEquals(count($ciphertexts), count($randomCoins));
-        $this->assertEquals('40237237455298050319120936869549056473558681858388723323151943196272052465320', gmp_strval($randomCoins[0]));
-
-        $checkReEncryption = $ZKPProofValidation->checkReEncryption($ciphertexts[0]['x'], $factorX[0], $randomCoins[0]);
-        $this->assertTrue($checkReEncryption);
-    }
-
     private function getZKPProofValidation(): ZKPProofValidation
     {
         $payload = Ballot0::getLoginResponseInitialMessage();

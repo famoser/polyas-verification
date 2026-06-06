@@ -23,41 +23,41 @@ class BallotDecodeTest extends TestCase
     public function testBallotDigestDigestedBytes(): void
     {
         $ballotDecode = $this->getBallotDecode();
-        $expectedPlaintextHex = '00000001';
+        $expectedPlaintextHex = '00000100';
 
         $message = $ballotDecode->decode();
         $this->assertNotNull($message);
         $this->assertEquals($expectedPlaintextHex, bin2hex($message));
     }
 
-    public function testCheckBallotDigestDigestedBytes(): void
+    public function testCheckDecodedRandomCoins(): void
     {
+        $payload = Ballot0::getLoginResponseInitialMessage();
+        $ciphertexts = $payload['ballot']['encryptedChoice']['ciphertexts'];
+
         $ballotDecode = $this->getBallotDecode();
-
         $randomCoins = $ballotDecode->getDecodeRandomCoins();
-
-        $this->assertCount(1, $randomCoins);
-        $this->assertEquals('115383914388283582501768653457363159558776433376562817712059811925202949510311', gmp_strval($randomCoins[0]));
+        $this->assertEquals(count($ciphertexts), count($randomCoins));
+        $this->assertEquals('40237237455298050319120936869549056473558681858388723323151943196272052465320', gmp_strval($randomCoins[0]));
     }
 
     public function testGetGroupElement(): void
     {
         $payload = Ballot0::getLoginResponseInitialMessage();
         $ballotDecode = $this->getBallotDecode();
-        $expectedGroupElement = SECP256K1\Encoder::parseCompressedPoint('020007d00000005000000000000000000000000000000000000000000000000003');
 
         $ciphertexts = $payload['ballot']['encryptedChoice']['ciphertexts'];
         $decodeRandomCoins = $ballotDecode->getDecodeRandomCoins();
         $groupElement = $ballotDecode->getGroupElement($ciphertexts[0]['y'], $payload['factorY'][0], $decodeRandomCoins[0]);
 
-        $this->assertTrue($expectedGroupElement->equals($groupElement));
+        $this->assertEquals('030007d00000500000000000000000000000000000000000000000000000000001', SECP256K1\Encoder::compressPoint($groupElement));
     }
 
     private function getBallotDecode(): BallotDecode
     {
         $payload = Ballot0::getLoginResponseInitialMessage();
         $deviceParameters = Ballot0::getDeviceParameters();
-        $randomCoinSeed = Ballot0::getQRCodeDecrypted()['randomCoinSeed'];
+        $randomCoinSeed = Ballot0::getRandomCoinSeed();
 
         return new BallotDecode($payload, $deviceParameters->getPublicKey(), $randomCoinSeed);
     }
