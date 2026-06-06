@@ -22,7 +22,7 @@ readonly class BallotDecode
      * @param array{
      *     'factorY': string[],
      *     'ballot': array{
-     *          'encryptedChoice': array{'ciphertexts': array{array{'y': string}}}
+     *          'encryptedChoice': array{'ciphertexts': array{array{'x': string, 'y': string}}},
      *      }
      *     } $payload
      */
