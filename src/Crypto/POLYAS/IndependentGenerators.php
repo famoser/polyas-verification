@@ -15,18 +15,18 @@ use Famoser\PolyasVerification\Crypto\SECP256K1;
 use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Primitives\PointInterface;
 
-readonly class IndependentGeneratorGenerator
+readonly class IndependentGenerators
 {
-    public function __construct(private int $index, private string $seed)
+    public function __construct(private string $seed)
     {
     }
 
-    public function derive(): PointInterface
+    public function derive(int $index): PointInterface
     {
         $curve = EccFactory::getSecgCurves()->curve256k1();
         $generator = EccFactory::getSecgCurves()->generator256k1();
 
-        $seed = $this->seed . "ggen" . pack('N', $this->index);
+        $seed = $this->seed . "ggen" . pack('N', $index);
         $numbersFromSeedInRange = new NumbersFromSeedInRange($seed, gmp_mul(2, $curve->getPrime()));
         foreach ($numbersFromSeedInRange->getIterator() as $randomNumber) {
             $x = gmp_mod($randomNumber, $curve->getPrime());

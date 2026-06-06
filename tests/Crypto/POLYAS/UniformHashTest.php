@@ -24,7 +24,7 @@ class UniformHashTest extends TestCase
     public static function uniformHashProvider(): array
     {
         return [
-            // ['2126991829', 'some data', '414907466'], cannot make this example work, but maybe not important
+            ['2126991829', 'some data', '414907466'],
             ['115792089237316195423570985008687907852837564279074904382605163141518161494337', 'voter7', '75257976807143615402452449431801958905811497121857943123079219007777383312406'],
         ];
     }
