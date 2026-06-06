@@ -2,6 +2,8 @@
 
 namespace Famoser\PolyasVerification\Test\resources\ballot0;
 
+use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
+
 class Ballot0
 {
     /**
@@ -72,5 +74,12 @@ class Ballot0
     public static function getBallotDigest(): string
     {
         return trim(file_get_contents(__DIR__ . '/ballot.digest'));
+    }
+
+    public static function getDeviceParameters(): DeviceParameters
+    {
+        $json = file_get_contents(__DIR__ . '/deviceParameters.json');
+
+        return DeviceParameters::createFromFingerprintedJson($json);
     }
 }
