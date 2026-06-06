@@ -33,6 +33,7 @@ class Ballot0
 
         return json_decode($json, true);
     }
+
     /**
      * @return array{
      *   'voterId': string,
@@ -116,5 +117,12 @@ class Ballot0
         $json = file_get_contents(__DIR__ . '/deviceParameters.json');
 
         return DeviceParameters::createFromFingerprintedJson($json);
+    }
+
+    public static function getRandomCoinSeed(): string
+    {
+        $randomCoinSeed = Ballot0::getQRCodeDecrypted()['randomCoinSeed'];
+
+        return hex2bin($randomCoinSeed);
     }
 }

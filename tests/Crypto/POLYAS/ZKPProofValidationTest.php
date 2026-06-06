@@ -53,6 +53,8 @@ class ZKPProofValidationTest extends TestCase
         $factorX = $payload['factorX'];
         $ballotDecode = $this->getBallotDecode();
         $randomCoins = $ballotDecode->getDecodeRandomCoins();
+        $this->assertEquals(count($ciphertexts), count($randomCoins));
+        $this->assertEquals('40237237455298050319120936869549056473558681858388723323151943196272052465320', gmp_strval($randomCoins[0]));
 
         $checkReEncryption = $ZKPProofValidation->checkReEncryption($ciphertexts[0]['x'], $factorX[0], $randomCoins[0]);
         $this->assertTrue($checkReEncryption);
@@ -64,7 +66,7 @@ class ZKPProofValidationTest extends TestCase
         $request = Ballot0::getChallengeRequest();
         $response = Ballot0::getChallengeResponse();
         $deviceParameters = Ballot0::getDeviceParameters();
-        $randomCoinSeed = Ballot0::getQRCodeDecrypted()['randomCoinSeed'];
+        $randomCoinSeed = Ballot0::getRandomCoinSeed();
 
         $challenge = gmp_init($request['challenge'], 10);
 
@@ -75,7 +77,7 @@ class ZKPProofValidationTest extends TestCase
     {
         $payload = Ballot0::getLoginResponseInitialMessage();
         $deviceParameters = Ballot0::getDeviceParameters();
-        $randomCoinSeed = Ballot0::getQRCodeDecrypted()['randomCoinSeed'];
+        $randomCoinSeed = Ballot0::getRandomCoinSeed();
 
         return new BallotDecode($payload, $deviceParameters->getPublicKey(), $randomCoinSeed);
     }
