@@ -11,12 +11,15 @@
 
 namespace Crypto\POLYAS;
 
-use Famoser\PolyasVerification\Crypto\POLYAS\IndependentGeneratorGenerator;
+use Famoser\PolyasVerification\Crypto\POLYAS\IndependentGenerators;
 use Famoser\PolyasVerification\Crypto\POLYAS\NumberFromSeed;
+use Famoser\PolyasVerification\Crypto\POLYAS\Utils\PedersenFactory;
+use Famoser\PolyasVerification\Crypto\SECP256K1\Encoder;
+use Mdanter\Ecc\EccFactory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class IndependentGeneratorGeneratorTest extends TestCase
+class IndependentGeneratorsTest extends TestCase
 {
     /**
      * @return array<array<string|int|array<string>>>
@@ -36,13 +39,28 @@ class IndependentGeneratorGeneratorTest extends TestCase
     #[DataProvider('generatorsUsingSeedAsSeed')]
     public function testGenerator(int $index, array $point): void
     {
-        $numbersFromSeed = new IndependentGeneratorGenerator($index, "seed");
-        $result = $numbersFromSeed->derive();
+        $numbersFromSeed = new IndependentGenerators("seed");
+        $result = $numbersFromSeed->derive($index);
 
         $x = gmp_strval($result->getX(), 16);
         $y = gmp_strval($result->getY(), 16);
 
         $this->assertEquals($point[0], $x);
         $this->assertEquals($point[1], $y);
+    }
+
+    public function testPedersenFactory(): void
+    {
+        $pedersen = PedersenFactory::createPedersen();
+        $deterministicCommit = $pedersen->commit(gmp_init(1), gmp_init(2));
+
+        $numbersFromSeed = new IndependentGenerators("pedersen-commitment-key");
+        $expectedH = $numbersFromSeed->derive(10);
+        $expectedHString = Encoder::compressPoint($expectedH);
+        $this->assertEquals($expectedHString, "0373744f99d31509eb5f8caaabc0cc3fab70e571a5db4d762020723b9cd6ada260");
+
+        $generatorG = EccFactory::getSecgCurves()->generator256k1();
+        $expectedCommit = $generatorG->add($expectedH->mul(gmp_init(2)));
+        $this->assertEquals(Encoder::compressPoint($expectedCommit), Encoder::compressPoint($deterministicCommit));
     }
 }

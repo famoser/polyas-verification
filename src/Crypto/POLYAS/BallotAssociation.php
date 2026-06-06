@@ -34,11 +34,15 @@ readonly class BallotAssociation
         $v = $uniformHash->hash();
 
         $pedersen = PedersenFactory::createPedersen();
-        $commitment =  $pedersen->commit($l, $v);
+        $commitment =  $pedersen->commit($v, $l);
 
         $commitmentString = Encoder::compressPoint($commitment);
-        $commitmentStringHash = hash('sha256', $commitmentString, true);
+        /** @var string $commitmentStringBinary */
+        $commitmentStringBinary = hex2bin($commitmentString);
+        $commitmentStringHash = hash('sha256', $commitmentStringBinary, true);
+
         $encodedCommitment = base64_encode($commitmentStringHash);
-        return $encodedCommitment === $this->reference;
+        $formattedReference = substr(chunk_split(substr($encodedCommitment, 0, 22), 6, "-"), 0, -1);
+        return $formattedReference === $this->reference;
     }
 }
