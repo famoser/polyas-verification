@@ -21,7 +21,7 @@ class VerificationMockTest extends TestCase
         $payload = VerificationMock::createMockPayload();
         $this->assertTrue(VerificationMock::isMockPayload($payload));
 
-        $status = VerificationMock::performMockVerification($payload, $failedCheck, $validReceipt, $hexBallot);
+        $status = VerificationMock::performMockVerification($payload, $payload['password'], $failedCheck, $validReceipt, $hexBallot);
         $this->assertTrue($status);
         $this->assertNull($failedCheck);
         $this->assertNotNull($validReceipt);

@@ -28,9 +28,10 @@ class ApiClientTest extends TestCase
         $commit = ChallengeCommit::createWithRandom();
         $challengeCommitment = $commit->commit();
         $loginPayload = [
-            'voterId' => 'voter40',
-            'nonce' => 'a9ce03337895a1482c08361e8435c34ffa07857fad0c56efcd6807a28fc0f26a',
-            'password' => '299406',
+            "voterId" => "voter7",
+            "ballotReference" => "/EhRgDjIA+scXsSyfSXvqPCHsvbf/UozQicLbNd4bjkps8aP4ZXdo3R+KuvYX/ZM8NeAJcGrZbeb3wm8fgnby1gQJGqJwMY+eN6qXN83b0i5pNaej1WrMglE4KIXpDc8Bn00stxsvy0qlw==",
+            "nonce" => "e552502592f5bec54e4750c769ae9a3ec913c69a7cd828ce0226201476a2f833",
+            "password" => "711852",
             'challengeCommitment' => $challengeCommitment,
         ];
         $loginResponse = $apiClient->postLogin($loginPayload);
