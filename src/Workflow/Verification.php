@@ -105,17 +105,17 @@ readonly class Verification
             return true;
         }
 
-        $ballotAssociation = new BallotAssociation($initialMessage['ballot']['reference'], $referenceCoin, $payload['vid']);
-        if (!$ballotAssociation->verify()) {
-            $failedCheck = self::ASSOCIATION_VALID;
-
-            return true;
-        }
-
         $ballotDigest = new BallotDigest($initialMessage['ballot']);
         $ballotDigestSignature = BallotDigestSignature::createFromBallotDigest($ballotDigest, $initialMessage['signatureHex'], $this->deviceParameters->getVerificationKey());
         if (!$ballotDigestSignature->verify()) {
             $failedCheck = self::SIGNATURE_VALID;
+
+            return true;
+        }
+
+        $ballotAssociation = new BallotAssociation($initialMessage['ballot']['reference'], $referenceCoin, $payload['vid']);
+        if (!$ballotAssociation->verify()) {
+            $failedCheck = self::ASSOCIATION_VALID;
 
             return true;
         }
