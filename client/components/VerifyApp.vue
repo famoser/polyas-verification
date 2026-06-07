@@ -18,14 +18,15 @@ import DownloadReceipt from '@/components/action/DownloadReceipt.vue'
 
 const route = useRoute()
 const urlPayload = computed(() => {
-  const payload = route.query?.c
-  const voterId = route.query?.vid
+  const encC = route.query?.encC
+  const encD = route.query?.encD
+  const vid = route.query?.vid
   const nonce = route.query?.nonce
-  if (!payload || Array.isArray(payload) || !voterId || Array.isArray(voterId) || !nonce || Array.isArray(nonce)) {
+  if (!encC || Array.isArray(encC) || !encD || Array.isArray(encD) || !vid || Array.isArray(vid) || !nonce || Array.isArray(nonce)) {
     return null
   }
 
-  return { payload, voterId, nonce }
+  return { encC, encD, vid, nonce }
 })
 
 const router = useRouter()
@@ -102,7 +103,7 @@ const { t } = useI18n()
     </StepView>
 
     <StepView v-if="urlPayload" prefix="domain.verification_step" :entry="VerificationSteps.ENTER_PASSWORD" :done="!!password" :success="true" :force-closed-when-done="true">
-      <SetPassword @changed="password = $event" :voterId="urlPayload.voterId" />
+      <SetPassword @changed="password = $event" :voterId="urlPayload.vid" />
     </StepView>
 
     <StepView v-if="urlPayload && password" prefix="domain.verification_step" :entry="VerificationSteps.RECOVER_BALLOT" :done="!!verificationResult" :success="!!verificationResult?.status">

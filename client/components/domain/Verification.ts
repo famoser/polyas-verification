@@ -1,6 +1,7 @@
 export type Verification = {
-  payload: string
-  voterId: string
+  encC: string
+  encD: string
+  vid: string
   nonce: string
   password: string
 }
