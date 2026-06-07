@@ -18,6 +18,7 @@ use Famoser\PolyasVerification\Storage;
 use Famoser\PolyasVerification\Workflow\ApiClient;
 use Famoser\PolyasVerification\Workflow\DownloadReceipt;
 use Famoser\PolyasVerification\Workflow\ElectionDetails;
+use Famoser\PolyasVerification\Workflow\ExportReceipts;
 use Famoser\PolyasVerification\Workflow\Mock\DownloadReceiptMock;
 use Famoser\PolyasVerification\Workflow\Mock\VerificationMock;
 use Famoser\PolyasVerification\Workflow\Verification;
@@ -28,6 +29,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Psr7\UploadedFile;
 use Slim\Routing\RouteCollectorProxy;
+use ZipArchive;
 
 class RouteFactory
 {
@@ -57,6 +59,20 @@ class RouteFactory
             $deviceParameters = self::getDeviceParameters();
 
             return SlimExtensions::createJsonResponse($request, $response, $deviceParameters->getBallots());
+        });
+
+        $route->get('/export/receipts.zip', function (Request $request, Response $response) {
+            RequestValidatorExtensions::checkApiKey($request);
+
+            $election = RouteFactory::getElection();
+            $exportReceipts = new ExportReceipts($election['polyasElection']);
+            if (!$exportReceipts->exportAll($pdfs, $error)) {
+                return SlimExtensions::createStatusJsonResponse($request, $response, false);
+            }
+
+            $pdfs["README.txt"] = "Generiert " . date('c') . " für " . $election['polyasElection'];
+            $filename = "export_receipts_" . date('Y-m-d_H-i-s') . '.zip';
+            return SlimExtensions::createZipFileResponse($request, $response, $pdfs, $filename);
         });
 
         $route->post('/receipt', function (Request $request, Response $response) {
