@@ -80,7 +80,7 @@ class VerificationTest extends TestCase
         // check content is equal up to the creation date & the document id
         $creationDatePattern = '#/CreationDate \(D:[0-9]+\+00\'00\)#';
         $originalPDF = preg_replace($creationDatePattern, '', $pdf) ?? "";
-        $exportedPDF = preg_replace($creationDatePattern, '', $pdfs[0]) ?? "";
+        $exportedPDF = preg_replace($creationDatePattern, '', $pdfs[array_key_first($pdfs)]) ?? "";
         $documentIdPattern = '#<xmpMM:(InstanceID|DocumentID)>[a-zA-Z0-9]+</xmpMM:(InstanceID|DocumentID)>#';
         $originalPDF = preg_replace($documentIdPattern, '', $originalPDF);
         $exportedPDF = preg_replace($documentIdPattern, '', $exportedPDF);
