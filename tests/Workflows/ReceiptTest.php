@@ -11,6 +11,7 @@
 
 namespace Famoser\PolyasVerification\Test\Workflows;
 
+use Famoser\PolyasVerification\Test\resources\ballot0\Ballot0;
 use Famoser\PolyasVerification\Workflow\VerifyReceipt;
 use PHPUnit\Framework\TestCase;
 
@@ -18,42 +19,18 @@ class ReceiptTest extends TestCase
 {
     public function testReceiptVerify(): void
     {
-        $receiptPath = $this->getReceiptPath();
-        $deviceParameters = $this->getDeviceParameters();
+        $receiptPath = Ballot0::getReceiptPath();
+        $deviceParameters = Ballot0::getDeviceParameters();
 
-        $receipt = new VerifyReceipt($deviceParameters['verificationKey']);
-        $result = $receipt->verify($receiptPath, $validReceipt, $failedCheck);
-        $this->assertTrue($result);
-        $this->assertNull($failedCheck);
-    }
+        $receipt = new VerifyReceipt($deviceParameters->getVerificationKey());
 
-    public function testReceiptRawVerify(): void
-    {
-        $receiptPath = $this->getReceiptRawPath();
-        $deviceParameters = $this->getDeviceParameters();
-
-        $receipt = new VerifyReceipt($deviceParameters['verificationKey']);
         $result = $receipt->getFingerprintAndSignature($receiptPath, $fingerprint, $signature);
         $this->assertTrue($result);
         $this->assertNotNull($fingerprint);
         $this->assertNotNull($signature);
-    }
 
-    /**
-     * @return array{'verificationKey': string}
-     */
-    private function getDeviceParameters(): array
-    {
-        return json_decode(file_get_contents(__DIR__ . '/resources/ballot0/deviceParameters.json'), true); // @phpstan-ignore-line
-    }
-
-    private function getReceiptPath(): string
-    {
-        return __DIR__ . '/resources/ballot0/receipt.pdf';
-    }
-
-    private function getReceiptRawPath(): string
-    {
-        return __DIR__ . '/resources/vote-receipt-raw.pdf';
+        $result = $receipt->verify($receiptPath, $validReceipt, $failedCheck);
+        $this->assertTrue($result);
+        $this->assertNull($failedCheck);
     }
 }

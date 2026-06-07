@@ -134,4 +134,9 @@ class Ballot0
 
         return hex2bin($randomCoinSeed);
     }
+
+    public static function getReceiptPath(): string
+    {
+        return __DIR__ . '/receipt.pdf';
+    }
 }
