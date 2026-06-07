@@ -141,65 +141,72 @@
     "verification_status": {
       "LOGIN_SUCCESSFUL": {
         "title": "Login erfolgreich",
-        "description": "Logged sich mit dem bereitgestellem Zugangscode ein, und fordert vom Server kryptographisches Material für die weiteren Checks an.",
+        "description": "Logged sich mit dem bereitgestellen Zugangscode ein, und fordert vom Server kryptographisches Material für die weiteren Checks an.",
         "success": "Der Login ist erfolgt, und kryptographisches Material wurde erhalten.",
         "failed": "Login fehlgeschlagen.",
-        "failed_hint": "Bitte stellen Sie sicher dass der Zugangscode korrekt und aktuell ist, und versuchen Sie es noch einmal."
+        "impact": "Das Verifizierungstool kann die Verifizierung nicht durchführen."
       },
       "DEVICE_PARAMETERS_MATCH": {
         "title": "Konfigurierte Parameter stimmen überein",
         "description": "Vergleicht vorkonfigurierte und vom Server verwendete Parameter.",
         "success": "Die Parameter sind identisch.",
         "failed": "Parameter unterschiedlich.",
-        "failed_hint": "Bitte versuchen Sie es erneut."
+        "impact": "Das Verifizierungstool kann die Verifizierung nicht durchführen."
       },
       "SIGNATURE_VALID": {
         "title": "Verschlüsselter Stimmzettel valid signiert",
         "description": "Überprüft, ob der vom Server verschlüsselt gespeicherter Stimmzettel valid signiert wurde.",
         "success": "Die Signatur des verschlüsselten Stimmzettels ist valid.",
         "failed": "Die Signatur des verschlüsselten Stimmzettels ist invalid.",
-        "failed_hint": "Bitte versuchen Sie es erneut."
+        "impact": "Das Verifizierungstool kann nicht sicherstellen, dass die Stimme beim Auszählvorgang berücksichtigt wird."
+      },
+      "ASSOCIATION_VALID": {
+        "title": "Verschlüsselter Stimmzettel korrekt zugeordnet",
+        "description": "Überprüft, dass der verschlüsselte Stimmzettel kryptographisch an das erwartete Login gebunden ist.",
+        "success": "Die Attribution ist korrekt.",
+        "failed": "Die Attribution ist nicht korrekt.",
+        "impact": "Das Verifizierungstool kann nicht sicherstellen, dass die zu verifizierende Stimme zum Login gehört."
       },
       "RECEIPT_STORED": {
-        "title": "Wahl-Quittung wird gespeichert",
-        "description": "Der verschlüsselte Stimmzettel und die Signatur, die zusammen die Wahl-Quittung bilden, wird vom Verifikationstool gespeichert. In der Auszählphase werden für alle vom Verifikationstool gespeicherten Wahl-Quittungen überprüft, ob der jeweilige Stimmzettel wirklich ausgezählt wird.",
+        "title": "Wahl-Quittung gespeichert",
+        "description": "Der verschlüsselte Stimmzettel und die Signatur, die zusammen die Wahl-Quittung bilden, ist vom Verifikationstool gespeichert. In der Auszählphase werden für alle vom Verifikationstool gespeicherten Wahl-Quittungen überprüft, ob der jeweilige Stimmzettel wirklich ausgezählt wird.",
         "success": "Die Wahl-Quittung ist gespeichert.",
         "failed": "Die Wahl-Quittung kann nicht gespeichert werden.",
-        "failed_hint": "Bitte versuchen Sie es erneut."
+        "impact": "Das Verifizierungstool kann nicht sicherstellen, dass die Stimme beim Auszählvorgang berücksichtigt wird."
       },
       "QR_CODE_DECRYPTION": {
         "title": "QR Code Inhalt entschlüsselt",
         "description": "Entschlüsselt den Ciphertext, der im QR Code enthalten ist.",
         "success": "Erfolgreich entschlüsselt.",
         "failed": "Der Ciphertext konnte nicht entschlüsselt werden.",
-        "failed_hint": "Bitte versuchen Sie es erneut."
+        "impact": "Das Verifizierungstool kann die Stimme nicht wiederherstellen."
       },
       "CHALLENGE_SUCCESSFUL": {
         "title": "Zero-Knowledge Beweis angefordert",
-        "description": "Fordert vom Server kryptographisches Material für den Zero-Knowledge Beweis.",
+        "description": "Fordert vom Server kryptographisches Material an für den Zero-Knowledge Beweis.",
         "success": "Resultat erhalten.",
         "failed": "Das Resultat wurde nicht erhalten.",
-        "failed_hint": "Bitte versuchen Sie es erneut."
+        "impact": "Das Verifizierungstool kann die Stimme nicht wiederherstellen."
       },
       "ZKP_VALID": {
         "title": "Zero-Knowledge Beweis überprüft",
         "description": "Überprüft den Zero-Knowledge Beweis um sicherzustellen, dass der zu entschlüsselnde Stimmzettel den gleichen Inhalt wie der abgegebene Stimmzettel hat.",
         "success": "Zero-Knowledge Beweis valid.",
         "failed": "Zero-Knowledge Beweis invalid.",
-        "failed_hint": "Bitte versuchen Sie es erneut."
+        "impact": "Das Verifizierungstool kann die Stimme nicht wiederherstellen."
       },
       "BALLOT_DECODE": {
         "title": "Stimmzettel wird entschlüsselt",
         "description": "Der Stimmzettel wird entschlüsselt. Dieser ist nicht der tatsächlich abgegebene Stimmzettel; der Inhalt ist aber identitisch.",
         "success": "Stimmzettel entschlüsselt.",
         "failed": "Stimmzettel kann nicht entschlüsselt werden.",
-        "failed_hint": "Bitte versuchen Sie es erneut."
+        "impact": "Das Verifizierungstool kann die Stimme nicht wiederherstellen."
       },
       "UNKNOWN": {
         "title": "Unbekanner Fehler",
         "description": "Bei der Verifizierung ist ein ungekannter Fehler aufgetreten.",
         "failed": "Der Stimmzettel kann nicht verifiziert werden.",
-        "failed_hint": "Bitte versuchen Sie es erneut."
+        "impact": "Das Verifizierungstool kann die Stimme nicht wiederherstellen."
       }
     },
     "receipt_status": {
@@ -208,25 +215,25 @@
         "description": "Die Wahl-Quittung (die .pdf Datei) wird für die Analyse auf den Server hochgeladen.",
         "success": "Wahl-Quittung hochgeladen."
       },
-      "UNKNOWN": {
-        "title": "Unbekanner Fehler",
-        "description": "Bei der Verifizierung ist ein ungekannter Fehler aufgetreten. Dies bedeutet, dass die Wahl-Quittung vermutlich ungültig ist.",
-        "failed": "Die Wahl-Quittung kann nicht validiert werden.",
-        "failed_hint": "Bitte stellen Sie sicher, dass Sie die richtige Datei ausgewählt haben."
-      },
       "RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE": {
         "title": "Referenz zum verschlüsselten Stimmzettel enthalten",
         "description": "Durchsucht die Wahl-Quittung (die .pdf Datei) nach der Referenz zum verschlüsselten Stimmzettel und einer Signatur davon.",
         "success": "Referenz zum verschlüsselten Stimmzettel und Signatur im Rezept gefunden.",
         "failed": "Referenz zum verschlüsselten Stimmzettel oder Signatur nicht im Rezept gefunden.",
-        "failed_hint": "Bitte stellen Sie sicher, dass Sie die richtige Datei ausgewählt haben."
+        "impact": "Die Quittung kann nicht möglicherweise nicht ausgelesen werden, und ist daher kein valider Beleg, dass die Stimme beim Auszählvorgang berücksichtigt wird."
       },
       "SIGNATURE_VALID": {
         "title": "Referenz zum verschlüsselten Stimmzettel valid signiert",
         "description": "Überprüft, ob die gefundene Signatur korrekt über die Referenz zum verschlüsselten Stimmzettel erstellt wurde.",
         "success": "Die Signatur der Referenz zum verschlüsselten Stimmzettel ist valid.",
         "failed": "Die Signatur der Referenz zum verschlüsselten Stimmzettel ist invalid.",
-        "failed_hint": "Bitte stellen Sie sicher, dass die Wahl-Quittung für die oben eingeblendete Wahl ausgestellt wurde."
+        "impact": "Die Quittung ist kein valider Beleg, dass die Stimme beim Auszählvorgang berücksichtigt wird."
+      },
+      "UNKNOWN": {
+        "title": "Unbekanner Fehler",
+        "description": "Bei der Verifizierung ist ein ungekannter Fehler aufgetreten. Dies bedeutet, dass die Wahl-Quittung vermutlich ungültig ist.",
+        "failed": "Die Wahl-Quittung kann nicht validiert werden.",
+        "failed_hint": "Bitte stellen Sie sicher, dass Sie die richtige Datei ausgewählt haben."
       }
     }
   }

@@ -25,7 +25,7 @@ const finalResult = computed(() => (props.loading ? undefined : props.success))
     </p>
     <p v-else-if="finalResult === false" class="mt-2 mb-0 alert alert-danger">
       <b>{{ t(`${entryPrefix}.failed`) }}</b>
-      {{ t(`${entryPrefix}.failed_hint`) }}
+      {{ t(`${entryPrefix}.impact`) }}
     </p>
   </CheckView>
 </template>
