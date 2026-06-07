@@ -110,17 +110,9 @@ The server needs to fulfil requirements specified in `composer.json`.
 
 ## Future functionality
 
-WIP:
+TODO until election:
 - Discuss receipt workflow
 - Get access to test election
-
-Issues:
-- lab / ref variable names inconsistent
-- vid / voterId inconsistent
-- ballot format unspecified (contentAbove/contentBelow seems to no longer exist?)
 - v is predictable; issue for commitment?
 - need to device how receipts are treated
-- still koblitz curve
 
-changelog to v1:
-- B.4 QR-code decryption: KDF no longer needs ballot digest; GCM now stores tag at the end of the ciphertext; now standard base64 encoding (used to be base64url)
