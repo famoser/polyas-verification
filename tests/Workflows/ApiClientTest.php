@@ -38,7 +38,7 @@ class ApiClientTest extends TestCase
         $this->assertNotNull($loginResponse);
 
         $challengePayload = ['challenge' => $commit->getEString(), 'challengeRandomCoin' => $commit->getRString()];
-        $challengeResponse = $apiClient->postChallenge($challengePayload, $loginResponse['token']);
+        $challengeResponse = $apiClient->postChallenge($challengePayload, $loginResponse['value']['token']);
         $this->assertNotNull($challengeResponse);
     }
 }

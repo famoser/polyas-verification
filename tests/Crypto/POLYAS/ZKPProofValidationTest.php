@@ -57,13 +57,4 @@ class ZKPProofValidationTest extends TestCase
 
         return new ZKPProofValidation($payload, $challenge, $response['z'], $deviceParameters->getPublicKey(), $randomCoinSeed);
     }
-
-    private function getBallotDecode(): BallotDecode
-    {
-        $payload = Ballot0::getLoginResponseInitialMessage();
-        $deviceParameters = Ballot0::getDeviceParameters();
-        $randomCoinSeed = Ballot0::getRandomCoinSeed();
-
-        return new BallotDecode($payload, $deviceParameters->getPublicKey(), $randomCoinSeed);
-    }
 }
