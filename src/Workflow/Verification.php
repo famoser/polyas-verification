@@ -71,7 +71,7 @@ readonly class Verification
         if (!$loginResponse) {
             $failedCheck = self::LOGIN_SUCCESSFUL;
 
-            return true;
+            return false;
         }
 
         /** @var array{

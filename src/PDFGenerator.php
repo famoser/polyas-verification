@@ -19,6 +19,15 @@ use Famoser\PdfGenerator\Frontend\Layout\Text;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PolyasVerification\Crypto\PEM\Encoder;
 
+function mm2p(mixed $mm): mixed
+{
+    if (is_array($mm)) {
+        return array_map(__FUNCTION__, $mm);
+    }
+
+    return $mm * 2.83464646465;
+}
+
 readonly class PDFGenerator
 {
     private TextStyle $normalText;
@@ -33,7 +42,7 @@ readonly class PDFGenerator
     {
         $normalFont = Font::createFromDefault();
         $this->normalText = new TextStyle($normalFont);
-        $this->normalFontSize = 8.0;
+        $this->normalFontSize = 12.0;
 
         $headerFont = Font::createFromDefault(Font\FontFamily::Helvetica, Font\FontWeight::Bold);
         $this->headerText = new TextStyle($headerFont);
@@ -60,7 +69,7 @@ readonly class PDFGenerator
         $ballotVoterId = $receipt['ballotVoterId'];
 
         try {
-            $document = new Document();
+            $document = new Document([mm2p(210), mm2p(297)], [mm2p(15), mm2p(15), mm2p(15), mm2p(15)]);
             $flow = new Flow(FlowDirection::COLUMN);
 
             $this->addIntroduction($flow);
@@ -89,7 +98,7 @@ readonly class PDFGenerator
         $howTo = $howToVerify . ' ' . $verificationIsPrivate;
 
         foreach ([$contentOfReceipt, $howTo] as $text) {
-            $paragraph = new Text();
+            $paragraph = new Text(alignment: Text\Alignment::ALIGNMENT_JUSTIFIED);
             $paragraph->addSpan($text, $this->normalText, $this->normalFontSize);
             $paragraph->setMargin([0, $this->normalFontSize * 1.6, 0, 0]);
 

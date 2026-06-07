@@ -46,7 +46,7 @@ After successful vote validation, there is an option to download the receipt or 
 <img src="assets/1_verify_4_receipt_store.png?raw=true" alt="Screenshot store receipt" width="50%">
 
 You can test this UI with the link as follows:
-- Enter the following link: http://localhost:5173/verify?c=7bgIHYQotKLc8tgCbWp5yuc83xSbN-JV4Vwpnb50qyIzNUj2tYDYzPInG80WJ1mf2tB8BstZXWH_b0y4&vid=voter3&nonce=f299af96450db626754147aa132237bbf5603df2eea8215a0859288df8015c85
+- Enter the following link: http://localhost:5173/verify?encC=J8kdvzMZHPQBHbVoNx%2BJrstXlgbhOqDIikjbOGOL9HvWVdRPWuw%2FXbvq%2FnKS%2FmqH%2Fh2FJjCYbozkJiq7&encD=%2FEhRgDjIA%2BscXsSyfSXvqPCHsvbf%2FUozQicLbNd4bjkps8aP4ZXdo3R%2BKuvYX%2FZM8NeAJcGrZbeb3wm8fgnby1gQJGqJwMY%2BeN6qXN83b0i5pNaej1WrMglE4KIXpDc8Bn00stxsvy0qlw%3D%3D&vid=voter7&nonce=e552502592f5bec54e4750c769ae9a3ec913c69a7cd828ce0226201476a2f833
 - Enter the password 123456
 
 Then mock data client will kick in, which validates the vote.
@@ -116,11 +116,18 @@ WIP:
 
 Issues:
 - lab / ref variable names inconsistent
+- vid / voterId inconsistent
+- ballot format unspecified (contentAbove/contentBelow seems to no longer exist?)
+- v is predictable; issue for commitment?
+- need to device how receipts are treated
+- still koblitz curve
 
 changelog to v1:
 - B.4 QR-code decryption: KDF no longer needs ballot digest; GCM now stores tag at the end of the ciphertext; now standard base64 encoding (used to be base64url)
-- 
 
-The following changes should be tackled:
-- Describe clearly what IV is for, as users are likely not aware (see https://publikationen.bibliothek.kit.edu/1000175514/155244080)
-- Use https://github.com/famoser/elliptic/ as a cryptography backend
+TODOs:
+- recover receipt verification (including tests)
+- add endpoint to export all receipts
+
+TODO now:
+- 
