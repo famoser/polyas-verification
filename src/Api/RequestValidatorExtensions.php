@@ -48,6 +48,14 @@ class RequestValidatorExtensions
         RequestValidatorExtensions::checkExactlyKeysSet($request, $receipt, ['fingerprint', 'signature', 'ballotVoterId']);
     }
 
+    public static function checkApiKey(Request $request): void
+    {
+        $queryParams = $request->getQueryParams();
+        if (!key_exists('apiKey', $queryParams) || $queryParams['apiKey'] !== $_SERVER['API_KEY']) {
+            throw new HttpBadRequestException($request, 'invalid api key.');
+        }
+    }
+
     /**
      * @param string[] $array
      * @param string[] $requiredKeys

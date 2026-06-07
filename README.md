@@ -84,7 +84,7 @@ This project also allows to verify that signature; thereby proving that the voti
     </tbody>
 </table>
 
-You can test this UI with the receipt in `assets/test_vote_receipt.pdf`.
+You can test this UI with the receipt in `assets/test_vote_receipt.pdf`. You can download all receipts from the server with `/api/export/receipts.zip` (needs a valid `api_key` in production as a GET parameter).
 
 ## Develop
 
@@ -124,10 +124,3 @@ Issues:
 
 changelog to v1:
 - B.4 QR-code decryption: KDF no longer needs ballot digest; GCM now stores tag at the end of the ciphertext; now standard base64 encoding (used to be base64url)
-
-TODOs:
-- recover receipt verification (including tests)
-- add endpoint to export all receipts
-
-TODO now:
-- 

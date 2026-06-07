@@ -11,9 +11,11 @@
 
 namespace Famoser\PolyasVerification\Api;
 
+use Famoser\PolyasVerification\PathHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpInternalServerErrorException;
+use ZipArchive;
 
 class SlimExtensions
 {
@@ -53,6 +55,38 @@ class SlimExtensions
         return $response
             ->withStatus($status ? 200 : 500)
             ->withHeader('Content-Type', 'application/pdf')
+            ->withHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
+    }
+
+    /**
+     * @param array<string, string> $files
+     */
+    public static function createZipFileResponse(Request $request, Response $response, array $files, string $filename): Response
+    {
+        $path = PathHelper::VAR_TRANSIENT_DIR . "/" . $filename;
+
+        $zip = new ZipArchive();
+        if (true !== $zip->open($path, ZipArchive::CREATE |  ZipArchive::OVERWRITE)) {
+            unlink($path);
+
+            return self::createStatusJsonResponse($request, $response, false, 'Cannot create zip file');
+        }
+
+        foreach ($files as $fileName => $fileContent) {
+            $zip->addFromString($fileName, $fileContent);
+        }
+
+        $zip->close();
+        $zipContent = file_get_contents($path);
+        if ($zipContent === false) {
+            return self::createStatusJsonResponse($request, $response, false, 'Cannot read zip file ' . $path);
+        }
+
+        $response->getBody()->write($zipContent);
+
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type', 'application/zip')
             ->withHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 

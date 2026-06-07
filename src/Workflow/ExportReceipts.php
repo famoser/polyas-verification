@@ -34,14 +34,14 @@ readonly class ExportReceipts
 
         $receipts = Storage::getReceipts($this->polyasElection);
         $generator = new PDFGenerator();
-        foreach ($receipts as $receipt) {
+        foreach ($receipts as $index => $receipt) {
             if (!$generator->generate($receipt, $receipt['electionId'], $pdf)) {
                 $error = self::PDF_GENERATION_FAILED;
 
                 return false;
             }
 
-            $pdfs[] = $pdf;
+            $pdfs["receipt" . $index . ".pdf"] = $pdf;
         }
 
         return true;
