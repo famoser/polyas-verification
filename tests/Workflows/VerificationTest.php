@@ -13,6 +13,7 @@ namespace Famoser\PolyasVerification\Test\Workflows;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
 use Famoser\PolyasVerification\Storage;
+use Famoser\PolyasVerification\Test\resources\ballot0\Ballot0;
 use Famoser\PolyasVerification\Workflow\ApiClient;
 use Famoser\PolyasVerification\Workflow\DownloadReceipt;
 use Famoser\PolyasVerification\Workflow\ExportReceipts;
@@ -25,34 +26,34 @@ class VerificationTest extends TestCase
     public function testReceiptVerify(): void
     {
         $election = 'electionId';
-        $input = json_decode(file_get_contents(__DIR__ . '/resources/ballot0/0_QRcode.json'), true); // @phpstan-ignore-line
-        $deviceParametersJson = file_get_contents(__DIR__ . '/resources/ballot0/deviceParameters.json');
+        $input = Ballot0::getQRCode();
+        $deviceParameters = Ballot0::getDeviceParameters();
 
         $apiClient = \Mockery::mock(ApiClient::class);
-        $loginRequest = json_decode(file_get_contents(__DIR__ . '/resources/ballot0/1_LoginRequest.json'), true); // @phpstan-ignore-line
-        $loginResponse = json_decode(file_get_contents(__DIR__ . '/resources/ballot0/2_LoginResponse.json'), true); // @phpstan-ignore-line
+        $loginRequest = Ballot0::getLoginRequest();
+        $loginResponse = Ballot0::getLoginResponse();
         $apiClient->shouldReceive('postLogin')->with($loginRequest)->andReturn($loginResponse); // @phpstan-ignore-line
 
-        $challengeRequest = json_decode(file_get_contents(__DIR__ . '/resources/ballot0/3_ChallengeRequest.json'), true); // @phpstan-ignore-line
-        $challengeResponse = json_decode(file_get_contents(__DIR__ . '/resources/ballot0/4_ChallengeResponse.json'), true); // @phpstan-ignore-line
-        $token = 'MDIwNWJmMmUxNDQ5NmY2OGMwZjg2ZjZiMzEzZjIxMGE5MzkzZWRiMDgzODIxZGNjNGY5OTE0Y2FiOWM1MWM5ZjJl.UjVXYXRxTlRzdk12QWRwOA==';
+        $challengeRequest = Ballot0::getChallengeRequest();
+        $challengeResponse = Ballot0::getChallengeResponse();
+        $token = $loginResponse['value']['token'];
         $apiClient->shouldReceive('postChallenge')->with($challengeRequest, $token)->andReturn($challengeResponse); // @phpstan-ignore-line
+        /** @var ApiClient $apiClient */
 
         $challenge = gmp_init($challengeRequest['challenge'], 10);
         $challengeRandomCoin = gmp_init($challengeRequest['challengeRandomCoin'], 10);
         $commit = new ChallengeCommit($challenge, $challengeRandomCoin);
 
         Storage::resetDb();
-        $verification = new Verification($deviceParametersJson, $apiClient, $election);  // @phpstan-ignore-line
-        $status = $verification->verify($input, $commit, $validReceipt, $hexBallot, $error);
+        $verification = new Verification($deviceParameters, $apiClient, $election);
+        $status = $verification->verify($input, $loginRequest['password'], $commit, $validReceipt, $hexBallot, $error);
         $this->assertTrue($status);
         $this->assertNull($error);
-        $this->assertEquals('00000001', $hexBallot);
+        $this->assertEquals('00000100', $hexBallot);
         $this->assertTrue(Storage::checkReceiptExists($validReceipt));
 
         // download receipt
-        $verificationKey = json_decode($deviceParametersJson, true)['verificationKey']; // @phpstan-ignore-line
-        $storeReceipt = new DownloadReceipt($verificationKey, 'electionId');
+        $storeReceipt = new DownloadReceipt($deviceParameters->getVerificationKey(), 'electionId');
         $storeResult = $storeReceipt->store($validReceipt, $pdf, $storeError);
         $this->assertNull($storeError);
         $this->assertNotNull($pdf);
@@ -61,7 +62,7 @@ class VerificationTest extends TestCase
         // verify receipt
         $path = 'pdf.pdf';
         file_put_contents($path, $pdf);
-        $receipt = new VerifyReceipt($verificationKey);
+        $receipt = new VerifyReceipt($deviceParameters->getVerificationKey());
         $status = $receipt->verify($path, $validReceipt, $failedCheck);
         $this->assertTrue($status);
         $this->assertNull($failedCheck);

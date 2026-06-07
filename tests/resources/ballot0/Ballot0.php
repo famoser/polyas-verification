@@ -49,6 +49,16 @@ class Ballot0
 
         return json_decode($loginRequestJson, true);
     }
+    /**
+     * @return array{
+     *   'value': array{'token': string,}
+     * }
+     */
+    public static function getLoginResponse(): array
+    {
+        $loginResponseJson = file_get_contents(__DIR__ . '/2_LoginResponse.json');
+        return json_decode($loginResponseJson, true);
+    }
 
     /**
      * @return array{
@@ -70,8 +80,7 @@ class Ballot0
      */
     public static function getLoginResponseInitialMessage(): array
     {
-        $loginResponseJson = file_get_contents(__DIR__ . '/2_LoginResponse.json');
-        $loginResponse = json_decode($loginResponseJson, true);
+        $loginResponse = self::getLoginResponse();
 
         $initialMessageJson = $loginResponse['value']['initialMessage'];
         return json_decode($initialMessageJson, true);
