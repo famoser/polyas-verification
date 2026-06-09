@@ -30,7 +30,7 @@ readonly class DeviceParameters
     public static function createFromFingerprintedJson(string $deviceParametersJson): self
     {
         $deviceParametersJson = json_decode($deviceParametersJson, true);
-        $self = new self($deviceParametersJson['secondDeviceParametersJson']);
+        $self = new self($deviceParametersJson['publicParametersJson']);
         assert($self->createFingerprint(), $deviceParametersJson['fingerprint']);
 
         return $self;
