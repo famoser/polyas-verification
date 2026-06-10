@@ -18,15 +18,15 @@ import DownloadReceipt from '@/components/action/DownloadReceipt.vue'
 
 const route = useRoute()
 const urlPayload = computed(() => {
-  const encC = route.query?.encC
-  const encD = route.query?.encD
+  const c = route.query?.c
+  const d = route.query?.d
   const vid = route.query?.vid
   const nonce = route.query?.nonce
-  if (!encC || Array.isArray(encC) || !encD || Array.isArray(encD) || !vid || Array.isArray(vid) || !nonce || Array.isArray(nonce)) {
+  if (!c || Array.isArray(c) || !d || Array.isArray(d) || !vid || Array.isArray(vid) || !nonce || Array.isArray(nonce)) {
     return null
   }
 
-  return { encC, encD, vid, nonce }
+  return { c, d, vid, nonce }
 })
 
 const router = useRouter()

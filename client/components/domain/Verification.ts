@@ -1,6 +1,6 @@
 export type Verification = {
-  encC: string
-  encD: string
+  c: string
+  d: string
   vid: string
   nonce: string
   password: string

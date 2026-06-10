@@ -15,14 +15,16 @@ watch(link, () => {
   try {
     const url = new URL(link.value)
     const c = url.searchParams.get('c')
+    const d = url.searchParams.get('d')
     const vid = url.searchParams.get('vid')
     const nonce = url.searchParams.get('nonce')
-    if (!c || !vid || !nonce) {
+    if (!c || !d || !vid || !nonce) {
       return
     }
 
     const urlParams = new URLSearchParams()
     urlParams.append('c', c)
+    urlParams.append('d', d)
     urlParams.append('vid', vid)
     urlParams.append('nonce', nonce)
 
