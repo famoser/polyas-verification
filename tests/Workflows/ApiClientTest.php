@@ -24,16 +24,24 @@ class ApiClientTest extends TestCase
     {
         $this->markTestIncompleteNS('Requires live server.');
 
-        $apiClient = new ApiClient('https://election.polyas.com/a02435b3-3d7e-4a6c-ab9b-0b3dab1103ed/');
+        $apiClient = new ApiClient('https://election.polyas.com/97a5d0b7-e8a2-4832-97fe-71bc0e8d7786');
+        $url = "https://polyas-verification.famoser.ch/verify?c=TB0gDjmdB9qzObC5bQvbnQfLFPcXpLM1eqkQKYTvDS3RafPiLr0mJe1cWbF_SL9-xmJ2mWvqB1VJs1Qa&d=0S2X4aP4YlOS0P2Pe67OsELiWolf083-QCwGk3U7L7lt1VHQpJx6Ji72PMEBNWVttKoc5wQnlrlNGNrQu8gJEgkLezx4QGAE0Hzbkdc_tPse5z0T7pNf-7B35lDf/Ptuw6BMGsPKbZ/L&vid=5001&nonce=7c3a102ebc45152919bfe94d221b7a22f440a6a28ac4a9159217331281a0426d";
+        $password = "746286";
+
+        $parsedUrl = parse_url($url);
+        parse_str($parsedUrl['query'], $payload);
+        /** @var array{'vid': string, 'd': string, 'nonce': string} $payload */
+
         $commit = ChallengeCommit::createWithRandom();
         $challengeCommitment = $commit->commit();
         $loginPayload = [
-            "voterId" => "voter7",
-            "ballotReference" => "/EhRgDjIA+scXsSyfSXvqPCHsvbf/UozQicLbNd4bjkps8aP4ZXdo3R+KuvYX/ZM8NeAJcGrZbeb3wm8fgnby1gQJGqJwMY+eN6qXN83b0i5pNaej1WrMglE4KIXpDc8Bn00stxsvy0qlw==",
-            "nonce" => "e552502592f5bec54e4750c769ae9a3ec913c69a7cd828ce0226201476a2f833",
-            "password" => "711852",
+            "voterId" => $payload['vid'],
+            "ballotReference" => $payload['d'],
+            "nonce" => $payload['nonce'],
+            "password" => $password,
             'challengeCommitment' => $challengeCommitment,
         ];
+
         $loginResponse = $apiClient->postLogin($loginPayload);
         $this->assertNotNull($loginResponse);
 
