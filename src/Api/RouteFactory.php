@@ -119,8 +119,8 @@ class RouteFactory
             $payload = SlimExtensions::parseJsonRequestBody($request);
             RequestValidatorExtensions::checkVerification($request, $payload);
             /** @var array{
-             * 'encC': string,
-             * 'encD': string,
+             * 'c': string,
+             * 'd': string,
              * 'vid': string,
              * 'nonce': string,
              * 'password': string,

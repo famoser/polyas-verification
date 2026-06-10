@@ -8,8 +8,8 @@ class Ballot0
 {
     /**
      * @return array{
-     *   'encC': string,
-     *   'encD': string,
+     *   'c': string,
+     *   'd': string,
      *   'vid': string,
      *   'nonce': string
      *  }

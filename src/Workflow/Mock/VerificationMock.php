@@ -32,8 +32,8 @@ readonly class VerificationMock
 
     /**
      * @return array{
-     *      'encC': string,
-     *      'encD': string,
+     *      'c': string,
+     *      'd': string,
      *       'vid': string,
      *       'nonce': string,
      *      'password': string,
@@ -42,8 +42,8 @@ readonly class VerificationMock
     public static function createMockPayload(): array
     {
         return [
-            'encC' => self::ENC_C,
-            'encD' => self::ENC_D,
+            'c' => self::ENC_C,
+            'd' => self::ENC_D,
             'vid' => self::VOTER_ID,
             'nonce' => self::NONCE,
             'password' => self::PASSWORD,
@@ -52,8 +52,8 @@ readonly class VerificationMock
 
     /**
      * @param array{
-     *  'encC': string,
-     *  'encD': string,
+     *  'c': string,
+     *  'd': string,
      *  'vid': string,
      *  'nonce': string,
      *     'password': string,
@@ -61,8 +61,8 @@ readonly class VerificationMock
      */
     public static function isMockPayload(array $payload): bool
     {
-        return self::ENC_C === $payload['encC']
-            && self::ENC_D === $payload['encD']
+        return self::ENC_C === $payload['c']
+            && self::ENC_D === $payload['d']
             && self::VOTER_ID === $payload['vid']
             && self::NONCE === $payload['nonce']
             && self::PASSWORD === $payload['password'];
@@ -70,8 +70,8 @@ readonly class VerificationMock
 
     /**
      * @param array{
-     *     'encC': string,
-     *     'encD': string,
+     *     'c': string,
+     *     'd': string,
      *     'vid': string,
      *     'nonce': string
      * } $payload

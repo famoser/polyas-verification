@@ -37,7 +37,7 @@ class RequestValidatorExtensions
      */
     public static function checkVerification(Request $request, array $verification): void
     {
-        RequestValidatorExtensions::checkExactlyKeysSet($request, $verification, ['encC', 'encD', 'vid', 'nonce', 'password']);
+        RequestValidatorExtensions::checkExactlyKeysSet($request, $verification, ['c', 'd', 'vid', 'nonce', 'password']);
     }
 
     /**

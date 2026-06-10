@@ -22,7 +22,7 @@ class QRCodeDecryptionTest extends TestCase
         $comSeed = Ballot0::getComSeed();
         $qrCode = Ballot0::getQRCode();
 
-        $qrCodeDecryption = new QRCodeDecryption($qrCode['encC'], $qrCode['encD'], $comSeed);
+        $qrCodeDecryption = new QRCodeDecryption($qrCode['c'], $qrCode['d'], $comSeed);
 
         $actualComKey = $qrCodeDecryption->createComKey();
         $actualComKeyHex = bin2hex($actualComKey);
@@ -35,13 +35,13 @@ class QRCodeDecryptionTest extends TestCase
         $qrCode = Ballot0::getQRCode();
         $qrCodeDecrypted = Ballot0::getQRCodeDecrypted();
 
-        $qrCodeDecryption = new QRCodeDecryption($qrCode['encC'], $qrCode['encD'], $comSeed);
+        $qrCodeDecryption = new QRCodeDecryption($qrCode['c'], $qrCode['d'], $comSeed);
 
         $comKey = $qrCodeDecryption->createComKey();
-        $actualEncC = QRCodeDecryption::decryptValue($comKey, $qrCode['encC']);
-        $this->assertEquals($qrCodeDecrypted['randomCoinSeed'], bin2hex($actualEncC));
-        $actualEncD = QRCodeDecryption::decryptValue($comKey, $qrCode['encD']);
-        $this->assertEquals($qrCodeDecrypted['referenceCoin'], $actualEncD);
+        $actualC = QRCodeDecryption::decryptValue($comKey, $qrCode['c']);
+        $this->assertEquals($qrCodeDecrypted['randomCoinSeed'], bin2hex($actualC));
+        $actualD = QRCodeDecryption::decryptValue($comKey, $qrCode['d']);
+        $this->assertEquals($qrCodeDecrypted['referenceCoin'], $actualD);
     }
 
     public function testDecrypt(): void
@@ -50,7 +50,7 @@ class QRCodeDecryptionTest extends TestCase
         $qrCode = Ballot0::getQRCode();
         $qrCodeDecrypted = Ballot0::getQRCodeDecrypted();
 
-        $qrCodeDecryption = new QRCodeDecryption($qrCode['encC'], $qrCode['encD'], $comSeed);
+        $qrCodeDecryption = new QRCodeDecryption($qrCode['c'], $qrCode['d'], $comSeed);
         $status = $qrCodeDecryption->decrypt($randomCoinSeed, $referenceCoin);
         $this->assertTrue($status);
         $this->assertEquals($qrCodeDecrypted['randomCoinSeed'], bin2hex($randomCoinSeed));

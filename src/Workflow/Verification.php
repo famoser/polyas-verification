@@ -48,8 +48,8 @@ readonly class Verification
 
     /**
      * @param array{
-     *    'encC': string,
-     *    'encD': string,
+     *    'c': string,
+     *    'd': string,
      *    'vid': string,
      *    'nonce': string
      *   } $payload
@@ -62,7 +62,7 @@ readonly class Verification
     public function verify(array $payload, string $password, ChallengeCommit $challengeCommit, ?array &$validReceipt = null, ?string &$hexBallot = null, ?string &$failedCheck = null): bool
     {
         $challengeCommitment = $challengeCommit->commit();
-        $loginPayload = ['voterId' => $payload['vid'], 'ballotReference' => $payload['encD'], 'nonce' => $payload['nonce'], 'password' => $password, 'challengeCommitment' => $challengeCommitment];
+        $loginPayload = ['voterId' => $payload['vid'], 'ballotReference' => $payload['d'], 'nonce' => $payload['nonce'], 'password' => $password, 'challengeCommitment' => $challengeCommitment];
         try {
             $loginResponse = $this->apiClient->postLogin($loginPayload);
         } catch (GuzzleException) {
@@ -98,7 +98,7 @@ readonly class Verification
             return true;
         }
 
-        $qrCodeDecryption = new QRCodeDecryption($payload['encC'], $payload['encD'], $initialMessage['comSeed']);
+        $qrCodeDecryption = new QRCodeDecryption($payload['c'], $payload['d'], $initialMessage['comSeed']);
         if (!$qrCodeDecryption->decrypt($randomCoinSeed, $referenceCoin)) {
             $failedCheck = self::QR_CODE_DECRYPTION;
 

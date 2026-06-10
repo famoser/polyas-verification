@@ -16,7 +16,7 @@ use Famoser\PolyasVerification\Crypto\RSA\OpenSSLException;
 
 readonly class QRCodeDecryption
 {
-    public function __construct(private string $encC, private string $encD, private string $comSeed)
+    public function __construct(private string $c, private string $d, private string $comSeed)
     {
     }
 
@@ -29,8 +29,8 @@ readonly class QRCodeDecryption
         $comKey = $this->createComKey();
 
         try {
-            $randomCoinSeed = $this->decryptValue($comKey, $this->encC);
-            $referenceCoin = $this->decryptValue($comKey, $this->encD);
+            $randomCoinSeed = $this->decryptValue($comKey, $this->c);
+            $referenceCoin = $this->decryptValue($comKey, $this->d);
 
             return true;
         } catch (OpenSSLException) {
