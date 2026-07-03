@@ -11,9 +11,6 @@
 
 namespace Famoser\PolyasVerification\Crypto\POLYAS;
 
-/**
- * @deprecated probably not needed anymore, as we use the base64 encoding now
- */
 class Base64UrlEncoding
 {
     private const array SEARCH = ['/', '+'];

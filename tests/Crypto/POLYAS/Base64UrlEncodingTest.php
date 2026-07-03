@@ -15,9 +15,6 @@ use Famoser\PolyasVerification\Crypto\POLYAS\Base64UrlEncoding;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @deprecated if base64url no longer needed, remove this test
- */
 class Base64UrlEncodingTest extends TestCase
 {
     /**

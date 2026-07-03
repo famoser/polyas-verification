@@ -11,6 +11,7 @@
 
 namespace Famoser\PolyasVerification\Test\Workflows;
 
+use Famoser\PolyasVerification\Crypto\POLYAS\Base64UrlEncoding;
 use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
 use Famoser\PolyasVerification\Test\Utils\IncompleteTestTrait;
 use Famoser\PolyasVerification\Workflow\ApiClient;
@@ -24,9 +25,9 @@ class ApiClientTest extends TestCase
     {
         $this->markTestIncompleteNS('Requires live server.');
 
-        $apiClient = new ApiClient('https://election.polyas.com/97a5d0b7-e8a2-4832-97fe-71bc0e8d7786');
-        $url = "https://polyas-verification.famoser.ch/verify?c=TB0gDjmdB9qzObC5bQvbnQfLFPcXpLM1eqkQKYTvDS3RafPiLr0mJe1cWbF_SL9-xmJ2mWvqB1VJs1Qa&d=0S2X4aP4YlOS0P2Pe67OsELiWolf083-QCwGk3U7L7lt1VHQpJx6Ji72PMEBNWVttKoc5wQnlrlNGNrQu8gJEgkLezx4QGAE0Hzbkdc_tPse5z0T7pNf-7B35lDf/Ptuw6BMGsPKbZ/L&vid=5001&nonce=7c3a102ebc45152919bfe94d221b7a22f440a6a28ac4a9159217331281a0426d";
-        $password = "746286";
+        $apiClient = new ApiClient('https://election.polyas.com/59e875f6-2d11-466a-8a49-d7f57ddef329');
+        $url = "https://polyas-verification.famoser.ch/verify?c=gmH_mAQix7kzTKPjXdyY19-WgP-9Sy0sSF4nHpboS5TPwvD21sw5D8HvYHFH7zSrI/yF4pnRGCM1d9nV&d=K1ZimkpfS2C83o5i5KfHdgGm9ZOzlm7QCbqQ6X09u1M1uTE8inq7tl2WCyyqcQaobSBezGvKM0nhLQNDPnAY2Pxharl9kkCX-Qik4kIJX8uG8BqBOhxeFDtexauLQ7FnZj1k81UZs96Cnw==&vid=1000&nonce=f74bee28a0e090c62947bfb63734310481049e21437c6df6e8f8f842267e3f44";
+        $password = "743310";
 
         $parsedUrl = parse_url($url);
         parse_str($parsedUrl['query'], $payload);
@@ -36,7 +37,7 @@ class ApiClientTest extends TestCase
         $challengeCommitment = $commit->commit();
         $loginPayload = [
             "voterId" => $payload['vid'],
-            "ballotReference" => $payload['d'],
+            "ballotReference" => Base64UrlEncoding::decode($payload['d']),
             "nonce" => $payload['nonce'],
             "password" => $password,
             'challengeCommitment' => $challengeCommitment,
@@ -46,7 +47,7 @@ class ApiClientTest extends TestCase
         $this->assertNotNull($loginResponse);
 
         $challengePayload = ['challenge' => $commit->getEString(), 'challengeRandomCoin' => $commit->getRString()];
-        $challengeResponse = $apiClient->postChallenge($challengePayload, $loginResponse['value']['token']);
+        $challengeResponse = $apiClient->postChallenge($challengePayload, $loginResponse['token']);
         $this->assertNotNull($challengeResponse);
     }
 }
