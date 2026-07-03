@@ -50,12 +50,10 @@ class ApiClient
      * } $payload
      *
      * @return array{
-     *     'value': array{
-     *       'token': string,
-     *       'ballotVoterId': string,
-     *       'publicLabel': string,
-     *       'initialMessage': string
-     *     }
+     *     'token': string,
+     *     'ballotVoterId': string,
+     *     'publicLabel': string,
+     *     'initialMessage': string
      * }|null
      *
      * @throws GuzzleException
