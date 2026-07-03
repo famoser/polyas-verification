@@ -17,6 +17,11 @@ import VerifyBallotContent from '@/components/action/VerifyBallotContent.vue'
 import DownloadReceipt from '@/components/action/DownloadReceipt.vue'
 
 const route = useRoute()
+const decodeUrlBase64 = (value: string) => {
+  const base64 = value.replace(/-/g, '+').replace(/_/g, '/')
+  return base64 + '='.repeat((4 - (base64.length % 4)) % 4)
+}
+
 const urlPayload = computed(() => {
   const c = route.query?.c
   const d = route.query?.d
@@ -64,7 +69,12 @@ const doVerification = async () => {
     return
   }
 
-  const payload = { ...urlPayload.value, password: password.value }
+  const payload = {
+    ...urlPayload.value,
+    c: decodeUrlBase64(urlPayload.value.c),
+    d: decodeUrlBase64(urlPayload.value.d),
+    password: password.value
+  }
   verificationResult.value = await api.postVerification(payload)
 }
 
