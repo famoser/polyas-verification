@@ -28,7 +28,7 @@ class VerificationMockApiClient extends ApiClient
         /** @var string $json */
         $json = file_get_contents(__DIR__ . '/loginResponse.json');
 
-        return json_decode($json, true);
+        return json_decode($json, true)['value'];
     }
 
     public function postChallenge(array $payload, string $authenticationToken): ?array

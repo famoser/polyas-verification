@@ -32,7 +32,7 @@ class VerificationTest extends TestCase
         $apiClient = \Mockery::mock(ApiClient::class);
         $loginRequest = Ballot0::getLoginRequest();
         $loginResponse = Ballot0::getLoginResponse();
-        $apiClient->shouldReceive('postLogin')->with($loginRequest)->andReturn($loginResponse); // @phpstan-ignore-line
+        $apiClient->shouldReceive('postLogin')->with($loginRequest)->andReturn($loginResponse['value']); // @phpstan-ignore-line
 
         $challengeRequest = Ballot0::getChallengeRequest();
         $challengeResponse = Ballot0::getChallengeResponse();

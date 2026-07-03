@@ -91,7 +91,7 @@ readonly class Verification
          * 'factorB': string[],
          * } $initialMessage
          */
-        $initialMessage = json_decode($loginResponse['value']['initialMessage'], true);
+        $initialMessage = json_decode($loginResponse['initialMessage'], true);
         if (!$this->deviceParameters->compareDeviceParameters($initialMessage['secondDeviceParametersJson'])) {
             $failedCheck = self::DEVICE_PARAMETERS_MATCH;
 
@@ -120,7 +120,7 @@ readonly class Verification
             return true;
         }
 
-        $ballotReceipt = new BallotReceipt($ballotDigestSignature, $loginResponse['value']['ballotVoterId']);
+        $ballotReceipt = new BallotReceipt($ballotDigestSignature, $loginResponse['ballotVoterId']);
         $validReceipt = $ballotReceipt->export();
         if (!Storage::checkReceiptExists($validReceipt) && !Storage::storeReceipt($validReceipt, $this->polyasElection)) {
             $failedCheck = self::RECEIPT_STORED;
@@ -130,7 +130,7 @@ readonly class Verification
 
         $challengePayload = ['challenge' => $challengeCommit->getEString(), 'challengeRandomCoin' => $challengeCommit->getRString()];
         try {
-            $challengeResponse = $this->apiClient->postChallenge($challengePayload, $loginResponse['value']['token']);
+            $challengeResponse = $this->apiClient->postChallenge($challengePayload, $loginResponse['token']);
         } catch (GuzzleException) {
             $challengeResponse = null;
         }
