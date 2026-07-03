@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Crypto\POLYAS;
+namespace Famoser\PolyasVerification\Test\Crypto\POLYAS;
 
 use Famoser\PolyasVerification\Crypto\POLYAS\NumbersFromSeedInRange;
 use Famoser\PolyasVerification\Crypto\POLYAS\UniformHash;
