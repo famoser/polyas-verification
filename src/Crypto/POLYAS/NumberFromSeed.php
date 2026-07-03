@@ -32,6 +32,7 @@ readonly class NumberFromSeed
         // cut off top bits if necessary
         if ($this->bitLength % 8 > 0) {
             $firstByte = substr($key, 0, 2);
+            $firstByte = str_pad($firstByte, 2, "\0");
             $firstNumber = (int) unpack('n', $firstByte)[1]; // @phpstan-ignore-line
 
             $keepBits = $this->bitLength % 8;
