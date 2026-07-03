@@ -21,6 +21,6 @@ app.use(router)
 
 app.use(i18n)
 
-app.component('FontAwesomeIcon', FontAwesomeIcon)
+app.component('FontAwesomeIcon', FontAwesomeIcon as any)
 
 app.mount('#app')
