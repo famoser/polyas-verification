@@ -1,8 +1,8 @@
-import Noty from 'noty'
+import Noty from 'nano-noty'
 
 Noty.overrideDefaults({
-  theme: 'bootstrap-v4',
-  type: 'success'
+    theme: 'bootstrap-v5',
+    type: 'success'
 })
 
 const displayError = function (errorMessage: string) {
