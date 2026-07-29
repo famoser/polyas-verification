@@ -4,8 +4,8 @@ $custom-control-cursor: pointer;
 $enable-shadows: true;
 
 @import 'bootstrap/scss/bootstrap.scss';
-@import 'noty/src/noty.scss';
-@import 'noty/src/themes/bootstrap-v4.scss';
+@import '~nano-noty/src/noty';
+@import '~nano-noty/src/themes/bootstrap-v5';
 
 .bg-body-tertiary {
   background: #f5f5f5;
