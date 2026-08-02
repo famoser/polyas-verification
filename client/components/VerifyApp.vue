@@ -93,6 +93,24 @@ const errorOrder: VerificationErrors[] = [
 const ballotOwner = ref<string>()
 const ballotContentVerifiedResult = ref<boolean>()
 const receiptDownloaded = ref<boolean>()
+const verificationFailed = computed(() => {
+  // ballot misattributed
+  if (urlPayload.value && ballotOwner.value && ballotOwner.value !== urlPayload.value.vid) {
+    return true
+  }
+
+  // ballot recovery failed
+  if (verificationResult.value?.error) {
+    return true
+  }
+
+  // ballot verification failed
+  if (ballotContentVerifiedResult.value !== undefined && !ballotContentVerifiedResult.value) {
+    return true
+  }
+
+  return false
+})
 
 const { t } = useTranslator()
 </script>
@@ -159,6 +177,6 @@ const { t } = useTranslator()
   </p>
 
   <div class="my-5">
-    <VerificationExplanation />
+    <VerificationExplanation :verification-failed="verificationFailed" />
   </div>
 </template>

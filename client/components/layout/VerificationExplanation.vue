@@ -2,6 +2,10 @@
 import FAQAnswer from '@/components/layout/FAQAnswer.vue'
 import { useTranslator } from '@/locales/translator'
 
+defineProps<{
+  verificationFailed: boolean
+}>()
+
 const { t } = useTranslator()
 </script>
 
@@ -18,8 +22,8 @@ const { t } = useTranslator()
     </p>
   </FAQAnswer>
 
-  <FAQAnswer :question="t('layout.verification_explanation.verification_fails.question')">
-    <p>
+  <FAQAnswer :question="t('layout.verification_explanation.verification_fails.question')" :force-open="verificationFailed">
+    <p :class="{ 'bg-danger-subtle p-2': verificationFailed }">
       {{ t('layout.verification_explanation.verification_fails.try_again_or_complain') }}
     </p>
   </FAQAnswer>
