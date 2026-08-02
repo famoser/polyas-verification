@@ -26,7 +26,7 @@
     },
     "verify_ballot_owner": {
       "set_ballot_owner": "Stimmberechtigung",
-      "ballot_owner_source": "Geben Sie Ihre GI-Mitgliedernummer ein. Ohne Präfix und ohne führende Nullen.",
+      "ballot_owner_source": "Geben Sie Ihre GI-Mitgliedernummer ein. Ohne Präfix oder führende Nullen.",
       "successful": "Sie überprüfen den Stimmzettel, der Ihnen zugeordnet ist.",
       "failed": "Der Stimmzettel ist nicht Ihnen zugeordnet."
     },
