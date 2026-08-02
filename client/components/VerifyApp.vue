@@ -11,7 +11,6 @@ import VerificationExplanation from '@/components/layout/VerificationExplanation
 import ResetButton from '@/components/shared/ResetButton.vue'
 import { VerificationSteps } from '@/components/domain/VerificationSteps'
 import StepView from '@/components/view/library/StepView.vue'
-import VerifyBallotOwner from '@/components/action/VerifyBallotOwner.vue'
 import VerifyBallotContent from '@/components/action/VerifyBallotContent.vue'
 import DownloadReceipt from '@/components/action/DownloadReceipt.vue'
 import { useTranslator } from '@/locales/translator'
@@ -43,7 +42,6 @@ const backVerify = computed(() => {
 const reset = () => {
   password.value = undefined
   verificationResult.value = undefined
-  ballotOwnerVerifiedResult.value = undefined
   ballotContentVerifiedResult.value = undefined
   receiptDownloaded.value = undefined
   if (backVerify.value) {
@@ -90,7 +88,6 @@ const errorOrder: VerificationErrors[] = [
   VerificationErrors.BALLOT_DECODE
 ]
 
-const ballotOwnerVerifiedResult = ref<boolean>()
 const ballotContentVerifiedResult = ref<boolean>()
 const receiptDownloaded = ref<boolean>()
 
@@ -123,17 +120,7 @@ const { t } = useTranslator()
     </StepView>
 
     <StepView
-      v-if="!!(verificationResult?.status && verificationResult.receipt)"
-      prefix="domain.verification_step"
-      :entry="VerificationSteps.VERIFY_BALLOT_OWNER"
-      :done="ballotOwnerVerifiedResult !== undefined"
-      :success="!!ballotOwnerVerifiedResult"
-    >
-      <VerifyBallotOwner :owner-id="verificationResult.receipt.ballotVoterId" @verified="ballotOwnerVerifiedResult = $event" :decision="ballotOwnerVerifiedResult" />
-    </StepView>
-
-    <StepView
-      v-if="!!(ballotOwnerVerifiedResult && verificationResult?.result)"
+      v-if="!!(verificationResult?.result)"
       prefix="domain.verification_step"
       :entry="VerificationSteps.VERIFY_BALLOT_CONTENT"
       :done="ballotContentVerifiedResult !== undefined"

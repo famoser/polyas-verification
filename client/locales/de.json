@@ -32,11 +32,6 @@
       "send_to_auditors": "Senden Sie die Wahl-Quittung an Auditoren, damit diese verifizieren können, dass Ihre Stimmabgabe im Resultat berücksichtigt wird.",
       "send_to_auditors_guards_secrecy": "Die Wahl-Quittung enthält nur eine Referenz auf den verschlüsselten Stimmzettel. Dennoch kann damit validiert werden, ob der referenziert Stimmzettel im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde. Das Wahlgeheimnis wird durch diese Verifizierung nicht beeinträchtigt."
     },
-    "verify_ballot_owner": {
-      "question": "Ist dies Ihre anonymisierte Wahl-ID?",
-      "successful": "Sie haben angegeben, dass dies Ihre anonymisierte Wahl-ID ist.",
-      "failed": "Sie haben angegeben, dass dies nicht Ihre anonymisierte Wahl-ID ist. Bitte nehmen Sie umgehend Kontakt mit den Wahlorganisatoren auf."
-    },
     "verify_ballot_content": {
       "question": "Entspricht dies Ihrem Stimmzettel?",
       "successful": "Sie haben angegeben, dass dies Ihrem Stimmzettel entspricht.",
@@ -124,10 +119,6 @@
       "RECOVER_BALLOT": {
         "title": "Wahlzettel wiederherstellen",
         "done": "Wahlzettel wiederhergestellt"
-      },
-      "VERIFY_BALLOT_OWNER": {
-        "title": "Zugehörigkeit überprüfen",
-        "done": "Zugehörigkeit überprüft"
       },
       "VERIFY_BALLOT_CONTENT": {
         "title": "Stimmzettel überprüfen",
