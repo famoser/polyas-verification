@@ -102,7 +102,6 @@ AddDefaultCharset utf-8
     # Content-Security-Policy-Report-Only: ; report-uri https://endpoint.com;
     # to receive a report of the violations
 
-    # block-all-mixed-content prevents http requests in http site
     # default-src none prevents access to unspecified fetch directives
     # base-uri self ensures the <base> element is set to the current url
     # connect-self restrics notably <a>, XMLHttpRequest
@@ -111,9 +110,9 @@ AddDefaultCharset utf-8
     # font-src 'self'; to load fonts from same domain
     # img-src 'self' data:; to load images from same domain and allow from data attributes
     # form-action 'self'; to submit forms only to same domain
-    Header set Content-Security-Policy "block-all-mixed-content; default-src 'none'; media-src 'self'; base-uri 'self'; connect-src 'self'; script-src 'self' blob: 'sha256-MS6/3FCg4WjP9gwgaBGwLpRCY6fZBgwmhVCdrPrNf3E=' 'sha256-tQjf8gvb2ROOMapIxFvFAYBeUJ0v1HCbOcSmDNXGtDo=' 'sha256-w36slEqa9euNKxfvkw+LLGsDIr++3rsZXpZxtmRh8Aw=' 'sha256-+5XkZFazzJo8n0iOP4ti/cLCMUudTf//Mzkb7xNPXIc='; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; form-action 'self'"
-    Header set X-Content-Security-Policy "block-all-mixed-content; default-src 'none'; media-src 'self'; base-uri 'self'; connect-src 'self'; script-src 'self' blob: 'sha256-MS6/3FCg4WjP9gwgaBGwLpRCY6fZBgwmhVCdrPrNf3E=' 'sha256-tQjf8gvb2ROOMapIxFvFAYBeUJ0v1HCbOcSmDNXGtDo=' 'sha256-w36slEqa9euNKxfvkw+LLGsDIr++3rsZXpZxtmRh8Aw=' 'sha256-+5XkZFazzJo8n0iOP4ti/cLCMUudTf//Mzkb7xNPXIc='; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; form-action 'self'"
-    Header set X--WebKit-CSP "block-all-mixed-content; default-src 'none'; media-src 'self'; base-uri 'self'; connect-src 'self'; script-src 'self' blob: 'sha256-MS6/3FCg4WjP9gwgaBGwLpRCY6fZBgwmhVCdrPrNf3E=' 'sha256-tQjf8gvb2ROOMapIxFvFAYBeUJ0v1HCbOcSmDNXGtDo=' 'sha256-w36slEqa9euNKxfvkw+LLGsDIr++3rsZXpZxtmRh8Aw=' 'sha256-+5XkZFazzJo8n0iOP4ti/cLCMUudTf//Mzkb7xNPXIc='; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; form-action 'self'"
+    Header set Content-Security-Policy "default-src 'none'; media-src 'self'; base-uri 'self'; connect-src 'self'; script-src 'self' blob: 'sha256-MS6/3FCg4WjP9gwgaBGwLpRCY6fZBgwmhVCdrPrNf3E=' 'sha256-tQjf8gvb2ROOMapIxFvFAYBeUJ0v1HCbOcSmDNXGtDo=' 'sha256-w36slEqa9euNKxfvkw+LLGsDIr++3rsZXpZxtmRh8Aw=' 'sha256-+5XkZFazzJo8n0iOP4ti/cLCMUudTf//Mzkb7xNPXIc='; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; form-action 'self'"
+    Header set X-Content-Security-Policy "default-src 'none'; media-src 'self'; base-uri 'self'; connect-src 'self'; script-src 'self' blob: 'sha256-MS6/3FCg4WjP9gwgaBGwLpRCY6fZBgwmhVCdrPrNf3E=' 'sha256-tQjf8gvb2ROOMapIxFvFAYBeUJ0v1HCbOcSmDNXGtDo=' 'sha256-w36slEqa9euNKxfvkw+LLGsDIr++3rsZXpZxtmRh8Aw=' 'sha256-+5XkZFazzJo8n0iOP4ti/cLCMUudTf//Mzkb7xNPXIc='; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; form-action 'self'"
+    Header set X--WebKit-CSP "default-src 'none'; media-src 'self'; base-uri 'self'; connect-src 'self'; script-src 'self' blob: 'sha256-MS6/3FCg4WjP9gwgaBGwLpRCY6fZBgwmhVCdrPrNf3E=' 'sha256-tQjf8gvb2ROOMapIxFvFAYBeUJ0v1HCbOcSmDNXGtDo=' 'sha256-w36slEqa9euNKxfvkw+LLGsDIr++3rsZXpZxtmRh8Aw=' 'sha256-+5XkZFazzJo8n0iOP4ti/cLCMUudTf//Mzkb7xNPXIc='; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; form-action 'self'"
     # `mod_headers` cannot match based on the content-type, however,
     # the `Content-Security-Policy` response header should be send
     # only for HTML documents and not for the other resources.
