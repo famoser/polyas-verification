@@ -28,7 +28,7 @@
       "set_ballot_owner": "Stimmberechtigung",
       "ballot_owner_source": "Geben Sie Ihre GI-Mitgliedernummer ein. Ohne Präfix oder führende Nullen.",
       "successful": "Sie überprüfen den Stimmzettel, der Ihnen zugeordnet ist.",
-      "failed": "Der Stimmzettel ist nicht Ihnen zugeordnet."
+      "failed": "Der Stimmzettel ist nicht Ihnen zugeordnet. Bitte nehmen Sie umgehend Kontakt mit den Wahlorganisatoren auf."
     },
     "download_receipt": {
       "question": "Möchten Sie die Wahl-Quittung herunterladen?",

@@ -3,6 +3,7 @@ import ExpandedIndicator from '@/components/shared/ExpandedIndicator.vue'
 import { ref } from 'vue'
 
 defineProps<{
+  forceOpen?: boolean
   question: string
 }>()
 
@@ -16,10 +17,10 @@ const showBody = ref(false)
         <b>{{ question }}</b>
       </p>
       <div class="ms-auto">
-        <ExpandedIndicator :expanded="showBody" class="ms-auto" />
+        <ExpandedIndicator :expanded="showBody || !!forceOpen" class="ms-auto" />
       </div>
     </div>
-    <div v-if="showBody" class="mb-5">
+    <div v-if="showBody || forceOpen" class="mb-5">
       <slot></slot>
     </div>
   </div>
