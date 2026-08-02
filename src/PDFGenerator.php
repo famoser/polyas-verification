@@ -123,7 +123,7 @@ readonly class PDFGenerator
 
         $paragraph = new Text();
         if ($ballotVoterId) {
-            $paragraph->addSpan('Anonymisierte Wahl-ID: ' . $ballotVoterId . "\n", $this->codeText, $this->metaFontSize);
+            $paragraph->addSpan('Wahl-ID: ' . $ballotVoterId . "\n", $this->codeText, $this->metaFontSize);
         }
         if ($polyasElection) {
             $paragraph->addSpan('Wahl: ' . $polyasElection, $this->codeText, $this->metaFontSize);
