@@ -46,15 +46,18 @@ const restClient = {
     const response = await httpClient.request(url, options)
     return response?.json()
   },
-  post: async function (url: string, post: object, options: RequestInit = {}) {
+  post: async function (url: string, body: BodyInit, options: RequestInit = {}) {
     const init: RequestInit = {
       ...options,
-      body: JSON.stringify(post),
+      body: body,
       method: 'POST'
     }
 
     const response = await httpClient.request(url, init)
     return response?.json()
+  },
+  postJson: function (url: string, post: object, options: RequestInit = {}) {
+    return this.post(url, JSON.stringify(post), options)
   },
   postDownload: async function (url: string, post: object, options: RequestInit = {}) {
     const init: RequestInit = {
@@ -79,7 +82,7 @@ const api = {
     return (await restClient.get('/api/ballots')) as Ballot[]
   },
   postVerification: async function (data: Verification) {
-    return (await restClient.post('/api/verification', data)) as Status
+    return (await restClient.postJson('/api/verification', data)) as Status
   },
   postReceipt: async function (receipt: File) {
     const data = new FormData()
