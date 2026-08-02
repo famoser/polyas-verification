@@ -3,9 +3,9 @@ $yiq-contrasted-threshold: 160;
 $custom-control-cursor: pointer;
 $enable-shadows: true;
 
-@import 'bootstrap/scss/bootstrap.scss';
-@import '~nano-noty/src/noty';
-@import '~nano-noty/src/themes/bootstrap-v5';
+@use 'bootstrap/scss/bootstrap';
+@use 'nano-noty/src/noty';
+@use 'nano-noty/src/themes/bootstrap-v5';
 
 .bg-body-tertiary {
   background: #f5f5f5;
