@@ -92,7 +92,7 @@ const errorOrder: VerificationErrors[] = [
 
 const ballotOwnerVerifiedResult = ref<boolean>()
 const ballotContentVerifiedResult = ref<boolean>()
-const receiptDownloaded = ref<boolean>
+const receiptDownloaded = ref<boolean>()
 
 const { t } = useTranslator()
 </script>
