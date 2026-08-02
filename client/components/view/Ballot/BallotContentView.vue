@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-  content: string
+  content: object
 }>()
 
 type PolyasDocument = {
