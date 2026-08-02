@@ -70,7 +70,7 @@ export const createTranslator = function (locale: string, fallbackLocale: string
 }
 
 const placeholderRegex = /{(.*?)}/g
-const fillTemplate = function (template: string, templateData: Record<string, string|number>): string {
+const fillTemplate = function (template: string, templateData: Record<string, string | number>): string {
   return template.replace(placeholderRegex, (_, placeholder) => {
     return String(templateData[placeholder.trim()]) ?? ''
   })
@@ -79,7 +79,7 @@ const fillTemplate = function (template: string, templateData: Record<string, st
 const getNestedValue = function (sourceObject: Dictionary, path: string): string | undefined {
   const pathSegments = path.split('.')
 
-  let currentValue: Dictionary|undefined|string = sourceObject
+  let currentValue: Dictionary | undefined | string = sourceObject
   for (let pathIndex = 0; pathIndex < pathSegments.length; pathIndex++) {
     currentValue = currentValue && typeof currentValue === 'object' ? currentValue[pathSegments[pathIndex]] : undefined
   }
@@ -87,7 +87,7 @@ const getNestedValue = function (sourceObject: Dictionary, path: string): string
   return typeof currentValue === 'string' ? currentValue : undefined
 }
 
-let globalTranslator: Translator|undefined
+let globalTranslator: Translator | undefined
 export const setGlobalTranslator = function (translator: Translator) {
   globalTranslator = translator
 }
