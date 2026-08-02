@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import InfoPopover from '@/components/shared/InfoPopover.vue'
 import type { Receipt } from '@/components/domain/Status'
 import { api } from '@/services/api'
 import { ref, watch } from 'vue'
+import { useTranslator } from '@/locales/translator'
 
 const props = defineProps<{ receipt: Receipt }>()
 
@@ -11,7 +11,7 @@ const emit = defineEmits<{
   (e: 'downloaded', result: boolean): void
 }>()
 
-const { t } = useI18n()
+const { t } = useTranslator()
 
 const receiptHref = ref<string>()
 

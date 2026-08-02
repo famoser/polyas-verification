@@ -1,40 +1,40 @@
-import type { App } from 'vue'
-
-export const createVuePlugin = function (translator: Translator) {
-  return {
-    install(app: App) {
-      app.config.globalProperties.$t = translator.translate.bind(translator)
-    }
-  }
-}
-
 interface Translator {
   getLocale(): string
   setLocale(locale: string): void
   translate(key: string, params?: Record<string, unknown>, locale?: string): string
 }
 
-export const createTranslator = function (locale: string, fallbackLocale: string, dictionary: object) {
+interface Dictionary {
+  [key: string]: Dictionary | string
+}
+
+interface Dictionaries {
+  [key: string]: Dictionary
+}
+
+type Params = Record<string, string | number> & { count?: number }
+
+export const createTranslator = function (locale: string, fallbackLocale: string, dictionaries: Dictionaries): Translator {
   let _locale = locale
   const _fallbackLocale = fallbackLocale
-  const _dictionary = dictionary
+  const _dictionaries = dictionaries
 
   return {
-    getLocale () {
+    getLocale() {
       return _locale
     },
 
-    setLocale (locale: string) {
+    setLocale(locale: string) {
       _locale = locale
     },
 
-    translate (key: string, params = {}, locale = undefined) {
+    translate(key: string, params: Params = {}, locale: string | undefined = undefined) {
       const currentLocale = locale || _locale
-      let template = getNestedValue(_dictionary[currentLocale], key)
+      let template = getNestedValue(_dictionaries[currentLocale], key)
       if (!template) {
         const error = `[translator] Missing the "${key}" key within the "${currentLocale}" dictionary`
         if (_fallbackLocale !== currentLocale) {
-          template = getNestedValue(_dictionary[_fallbackLocale], key)
+          template = getNestedValue(_dictionaries[_fallbackLocale], key)
           if (!template) {
             console.error(error + ` and the "${_fallbackLocale}" fallback locale.`)
             return ''
@@ -47,7 +47,7 @@ export const createTranslator = function (locale: string, fallbackLocale: string
         }
       }
 
-      if ('count' in params) {
+      if ('count' in params && params.count) {
         const templateParts = template.split('|')
 
         if (templateParts.length === 2) {
@@ -70,19 +70,36 @@ export const createTranslator = function (locale: string, fallbackLocale: string
 }
 
 const placeholderRegex = /{(.*?)}/g
-const fillTemplate = function (template: string, templateData: object): string {
-  return template.replace(placeholderRegex, (match, placeholderPath) => {
-    return getNestedValue(templateData, placeholderPath.trim()) ?? ''
+const fillTemplate = function (template: string, templateData: Record<string, string|number>): string {
+  return template.replace(placeholderRegex, (_, placeholder) => {
+    return String(templateData[placeholder.trim()]) ?? ''
   })
 }
 
-const getNestedValue = function (sourceObject: object, path: string): string|undefined {
+const getNestedValue = function (sourceObject: Dictionary, path: string): string | undefined {
   const pathSegments = path.split('.')
 
-  let currentValue = sourceObject
+  let currentValue: Dictionary|undefined|string = sourceObject
   for (let pathIndex = 0; pathIndex < pathSegments.length; pathIndex++) {
-    currentValue = currentValue ? currentValue[pathSegments[pathIndex]] : undefined
+    currentValue = currentValue && typeof currentValue === 'object' ? currentValue[pathSegments[pathIndex]] : undefined
   }
 
-  return currentValue
+  return typeof currentValue === 'string' ? currentValue : undefined
+}
+
+let globalTranslator: Translator|undefined
+export const setGlobalTranslator = function (translator: Translator) {
+  globalTranslator = translator
+}
+
+// by convention, composable function names start with "use"
+export function useTranslator() {
+  if (!globalTranslator) {
+    throw new Error('Global translator not set')
+  }
+
+  const t = globalTranslator.translate.bind(globalTranslator)
+
+  // expose managed state as return value
+  return { t }
 }

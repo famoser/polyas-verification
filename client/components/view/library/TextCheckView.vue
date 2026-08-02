@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import CheckView from '@/components/view/library/CheckView.vue'
+import { useTranslator } from '@/locales/translator'
 
 const props = defineProps<{
   prefix: string
@@ -10,7 +10,7 @@ const props = defineProps<{
   success?: boolean
 }>()
 
-const { t } = useI18n()
+const { t } = useTranslator()
 const entryPrefix = `${props.prefix}.${props.entry}`
 const finalResult = computed(() => (props.loading ? undefined : props.success))
 </script>

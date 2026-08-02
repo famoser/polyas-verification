@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import { computed, onMounted, ref, watch } from 'vue'
+import { useTranslator } from '@/locales/translator'
 
 defineProps<{
   voterId: string
@@ -32,7 +32,7 @@ const onPaste = (event: ClipboardEvent) => {
   password.value = (password.value ?? '') + data?.replace(' ', '')
 }
 
-const { t } = useI18n()
+const { t } = useTranslator()
 </script>
 
 <template>

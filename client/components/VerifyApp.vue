@@ -5,7 +5,6 @@ import { useRoute, useRouter } from 'vue-router'
 import SetLink from '@/components/action/SetLink.vue'
 import { api } from '@/services/api'
 import SetPassword from '@/components/action/SetPassword.vue'
-import { useI18n } from 'vue-i18n'
 import { VerificationErrors } from '@/components/domain/VerificationErrors'
 import ChecksView from '@/components/view/library/ChecksView.vue'
 import VerificationExplanation from '@/components/layout/VerificationExplanation.vue'
@@ -15,6 +14,7 @@ import StepView from '@/components/view/library/StepView.vue'
 import VerifyBallotOwner from '@/components/action/VerifyBallotOwner.vue'
 import VerifyBallotContent from '@/components/action/VerifyBallotContent.vue'
 import DownloadReceipt from '@/components/action/DownloadReceipt.vue'
+import { useTranslator } from '@/locales/translator'
 
 const route = useRoute()
 const decodeUrlBase64 = (value: string) => {
@@ -92,9 +92,9 @@ const errorOrder: VerificationErrors[] = [
 
 const ballotOwnerVerifiedResult = ref<boolean>()
 const ballotContentVerifiedResult = ref<boolean>()
-const receiptDownloaded = ref<boolean>()
+const receiptDownloaded = ref<boolean>
 
-const { t } = useI18n()
+const { t } = useTranslator()
 </script>
 
 <template>
