@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import { api } from './services/api.js'
 import HeaderJumbotron from '@/components/layout/HeaderJumbotron.vue'
 import { ref } from 'vue'
@@ -8,10 +7,6 @@ import type { Election } from '@/components/domain/Election'
 
 import type { ElectionDetails } from '@/components/domain/POLYAS'
 import { displayError } from '@/services/notifiers'
-
-const { t } = useI18n()
-
-api.addInterceptors(t)
 
 const election = ref<Election>()
 const electionDetails = ref<ElectionDetails>()

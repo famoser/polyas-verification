@@ -11,11 +11,19 @@ export default defineConfig({
     vue(),
     legacy({
       targets: ['defaults']
-    }),
+    })
   ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./client', import.meta.url))
+    }
+  },
+
+  css: {
+    preprocessorOptions: {
+      scss: {
+        quietDeps: true
+      }
     }
   },
 
@@ -27,12 +35,12 @@ export default defineConfig({
 
     // our entry
     rollupOptions: {
-      input: path.resolve(__dirname, 'client/index.html'),
+      input: path.resolve(__dirname, 'client/index.html')
     }
   },
 
   server: {
     strictPort: true,
     port: 5173
-  },
+  }
 })
