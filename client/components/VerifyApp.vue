@@ -14,6 +14,7 @@ import StepView from '@/components/view/library/StepView.vue'
 import VerifyBallotContent from '@/components/action/VerifyBallotContent.vue'
 import DownloadReceipt from '@/components/action/DownloadReceipt.vue'
 import { useTranslator } from '@/locales/translator'
+import VerifyBallotOwner from '@/components/action/VerifyBallotOwner.vue'
 
 const route = useRoute()
 const decodeUrlBase64 = (value: string) => {
@@ -88,6 +89,7 @@ const errorOrder: VerificationErrors[] = [
   VerificationErrors.BALLOT_DECODE
 ]
 
+const ballotOwnerVerifiedResult = ref<boolean>()
 const ballotContentVerifiedResult = ref<boolean>()
 const receiptDownloaded = ref<boolean>()
 
@@ -109,8 +111,19 @@ const { t } = useTranslator()
       <SetLink />
     </StepView>
 
-    <StepView v-if="urlPayload" prefix="domain.verification_step" :entry="VerificationSteps.ENTER_PASSWORD" :done="!!password" :success="true" :force-closed-when-done="true">
-      <SetPassword @changed="password = $event" :voterId="urlPayload.vid" />
+    <StepView v-if="urlPayload" prefix="domain.verification_step" :entry="VerificationSteps.VERIFY_BALLOT_OWNER" :done="!!ballotOwnerVerifiedResult" :success="ballotOwnerVerifiedResult">
+      <VerifyBallotOwner @verified="ballotOwnerVerifiedResult = $event" :expectedOwnerId="urlPayload.vid" :verified="ballotContentVerifiedResult" />
+    </StepView>
+
+    <StepView
+      v-if="ballotOwnerVerifiedResult"
+      prefix="domain.verification_step"
+      :entry="VerificationSteps.ENTER_PASSWORD"
+      :done="!!password"
+      :success="true"
+      :force-closed-when-done="true"
+    >
+      <SetPassword @changed="password = $event" />
     </StepView>
 
     <StepView v-if="urlPayload && password" prefix="domain.verification_step" :entry="VerificationSteps.RECOVER_BALLOT" :done="!!verificationResult" :success="!!verificationResult?.status">
@@ -120,7 +133,7 @@ const { t } = useTranslator()
     </StepView>
 
     <StepView
-      v-if="!!(verificationResult?.result)"
+      v-if="!!verificationResult?.result"
       prefix="domain.verification_step"
       :entry="VerificationSteps.VERIFY_BALLOT_CONTENT"
       :done="ballotContentVerifiedResult !== undefined"

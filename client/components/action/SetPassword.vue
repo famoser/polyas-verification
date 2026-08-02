@@ -2,10 +2,6 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useTranslator } from '@/locales/translator'
 
-defineProps<{
-  voterId: string
-}>()
-
 const emit = defineEmits<{
   (e: 'changed', result: string): void
 }>()
