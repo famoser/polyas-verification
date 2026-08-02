@@ -6,9 +6,9 @@ import ReceiptExplanation from '@/components/layout/ReceiptExplanation.vue'
 import { ReceiptErrors } from '@/components/domain/ReceiptErrors'
 import { api } from '@/services/api'
 import ChecksView from '@/components/view/library/ChecksView.vue'
-import { useI18n } from 'vue-i18n'
 import ResetButton from '@/components/shared/ResetButton.vue'
 import TextCheckView from '@/components/view/library/TextCheckView.vue'
+import { useTranslator } from '@/locales/translator'
 
 const receiptStatus = ref<Status>()
 const fileSet = ref<boolean>()
@@ -30,7 +30,7 @@ const canReset = computed(() => {
 
 const errorOrder: ReceiptErrors[] = [ReceiptErrors.RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE, ReceiptErrors.SIGNATURE_VALID]
 
-const { t } = useI18n()
+const { t } = useTranslator()
 </script>
 
 <template>

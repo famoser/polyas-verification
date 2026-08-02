@@ -2,8 +2,8 @@
 import { computed } from 'vue'
 import type { Ballot } from '@/components/domain/POLYAS'
 import ListView from '@/components/view/Ballot/ListView.vue'
-import { useI18n } from 'vue-i18n'
 import BallotContentView from '@/components/view/Ballot/BallotContentView.vue'
+import { useTranslator } from '@/locales/translator'
 
 const props = defineProps<{
   choice: string
@@ -23,7 +23,7 @@ const choicePerList = computed(() => {
   return lookup
 })
 
-const { t } = useI18n()
+const { t } = useTranslator()
 </script>
 
 <template>

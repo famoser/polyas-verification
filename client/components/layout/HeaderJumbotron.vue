@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
+import { useTranslator } from '@/locales/translator'
 
-const { t } = useI18n()
+const { t } = useTranslator()
 </script>
 
 <template>

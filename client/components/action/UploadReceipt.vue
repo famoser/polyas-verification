@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import InfoPopover from '@/components/shared/InfoPopover.vue'
+import { useTranslator } from '@/locales/translator'
 
 const emit = defineEmits<{
   (e: 'uploaded', file: File): void
@@ -17,7 +17,7 @@ const uploadReceipt = async (event: Event) => {
 
 const uniqueId = String(Math.random())
 
-const { t } = useI18n()
+const { t } = useTranslator()
 </script>
 
 <template>

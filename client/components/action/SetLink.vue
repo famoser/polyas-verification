@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import { ref, watch } from 'vue'
 import InfoPopover from '@/components/shared/InfoPopover.vue'
 import { useRouter } from 'vue-router'
 import ScanQRCode from '@/components/action/ScanQRCode.vue'
+import { useTranslator } from '@/locales/translator'
 
 const link = ref<string>()
 const router = useRouter()
@@ -42,7 +42,7 @@ const isInvalid = !!link.value
 
 const cameraActive = ref<boolean>()
 
-const { t } = useI18n()
+const { t } = useTranslator()
 </script>
 
 <template>

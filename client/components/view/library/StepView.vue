@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import SuccessIndicator from '@/components/shared/CorrectIndicator.vue'
 import { computed, ref } from 'vue'
 import ExpandedIndicator from '@/components/shared/ExpandedIndicator.vue'
+import { useTranslator } from '@/locales/translator'
 
 const props = defineProps<{
   prefix: string
@@ -12,7 +12,7 @@ const props = defineProps<{
   forceClosedWhenDone?: boolean
 }>()
 
-const { t } = useI18n()
+const { t } = useTranslator()
 const entryPrefix = `${props.prefix}.${props.entry}`
 const expanded = ref(false)
 // noinspection PointlessBooleanExpressionJS

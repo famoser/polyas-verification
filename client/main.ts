@@ -7,14 +7,13 @@ import ReceiptApp from '@/components/ReceiptApp.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeApp from '@/components/HomeApp.vue'
 import VerifyApp from '@/components/VerifyApp.vue'
-import { createTranslator, createVuePlugin } from '@/locales/translator'
+import { createTranslator, setGlobalTranslator } from '@/locales/translator'
 import de from './locales/de.json'
 
 const app = createApp(App)
 
 const translator = createTranslator('de', 'de', { de })
-const i18n = createVuePlugin(translator)
-app.use(i18n)
+setGlobalTranslator(translator)
 
 const routes = [
   { path: '/', component: HomeApp },

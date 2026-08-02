@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import BallotsView from '@/components/view/BallotsView.vue'
+import { useTranslator } from '@/locales/translator'
 
 defineProps<{
   choice: string
@@ -15,7 +15,7 @@ const verify = function (result: boolean) {
   emit('verified', result)
 }
 
-const { t } = useI18n()
+const { t } = useTranslator()
 </script>
 
 <template>

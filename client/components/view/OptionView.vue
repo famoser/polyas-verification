@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
+import { useTranslator } from '@/locales/translator'
 
 defineProps<{
   prefix: string
   to: string
 }>()
 
-const { t } = useI18n()
+const { t } = useTranslator()
 </script>
 
 <template>
