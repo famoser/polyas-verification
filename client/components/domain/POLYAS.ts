@@ -5,10 +5,10 @@ export type ElectionDetails = {
 export type Ballot = {
   id: string
   type: string
-  contentAbove?: Content
+  contentAbove?: any
   title: Translation
   lists: List[]
-  contentBelow?: Content
+  contentBelow?: any
 
   // properties left out which influence validation
 
