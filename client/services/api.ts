@@ -41,7 +41,6 @@ const httpClient = {
   }
 }
 
-
 const restClient = {
   get: async function (url: string, options: RequestInit = {}) {
     const response = await httpClient.request(url, options)
