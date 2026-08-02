@@ -7,6 +7,9 @@ import type { Election } from '@/components/domain/Election'
 
 import type { ElectionDetails } from '@/components/domain/POLYAS'
 import { displayError } from '@/services/notifiers'
+import { useTranslator } from '@/locales/translator'
+
+const { t } = useTranslator()
 
 const election = ref<Election>()
 const electionDetails = ref<ElectionDetails>()

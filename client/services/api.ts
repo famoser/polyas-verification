@@ -64,7 +64,7 @@ const restClient = {
     }
 
     const response = await httpClient.request(url, init)
-    return response?.bytes()
+    return response?.blob()
   }
 }
 
@@ -87,7 +87,7 @@ const api = {
     return (await restClient.post('/api/receipt', data)) as Status
   },
   postDownloadReceipt: async function (receipt: Receipt) {
-    return await restClient.postDownload('/api/receipt/download', receipt)
+    return (await restClient.postDownload('/api/receipt/download', receipt)) as Blob
   }
 }
 

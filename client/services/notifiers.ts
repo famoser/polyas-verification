@@ -1,3 +1,4 @@
+// @ts-ignore
 import Noty from 'nano-noty'
 
 Noty.overrideDefaults({
