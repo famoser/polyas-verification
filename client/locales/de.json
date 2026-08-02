@@ -22,8 +22,13 @@
     },
     "set_password": {
       "set_password": "Einmalpasswort",
-      "one_time_password": "Das Einmalpasswort wird auf dem Wahlgerät angezeigt.",
-      "verified_voter": "Verifizierung des Stimmzettels von"
+      "one_time_password": "Das Einmalpasswort wird auf dem Wahlgerät angezeigt."
+    },
+    "verify_ballot_owner": {
+      "set_ballot_owner": "Stimmberechtigung",
+      "ballot_owner_source": "Geben Sie Ihre GI-Mitgliedernummer ein. Ohne Präfix und ohne führende Nullen.",
+      "successful": "Sie überprüfen den Stimmzettel, der Ihnen zugeordnet ist.",
+      "failed": "Der Stimmzettel ist nicht Ihnen zugeordnet."
     },
     "download_receipt": {
       "question": "Möchten Sie die Wahl-Quittung herunterladen?",
@@ -73,6 +78,7 @@
       "reset": "Zurücksetzen"
     },
     "yes": "Ja",
+    "verify": "Überprüfen",
     "no": "Nein"
   },
   "view": {
@@ -112,13 +118,17 @@
         "title": "Initialisieren",
         "done": "Initialisiert"
       },
+      "VERIFY_BALLOT_OWNER": {
+        "title": "Zuordnung überprüfen",
+        "done": "Zuordnung überprüft"
+      },
       "ENTER_PASSWORD": {
         "title": "Passwort eingeben",
         "done": "Passwort eingegeben"
       },
       "RECOVER_BALLOT": {
-        "title": "Wahlzettel wiederherstellen",
-        "done": "Wahlzettel wiederhergestellt"
+        "title": "Stimmzettel wiederherstellen",
+        "done": "Stimmzettel wiederhergestellt"
       },
       "VERIFY_BALLOT_CONTENT": {
         "title": "Stimmzettel überprüfen",
