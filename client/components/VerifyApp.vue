@@ -43,6 +43,7 @@ const backVerify = computed(() => {
 const reset = () => {
   password.value = undefined
   verificationResult.value = undefined
+  ballotOwner.value = undefined
   ballotContentVerifiedResult.value = undefined
   receiptDownloaded.value = undefined
   if (backVerify.value) {
@@ -89,7 +90,7 @@ const errorOrder: VerificationErrors[] = [
   VerificationErrors.BALLOT_DECODE
 ]
 
-const ballotOwnerVerifiedResult = ref<boolean>()
+const ballotOwner = ref<string>()
 const ballotContentVerifiedResult = ref<boolean>()
 const receiptDownloaded = ref<boolean>()
 
@@ -111,12 +112,12 @@ const { t } = useTranslator()
       <SetLink />
     </StepView>
 
-    <StepView v-if="urlPayload" prefix="domain.verification_step" :entry="VerificationSteps.VERIFY_BALLOT_OWNER" :done="!!ballotOwnerVerifiedResult" :success="ballotOwnerVerifiedResult">
-      <VerifyBallotOwner @verified="ballotOwnerVerifiedResult = $event" :expectedOwnerId="urlPayload.vid" :verified="ballotContentVerifiedResult" />
+    <StepView v-if="urlPayload" prefix="domain.verification_step" :entry="VerificationSteps.VERIFY_BALLOT_OWNER" :done="!!ballotOwner" :success="ballotOwner === urlPayload.vid">
+      <VerifyBallotOwner @entered="ballotOwner = $event" :expectedOwnerId="urlPayload.vid" :enteredOwnerId="ballotOwner" />
     </StepView>
 
     <StepView
-      v-if="ballotOwnerVerifiedResult"
+      v-if="urlPayload && ballotOwner === urlPayload.vid"
       prefix="domain.verification_step"
       :entry="VerificationSteps.ENTER_PASSWORD"
       :done="!!password"
