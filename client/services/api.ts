@@ -84,10 +84,13 @@ const api = {
   postVerification: async function (data: Verification) {
     return (await restClient.postJson('/api/verification', data)) as Status
   },
-  postReceipt: async function (receipt: File) {
+  postReceiptFileVerify: async function (receipt: File) {
     const data = new FormData()
     data.append('receipt', receipt)
-    return (await restClient.post('/api/receipt', data)) as Status
+    return (await restClient.post('/api/receipt/file/verify', data)) as Status
+  },
+  postReceipt: async function (receipt: Receipt) {
+    return (await restClient.postJson('/api/receipt', receipt)) as Status
   },
   postDownloadReceipt: async function (receipt: Receipt) {
     return (await restClient.postDownload('/api/receipt/download', receipt)) as Blob

@@ -15,7 +15,7 @@ const fileSet = ref<boolean>()
 const checksShown = ref<boolean>()
 const doVerification = async (file: File) => {
   fileSet.value = true
-  receiptStatus.value = await api.postReceipt(file)
+  receiptStatus.value = await api.postReceiptFileVerify(file)
 }
 
 const reset = () => {

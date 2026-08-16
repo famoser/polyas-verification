@@ -75,7 +75,7 @@ class RouteFactory
             return SlimExtensions::createZipFileResponse($request, $response, $pdfs, $filename);
         });
 
-        $route->post('/receipt', function (Request $request, Response $response) {
+        $route->post('/receipt/file/verify', function (Request $request, Response $response) {
             /** @var UploadedFile|false $file */
             $file = current($request->getUploadedFiles());
             if (!$file) {
