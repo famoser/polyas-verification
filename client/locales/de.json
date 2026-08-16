@@ -30,12 +30,16 @@
       "successful": "Sie überprüfen den Stimmzettel, der Ihnen zugeordnet ist.",
       "failed": "Der Stimmzettel ist nicht Ihnen zugeordnet. Bitte nehmen Sie umgehend Kontakt mit den Wahlorganisatoren (wahlbeobachtung@gi.de) auf."
     },
+    "check_receipt": {
+      "info": "Wie speichern nun Ihre Wahlquittung, und speisen diese in die universellen Verifikation ein.",
+      "store_receipt": "Wir können damit sicherstellen, dass Ihre Stimmabgabe im Wahlresultat berücksichtigt wird. Das Stimmgeheimnis bleibt dadurch gewahrt.",
+      "receipt_popover": "Die Wahlquittung enthält eine Referenz Ihrer verschlüsselten Stimme, sowie eine kryptographische Signatur davon vom Wahlserver. Damit kann bewiesen werden, dass der Wahlserver Ihre Stimme erhalten hat. Ihr Stimmzettel kann damit aber nicht entschlüsselt werden.",
+      "continue": "Weiter",
+      "download": "Wahlquittung herunterladen"
+    },
     "download_receipt": {
-      "question": "Möchten Sie die Wahlquittung herunterladen?",
-      "download": "Wahlquittung herunterladen",
-      "skip": "Schritt überpringen",
-      "send_to_auditors": "Senden Sie die Wahlquittung an Auditoren, damit diese verifizieren können, dass Ihre Stimmabgabe im Resultat berücksichtigt wird.",
-      "send_to_auditors_guards_secrecy": "Die Wahlquittung enthält nur eine Referenz auf den verschlüsselten Stimmzettel. Dennoch kann damit validiert werden, ob der referenziert Stimmzettel im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde. Das Wahlgeheimnis wird durch diese Verifizierung nicht beeinträchtigt."
+      "info": "Sie können die Wahlquittung herunterladen, und diese auf einem weiteren Weg in die universelle Verifikation einfliessen lassen (z.B. durch direkte Kontaktaufnahme mit den Teams, die die universelle Verifikation durchführen).",
+      "download": "Wahlquittung herunterladen"
     },
     "verify_ballot_content": {
       "question": "Entspricht dies Ihrem Stimmzettel?",
@@ -88,7 +92,7 @@
     "verify_app": {
       "title": "Stimmabgabe überprüfen",
       "description": "Mit dem QR Code, der nach der Wahl angezeigt wird, können Sie den Inhalt Ihres Stimmzettels überprüfen.",
-      "verification_finished": "Stimmabgabe überprüft. Wenn alles gut gegangen ist, können Sie dieses Fenster nun schliessen."
+      "verification_finished": "Stimmabgabe erfolgreich verifiziert. Sie können dieses Fenster nun schliessen."
     },
     "receipt_app": {
       "title": "Wahlquittung überprüfen",
@@ -137,6 +141,10 @@
       "STORE_RECEIPT": {
         "title": "Wahlquittung speichern",
         "done": "Wahlquittung speichern"
+      },
+      "DOWNLOAD_RECEIPT": {
+        "title": "Optional: Wahlquittung herunterladen",
+        "done": "Wahlquittung heruntergeladen"
       }
     },
     "verification_status": {

@@ -8,6 +8,7 @@ const props = defineProps<{
   prefix: string
   entry: string
   done: boolean
+  optional?: boolean
   success?: boolean
   forceClosedWhenDone?: boolean
 }>()
@@ -21,12 +22,12 @@ const showBody = computed(() => !props.done || (invertedExpandedForFail.value &&
 </script>
 
 <template>
-  <div class="card shadow-sm p-0" :class="{ 'border-warning': !done, 'border-success': done && success, 'border-danger': done && success === false }" role="button">
+  <div class="card shadow-sm p-0" :class="{ 'border-warning': !done && optional !== true, 'border-success': done && success, 'border-danger': done && success === false }" role="button">
     <div class="card-header" :class="{ 'border-bottom-0': !showBody }" @click="expanded = !expanded">
       <div class="d-flex flex-row">
         <p class="mb-0">
           <b>
-            <SuccessIndicator :loading="!done" :success="success" class="me-2" />
+            <SuccessIndicator :loading="!done && optional !== true" :success="success" class="me-2" />
             <span v-if="!done">{{ t(`${entryPrefix}.title`) }}</span>
             <span v-else>{{ t(`${entryPrefix}.done`) }}</span>
           </b>
