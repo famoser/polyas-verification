@@ -174,7 +174,7 @@ const { t } = useTranslator()
     </StepView>
   </div>
 
-  <p class="alert alert-success mt-2" v-if="receiptChecked !== undefined">
+  <p class="alert alert-success mt-2 mb-5" v-if="receiptChecked !== undefined">
     {{ t('view.verify_app.verification_finished') }}
   </p>
 
