@@ -46,7 +46,14 @@ const { t } = useTranslator()
     <UploadReceipt v-if="!fileSet" @uploaded="doVerification($event)" />
     <TextCheckView v-if="fileSet" prefix="domain.receipt_status" :entry="VerifyReceiptErrors.RECEIPT_UPLOADED" :success="true" />
 
-    <ChecksView v-if="fileSet" prefix="domain.receipt_status" :result="receiptStatus" :error-order="errorOrder" :fallback-error="VerifyReceiptErrors.UNKNOWN" @checks-finished-loading="checksShown = true" />
+    <ChecksView
+      v-if="fileSet"
+      prefix="domain.receipt_status"
+      :result="receiptStatus"
+      :error-order="errorOrder"
+      :fallback-error="VerifyReceiptErrors.UNKNOWN"
+      @checks-finished-loading="checksShown = true"
+    />
   </div>
 
   <p class="my-5 alert alert-success" v-if="checksShown && receiptStatus && receiptStatus.status">
