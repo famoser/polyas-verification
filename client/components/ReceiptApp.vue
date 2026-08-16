@@ -3,7 +3,7 @@ import UploadReceipt from '@/components/action/UploadReceipt.vue'
 import { computed, ref } from 'vue'
 import type { Status } from '@/components/domain/Status'
 import ReceiptExplanation from '@/components/layout/ReceiptExplanation.vue'
-import { ReceiptErrors } from '@/components/domain/ReceiptErrors'
+import { VerifyReceiptErrors } from '@/components/domain/VerifyReceiptErrors'
 import { api } from '@/services/api'
 import ChecksView from '@/components/view/library/ChecksView.vue'
 import ResetButton from '@/components/shared/ResetButton.vue'
@@ -28,7 +28,7 @@ const canReset = computed(() => {
   return fileSet.value
 })
 
-const errorOrder: ReceiptErrors[] = [ReceiptErrors.RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE, ReceiptErrors.SIGNATURE_VALID]
+const errorOrder: VerifyReceiptErrors[] = [VerifyReceiptErrors.RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE, VerifyReceiptErrors.SIGNATURE_VALID]
 
 const { t } = useTranslator()
 </script>
@@ -44,9 +44,9 @@ const { t } = useTranslator()
       <ResetButton @reset="reset" />
     </div>
     <UploadReceipt v-if="!fileSet" @uploaded="doVerification($event)" />
-    <TextCheckView v-if="fileSet" prefix="domain.receipt_status" :entry="ReceiptErrors.RECEIPT_UPLOADED" :success="true" />
+    <TextCheckView v-if="fileSet" prefix="domain.receipt_status" :entry="VerifyReceiptErrors.RECEIPT_UPLOADED" :success="true" />
 
-    <ChecksView v-if="fileSet" prefix="domain.receipt_status" :result="receiptStatus" :error-order="errorOrder" :fallback-error="ReceiptErrors.UNKNOWN" @checks-finished-loading="checksShown = true" />
+    <ChecksView v-if="fileSet" prefix="domain.receipt_status" :result="receiptStatus" :error-order="errorOrder" :fallback-error="VerifyReceiptErrors.UNKNOWN" @checks-finished-loading="checksShown = true" />
   </div>
 
   <p class="my-5 alert alert-success" v-if="checksShown && receiptStatus && receiptStatus.status">
