@@ -41,7 +41,7 @@ readonly class Verification
     public const string ZKP_VALID = 'ZKP_VALID';
     public const string BALLOT_DECODE = 'BALLOT_DECODE';
 
-    public function __construct(private DeviceParameters $deviceParameters, private ApiClient $apiClient, private string $polyasElection)
+    public function __construct(private DeviceParameters $deviceParameters, private ApiClient $apiClient)
     {
     }
 

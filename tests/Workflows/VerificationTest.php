@@ -33,12 +33,12 @@ class VerificationTest extends TestCase
         $apiClient = \Mockery::mock(ApiClient::class);
         $loginRequest = Ballot0::getLoginRequest();
         $loginResponse = Ballot0::getLoginResponse();
-        $apiClient->shouldReceive('postLogin')->with($loginRequest)->andReturn($loginResponse['value']); // @phpstan-ignore-line
+        $apiClient->shouldReceive('postLogin')->with($loginRequest)->andReturn($loginResponse['value']);
 
         $challengeRequest = Ballot0::getChallengeRequest();
         $challengeResponse = Ballot0::getChallengeResponse();
         $token = $loginResponse['value']['token'];
-        $apiClient->shouldReceive('postChallenge')->with($challengeRequest, $token)->andReturn($challengeResponse); // @phpstan-ignore-line
+        $apiClient->shouldReceive('postChallenge')->with($challengeRequest, $token)->andReturn($challengeResponse);
         /** @var ApiClient $apiClient */
 
         $challenge = gmp_init($challengeRequest['challenge'], 10);
@@ -46,7 +46,7 @@ class VerificationTest extends TestCase
         $commit = new ChallengeCommit($challenge, $challengeRandomCoin);
 
         Storage::resetDb();
-        $verification = new Verification($deviceParameters, $apiClient, $election);
+        $verification = new Verification($deviceParameters, $apiClient);
         $status = $verification->verify($input, $loginRequest['password'], $commit, $validReceipt, $hexBallot, $error);
         $this->assertTrue($status);
         $this->assertNull($error);

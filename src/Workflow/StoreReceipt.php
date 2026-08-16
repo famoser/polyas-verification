@@ -35,8 +35,6 @@ readonly class StoreReceipt
 
     /**
      * @param ValidReceipt $validReceipt
-     *
-     * @phpstan-assert-if-false string $failedCheck
      */
     public function store(array $validReceipt, ?string &$failedCheck = null): bool
     {

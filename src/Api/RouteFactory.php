@@ -154,10 +154,9 @@ class RouteFactory
                 $status = VerificationMock::performMockVerification($payload, $payload['password'], $failedCheck, $validReceipt, $hexBallot);
             } else {
                 $deviceParameters = self::getDeviceParameters();
-                $election = self::getElection();
 
                 $apiClient = self::createPOLYASApiClient();
-                $verification = new Verification($deviceParameters, $apiClient, $election['polyasElection']);
+                $verification = new Verification($deviceParameters, $apiClient);
                 $challengeCommit = ChallengeCommit::createWithRandom();
                 $status = $verification->verify($payload, $payload['password'], $challengeCommit, $validReceipt, $hexBallot, $failedCheck);
             }
