@@ -12,11 +12,12 @@
 namespace Famoser\PolyasVerification\Workflow\Mock;
 
 use Famoser\PolyasVerification\Workflow\DownloadReceipt;
+use Famoser\PolyasVerification\Workflow\StoreReceipt;
 
 /**
  * Used to test the verification procedure without needing an active election.
  */
-readonly class DownloadReceiptMock extends ReceiptMock
+readonly class StoreReceiptMock extends ReceiptMock
 {
     /**
      * @param array{
@@ -25,10 +26,10 @@ readonly class DownloadReceiptMock extends ReceiptMock
      * 'ballotVoterId': string,
      * } $payload
      */
-    public static function performMockDownloadReceipt(array $payload, ?string &$pdf = null, ?string &$failedCheck = null): bool
+    public static function performMockStoreReceipt(array $payload, ?string &$failedCheck = null): bool
     {
-        $storeReceipt = new DownloadReceipt(self::VERIFICATION_KEY, self::ELECTION_NAME);
+        $storeReceipt = new StoreReceipt(self::VERIFICATION_KEY, self::ELECTION_NAME);
 
-        return $storeReceipt->store($payload, $pdf, $failedCheck);
+        return $storeReceipt->store($payload, $failedCheck);
     }
 }

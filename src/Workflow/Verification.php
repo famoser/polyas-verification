@@ -36,7 +36,6 @@ readonly class Verification
     public const string DEVICE_PARAMETERS_MATCH = 'DEVICE_PARAMETERS_MATCH';
     public const string ASSOCIATION_VALID = 'ASSOCIATION_VALID';
     public const string SIGNATURE_VALID = 'SIGNATURE_VALID';
-    public const string RECEIPT_STORED = 'RECEIPT_STORED';
     public const string QR_CODE_DECRYPTION = 'QR_CODE_DECRYPTION';
     public const string CHALLENGE_SUCCESSFUL = 'CHALLENGE_SUCCESSFUL';
     public const string ZKP_VALID = 'ZKP_VALID';
@@ -95,14 +94,14 @@ readonly class Verification
         if (!$this->deviceParameters->compareDeviceParameters($initialMessage['secondDeviceParametersJson'])) {
             $failedCheck = self::DEVICE_PARAMETERS_MATCH;
 
-            return true;
+            return false;
         }
 
         $qrCodeDecryption = new QRCodeDecryption($payload['c'], $payload['d'], $initialMessage['comSeed']);
         if (!$qrCodeDecryption->decrypt($randomCoinSeed, $referenceCoin)) {
             $failedCheck = self::QR_CODE_DECRYPTION;
 
-            return true;
+            return false;
         }
 
         $ballotDigest = new BallotDigest($initialMessage['ballot']);
@@ -110,23 +109,18 @@ readonly class Verification
         if (!$ballotDigestSignature->verify()) {
             $failedCheck = self::SIGNATURE_VALID;
 
-            return true;
+            return false;
         }
 
         $ballotAssociation = new BallotAssociation($initialMessage['ballot']['reference'], $referenceCoin, $payload['vid']);
         if (!$ballotAssociation->verify()) {
             $failedCheck = self::ASSOCIATION_VALID;
 
-            return true;
+            return false;
         }
 
         $ballotReceipt = new BallotReceipt($ballotDigestSignature, $loginResponse['ballotVoterId']);
         $validReceipt = $ballotReceipt->export();
-        if (!Storage::checkReceiptExists($validReceipt) && !Storage::storeReceipt($validReceipt, $this->polyasElection)) {
-            $failedCheck = self::RECEIPT_STORED;
-
-            return true;
-        }
 
         $challengePayload = ['challenge' => $challengeCommit->getEString(), 'challengeRandomCoin' => $challengeCommit->getRString()];
         try {
@@ -138,14 +132,14 @@ readonly class Verification
         if (!$challengeResponse) {
             $failedCheck = self::CHALLENGE_SUCCESSFUL;
 
-            return true;
+            return false;
         }
 
         $zkpProofValidation = new ZKPProofValidation($initialMessage, $challengeCommit->getE(), $challengeResponse['z'], $this->deviceParameters->getPublicKey(), $randomCoinSeed);
         if (!$zkpProofValidation->validate()) {
             $failedCheck = self::ZKP_VALID;
 
-            return true;
+            return false;
         }
 
         $ballotDecoding = new BallotDecode($initialMessage, $this->deviceParameters->getPublicKey(), $randomCoinSeed);
@@ -153,7 +147,7 @@ readonly class Verification
         if (!$decodedBallot) {
             $failedCheck = self::BALLOT_DECODE;
 
-            return true;
+            return false;
         }
 
         $hexBallot = bin2hex($decodedBallot);

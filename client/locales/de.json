@@ -168,13 +168,6 @@
         "failed": "Die Attribution ist nicht korrekt.",
         "impact": "Das Verifizierungstool kann nicht sicherstellen, dass die zu verifizierende Stimme zum Login gehört."
       },
-      "RECEIPT_STORED": {
-        "title": "Wahlquittung gespeichert",
-        "description": "Der verschlüsselte Stimmzettel und die Signatur, die zusammen die Wahlquittung bilden, ist vom Verifikationstool gespeichert. In der Auszählphase werden für alle vom Verifikationstool gespeicherten Wahlquittungen überprüft, ob der jeweilige Stimmzettel wirklich ausgezählt wird.",
-        "success": "Die Wahlquittung ist gespeichert.",
-        "failed": "Die Wahlquittung kann nicht gespeichert werden.",
-        "impact": "Das Verifizierungstool kann nicht sicherstellen, dass die Stimme beim Auszählvorgang berücksichtigt wird."
-      },
       "QR_CODE_DECRYPTION": {
         "title": "QR Code Inhalt entschlüsselt",
         "description": "Entschlüsselt den Ciphertext, der im QR Code enthalten ist.",

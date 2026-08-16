@@ -17,6 +17,7 @@ use Famoser\PolyasVerification\Test\resources\ballot0\Ballot0;
 use Famoser\PolyasVerification\Workflow\ApiClient;
 use Famoser\PolyasVerification\Workflow\DownloadReceipt;
 use Famoser\PolyasVerification\Workflow\ExportReceipts;
+use Famoser\PolyasVerification\Workflow\StoreReceipt;
 use Famoser\PolyasVerification\Workflow\Verification;
 use Famoser\PolyasVerification\Workflow\VerifyReceipt;
 use PHPUnit\Framework\TestCase;
@@ -50,6 +51,13 @@ class VerificationTest extends TestCase
         $this->assertTrue($status);
         $this->assertNull($error);
         $this->assertEquals('00000100', $hexBallot);
+        $this->assertFalse(Storage::checkReceiptExists($validReceipt));
+
+        // store receipt
+        $verification = new StoreReceipt($deviceParameters->getVerificationKey(), $election);
+        $status = $verification->store($validReceipt, $error);
+        $this->assertTrue($status);
+        $this->assertNull($error);
         $this->assertTrue(Storage::checkReceiptExists($validReceipt));
 
         // download receipt
