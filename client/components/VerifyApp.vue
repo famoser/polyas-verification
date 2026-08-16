@@ -84,7 +84,6 @@ const errorOrder: VerificationErrors[] = [
   VerificationErrors.DEVICE_PARAMETERS_MATCH,
   VerificationErrors.SIGNATURE_VALID,
   VerificationErrors.ASSOCIATION_VALID,
-  VerificationErrors.RECEIPT_STORED,
   VerificationErrors.QR_CODE_DECRYPTION,
   VerificationErrors.CHALLENGE_SUCCESSFUL,
   VerificationErrors.ZKP_VALID,

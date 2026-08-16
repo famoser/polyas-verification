@@ -1,0 +1,4 @@
+export enum StoreReceiptErrors {
+  SIGNATURE_VALID = 'SIGNATURE_VALID',
+  RECEIPT_STORED = 'RECEIPT_STORED'
+}

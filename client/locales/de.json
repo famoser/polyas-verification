@@ -35,7 +35,12 @@
       "store_receipt": "Wir können damit sicherstellen, dass Ihre Stimmabgabe im Wahlresultat berücksichtigt wird. Das Stimmgeheimnis bleibt dadurch gewahrt.",
       "receipt_popover": "Die Wahlquittung enthält eine Referenz Ihrer verschlüsselten Stimme, sowie eine kryptographische Signatur davon vom Wahlserver. Damit kann bewiesen werden, dass der Wahlserver Ihre Stimme erhalten hat. Ihr Stimmzettel kann damit aber nicht entschlüsselt werden.",
       "continue": "Weiter",
-      "download": "Wahlquittung herunterladen"
+      "download": "Wahlquittung herunterladen",
+      "errors": {
+        "SIGNATURE_VALID": "Die Signatur der Wahlquittung konnte nicht überprüft werden.",
+        "RECEIPT_STORED": "Die Wahlquittung konnte nicht gespeichert werden.",
+        "contact_me": "Bitte nehmen Sie Kontakt mit mir (git@famoser.ch) auf."
+      }
     },
     "download_receipt": {
       "info": "Sie können die Wahlquittung herunterladen, und diese auf einem weiteren Weg in die universelle Verifikation einfliessen lassen (z.B. durch direkte Kontaktaufnahme mit den Teams, die die universelle Verifikation durchführen).",
