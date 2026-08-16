@@ -132,8 +132,8 @@
         "done": "Zuordnung überprüft"
       },
       "ENTER_PASSWORD": {
-        "title": "Passwort eingeben",
-        "done": "Passwort eingegeben"
+        "title": "Einmalpasswort eingeben",
+        "done": "Einmalpasswort eingegeben"
       },
       "RECOVER_BALLOT": {
         "title": "Stimmzettel wiederherstellen",
