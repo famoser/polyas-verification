@@ -7,10 +7,10 @@
   },
   "action": {
     "upload_receipt": {
-      "title": "Wahl-Quittung hochladen",
-      "processing": "Wahl-Quittung wird verarbeitet...",
+      "title": "Wahlquittung hochladen",
+      "processing": "Wahlquittung wird verarbeitet...",
       "privacy_is_safeguarded": "Das Stimmgeheimnis bleibt dadurch gewahrt.",
-      "privacy_is_safeguarded_help": "Die Wahl-Quittung enthält nur eine Referenz auf die verschlüsselte Stimme."
+      "privacy_is_safeguarded_help": "Die Wahlquittung enthält nur eine Referenz auf die verschlüsselte Stimme."
     },
     "set_link": {
       "scan_qr_code": "QR Code scannen",
@@ -26,21 +26,21 @@
     },
     "verify_ballot_owner": {
       "set_ballot_owner": "Stimmberechtigung",
-      "ballot_owner_source": "Geben Sie Ihre GI-Mitgliedernummer ein. Ohne Präfix oder führende Nullen.",
+      "ballot_owner_source": "Geben Sie Ihre persönliche ID für diese Wahl ein. Dies ist die GI-Mitgliedernummer, ohne Präfix oder führende Nullen.",
       "successful": "Sie überprüfen den Stimmzettel, der Ihnen zugeordnet ist.",
-      "failed": "Der Stimmzettel ist nicht Ihnen zugeordnet. Bitte nehmen Sie umgehend Kontakt mit den Wahlorganisatoren auf."
+      "failed": "Der Stimmzettel ist nicht Ihnen zugeordnet. Bitte nehmen Sie umgehend Kontakt mit den Wahlorganisatoren (wahlbeobachtung@gi.de) auf."
     },
     "download_receipt": {
-      "question": "Möchten Sie die Wahl-Quittung herunterladen?",
-      "download": "Wahl-Quittung herunterladen",
+      "question": "Möchten Sie die Wahlquittung herunterladen?",
+      "download": "Wahlquittung herunterladen",
       "skip": "Schritt überpringen",
-      "send_to_auditors": "Senden Sie die Wahl-Quittung an Auditoren, damit diese verifizieren können, dass Ihre Stimmabgabe im Resultat berücksichtigt wird.",
-      "send_to_auditors_guards_secrecy": "Die Wahl-Quittung enthält nur eine Referenz auf den verschlüsselten Stimmzettel. Dennoch kann damit validiert werden, ob der referenziert Stimmzettel im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde. Das Wahlgeheimnis wird durch diese Verifizierung nicht beeinträchtigt."
+      "send_to_auditors": "Senden Sie die Wahlquittung an Auditoren, damit diese verifizieren können, dass Ihre Stimmabgabe im Resultat berücksichtigt wird.",
+      "send_to_auditors_guards_secrecy": "Die Wahlquittung enthält nur eine Referenz auf den verschlüsselten Stimmzettel. Dennoch kann damit validiert werden, ob der referenziert Stimmzettel im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde. Das Wahlgeheimnis wird durch diese Verifizierung nicht beeinträchtigt."
     },
     "verify_ballot_content": {
       "question": "Entspricht dies Ihrem Stimmzettel?",
       "successful": "Sie haben angegeben, dass dies Ihrem Stimmzettel entspricht.",
-      "failed": "Sie haben angegeben, dass dies nicht Ihrem Stimmzettel entspricht. Bitte nehmen Sie umgehend Kontakt mit den Wahlorganisatoren auf."
+      "failed": "Sie haben angegeben, dass dies nicht Ihrem Stimmzettel entspricht. Bitte nehmen Sie umgehend Kontakt mit den Wahlorganisatoren (wahlbeobachtung@gi.de) auf."
     }
   },
   "layout": {
@@ -50,14 +50,14 @@
     },
     "receipt_explanation": {
       "verification_target": {
-        "question": "Was kann durch die Wahl-Quittung verifiziert werden?",
-        "verifies_received_at_server": "Die Wahl-Quittung enthält eine Signatur über den dazugehörigen verschlüsselten Stimmzettel. Damit kann bewiesen werden, dass der Stimmzettel vom Wahl-Server empfangen wurde.",
-        "must_trust_device": "Die Wahl-Quittung erlaubt es aber nicht zu überprüfen, ob der dazugehörige verschlüsselte Stimmzettel wirklich dem Wunsch des Wählenden entspricht. Dazu muss dem Wahlgerät (mit dem der Stimmzettel abgegeben wurde) oder dem Zweitgerät (mit dem der Stimmzettel verifiziert wurde) vertraut werden.",
-        "must_trust_servers": "Die Wahl-Quittung alleine kann auch nicht festellen, ob der dazugehörige verschlüsselte Stimmzettel auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem Wahl-Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten."
+        "question": "Was kann durch die Wahlquittung verifiziert werden?",
+        "verifies_received_at_server": "Die Wahlquittung enthält eine Signatur über den dazugehörigen verschlüsselten Stimmzettel. Damit kann bewiesen werden, dass der Stimmzettel vom Wahl-Server empfangen wurde.",
+        "must_trust_device": "Die Wahlquittung erlaubt es aber nicht zu überprüfen, ob der dazugehörige verschlüsselte Stimmzettel wirklich dem Wunsch des Wählenden entspricht. Dazu muss dem Wahlgerät (mit dem der Stimmzettel abgegeben wurde) oder dem Zweitgerät (mit dem der Stimmzettel verifiziert wurde) vertraut werden.",
+        "must_trust_servers": "Die Wahlquittung alleine kann auch nicht festellen, ob der dazugehörige verschlüsselte Stimmzettel auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem Wahl-Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten (lassen)."
       },
       "verification_fails": {
         "question": "Was tun, wenn die Verifizierung hier fehlschlägt?",
-        "try_again_or_complain": "Stellen Sie sicher, dass Sie eine Wahl-Quittung der oben eingeblendeten Wahl verwenden, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an die Wahlorganisatoren."
+        "try_again_or_complain": "Stellen Sie sicher, dass Sie eine Wahlquittung der oben eingeblendeten Wahl verwenden, und versuchen Sie es noch einmal. Wenn der Fehler dauerhaft besteht, wenden Sie sich bitte an die Wahlorganisatoren."
       }
     },
     "verification_explanation": {
@@ -65,7 +65,7 @@
         "question": "Was kann hier verifiziert werden?",
         "shows_vote_unencrypted": "Hier wird der Stimmzettel noch einmal unverschlüsselt dargestellt. Dadurch kann überprüft werden, dass der Stimmzettel vom Wahlgerät richtig verschlüsselt wurde.",
         "must_trust_one_device": "Solange entweder das Wahlgerät oder das Verifizierungsgerät richtig funktioniert, können so Fehler bei der Stimmabgabe entdeckt werden.",
-        "must_trust_servers": "Hier kann aber nicht festgestellt werden, ob der Stimmzettel auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem Wahl-Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten."
+        "must_trust_servers": "Hier kann aber nicht festgestellt werden, ob der Stimmzettel auch tatsächlich richtig ausgezählt wird. Dazu müssen Sie dem Wahl-Server vertrauen, oder dessen Beweise für die universelle Verifizierbarkeit auswerten (lassen)."
       },
       "verification_fails": {
         "question": "Was tun, wenn die Verifizierung hier fehlschlägt?",
@@ -91,9 +91,9 @@
       "verification_finished": "Stimmabgabe überprüft. Wenn alles gut gegangen ist, können Sie dieses Fenster nun schliessen."
     },
     "receipt_app": {
-      "title": "Wahl-Quittung überprüfen",
-      "description": "Mit einer Wahl-Quittung (.pdf) können Sie prüfen, ob Ihr Stimmzettel vom Wahl-Server registriert wurde.",
-      "receipt_valid": "Die Wahl-Quittung ist valid."
+      "title": "Wahlquittung überprüfen",
+      "description": "Mit einer Wahlquittung (.pdf) können Sie prüfen, ob Ihr Stimmzettel vom Wahl-Server registriert wurde.",
+      "receipt_valid": "Die Wahlquittung ist valid."
     },
     "ballot": {
       "ballot_view": {
@@ -104,9 +104,9 @@
       }
     },
     "receipt_view": {
-      "receipt": "Wahl-Quittung",
-      "privacy_is_safeguarded": "Mit der Wahl-Quittung kann überprüft werden, ob der Stimmzettel wirklich ausgezählt wurde. Das Stimmgeheimnis bleibt dadurch gewahrt.",
-      "privacy_is_safeguarded_help": "Das Wahl-Quittung enthält nur eine Referenz auf die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob der referenzierte Stimmzettel im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde."
+      "receipt": "Wahlquittung",
+      "privacy_is_safeguarded": "Mit der Wahlquittung kann überprüft werden, ob der Stimmzettel wirklich ausgezählt wurde. Das Stimmgeheimnis bleibt dadurch gewahrt.",
+      "privacy_is_safeguarded_help": "Das Wahlquittung enthält nur eine Referenz auf die verschlüsselte Stimme. Dennoch kann damit validiert werden, ob der referenzierte Stimmzettel im Wahlresultat enthalten ist, und somit auch wirklich ausgezählt wurde."
     },
     "verification_result_view": {
       "reset": "Ansicht zurücksetzen"
@@ -135,14 +135,14 @@
         "done": "Stimmzettel überprüft"
       },
       "STORE_RECEIPT": {
-        "title": "Wahl-Quittung speichern",
-        "done": "Wahl-Quittung speichern"
+        "title": "Wahlquittung speichern",
+        "done": "Wahlquittung speichern"
       }
     },
     "verification_status": {
       "LOGIN_SUCCESSFUL": {
         "title": "Login erfolgreich",
-        "description": "Logged sich mit dem bereitgestellen Zugangscode ein, und fordert vom Server kryptographisches Material für die weiteren Checks an.",
+        "description": "Logged sich mit dem bereitgestellen Zugangscode ein, und fordert vom Server kryptographisches Material für die weitere Verifikation an.",
         "success": "Der Login ist erfolgt, und kryptographisches Material wurde erhalten.",
         "failed": "Login fehlgeschlagen.",
         "impact": "Das Verifizierungstool kann die Verifizierung nicht durchführen."
@@ -169,10 +169,10 @@
         "impact": "Das Verifizierungstool kann nicht sicherstellen, dass die zu verifizierende Stimme zum Login gehört."
       },
       "RECEIPT_STORED": {
-        "title": "Wahl-Quittung gespeichert",
-        "description": "Der verschlüsselte Stimmzettel und die Signatur, die zusammen die Wahl-Quittung bilden, ist vom Verifikationstool gespeichert. In der Auszählphase werden für alle vom Verifikationstool gespeicherten Wahl-Quittungen überprüft, ob der jeweilige Stimmzettel wirklich ausgezählt wird.",
-        "success": "Die Wahl-Quittung ist gespeichert.",
-        "failed": "Die Wahl-Quittung kann nicht gespeichert werden.",
+        "title": "Wahlquittung gespeichert",
+        "description": "Der verschlüsselte Stimmzettel und die Signatur, die zusammen die Wahlquittung bilden, ist vom Verifikationstool gespeichert. In der Auszählphase werden für alle vom Verifikationstool gespeicherten Wahlquittungen überprüft, ob der jeweilige Stimmzettel wirklich ausgezählt wird.",
+        "success": "Die Wahlquittung ist gespeichert.",
+        "failed": "Die Wahlquittung kann nicht gespeichert werden.",
         "impact": "Das Verifizierungstool kann nicht sicherstellen, dass die Stimme beim Auszählvorgang berücksichtigt wird."
       },
       "QR_CODE_DECRYPTION": {
@@ -212,28 +212,28 @@
     },
     "receipt_status": {
       "RECEIPT_UPLOADED": {
-        "title": "Wahl-Quittung hochgeladen",
-        "description": "Die Wahl-Quittung (die .pdf Datei) wird für die Analyse auf den Server hochgeladen.",
-        "success": "Wahl-Quittung hochgeladen."
+        "title": "Wahlquittung hochgeladen",
+        "description": "Die Wahlquittung (die .pdf Datei) wird für die Analyse auf den Server hochgeladen.",
+        "success": "Wahlquittung hochgeladen."
       },
       "RECEIPT_HAS_FINGERPRINT_AND_SIGNATURE": {
         "title": "Referenz zum verschlüsselten Stimmzettel enthalten",
-        "description": "Durchsucht die Wahl-Quittung (die .pdf Datei) nach der Referenz zum verschlüsselten Stimmzettel und einer Signatur davon.",
-        "success": "Referenz zum verschlüsselten Stimmzettel und Signatur im Rezept gefunden.",
-        "failed": "Referenz zum verschlüsselten Stimmzettel oder Signatur nicht im Rezept gefunden.",
-        "impact": "Die Quittung kann nicht möglicherweise nicht ausgelesen werden, und ist daher kein valider Beleg, dass die Stimme beim Auszählvorgang berücksichtigt wird."
+        "description": "Durchsucht die Wahlquittung (die .pdf Datei) nach der Referenz zum verschlüsselten Stimmzettel und einer Signatur davon.",
+        "success": "Referenz zum verschlüsselten Stimmzettel und Signatur in der Wahlquittung gefunden.",
+        "failed": "Referenz zum verschlüsselten Stimmzettel oder Signatur nicht in der Wahlquittung gefunden.",
+        "impact": "Die Wahlquittung kann nicht möglicherweise nicht ausgelesen werden, und ist daher kein valider Beleg, dass die Stimme beim Auszählvorgang berücksichtigt wird."
       },
       "SIGNATURE_VALID": {
         "title": "Referenz zum verschlüsselten Stimmzettel valid signiert",
         "description": "Überprüft, ob die gefundene Signatur korrekt über die Referenz zum verschlüsselten Stimmzettel erstellt wurde.",
         "success": "Die Signatur der Referenz zum verschlüsselten Stimmzettel ist valid.",
         "failed": "Die Signatur der Referenz zum verschlüsselten Stimmzettel ist invalid.",
-        "impact": "Die Quittung ist kein valider Beleg, dass die Stimme beim Auszählvorgang berücksichtigt wird."
+        "impact": "Die Wahlquittung ist kein valider Beleg, dass die Stimme beim Auszählvorgang berücksichtigt wird."
       },
       "UNKNOWN": {
         "title": "Unbekanner Fehler",
-        "description": "Bei der Verifizierung ist ein ungekannter Fehler aufgetreten. Dies bedeutet, dass die Wahl-Quittung vermutlich ungültig ist.",
-        "failed": "Die Wahl-Quittung kann nicht validiert werden.",
+        "description": "Bei der Verifizierung ist ein ungekannter Fehler aufgetreten. Dies bedeutet, dass die Wahlquittung vermutlich ungültig ist.",
+        "failed": "Die Wahlquittung kann nicht validiert werden.",
         "failed_hint": "Bitte stellen Sie sicher, dass Sie die richtige Datei ausgewählt haben."
       }
     }
