@@ -12,9 +12,10 @@ import ResetButton from '@/components/shared/ResetButton.vue'
 import { VerificationSteps } from '@/components/domain/VerificationSteps'
 import StepView from '@/components/view/library/StepView.vue'
 import VerifyBallotContent from '@/components/action/VerifyBallotContent.vue'
-import DownloadReceipt from '@/components/action/DownloadReceipt.vue'
+import CheckReceipt from '@/components/action/CheckReceipt.vue'
 import { useTranslator } from '@/locales/translator'
 import VerifyBallotOwner from '@/components/action/VerifyBallotOwner.vue'
+import DownloadReceipt from '@/components/action/DownloadReceipt.vue'
 
 const route = useRoute()
 const decodeUrlBase64 = (value: string) => {
@@ -45,7 +46,7 @@ const reset = () => {
   verificationResult.value = undefined
   ballotOwner.value = undefined
   ballotContentVerifiedResult.value = undefined
-  receiptDownloaded.value = undefined
+  receiptChecked.value = undefined
   if (backVerify.value) {
     router.back()
   }
@@ -92,6 +93,7 @@ const errorOrder: VerificationErrors[] = [
 
 const ballotOwner = ref<string>()
 const ballotContentVerifiedResult = ref<boolean>()
+const receiptChecked = ref<boolean>()
 const receiptDownloaded = ref<boolean>()
 const verificationFailed = computed(() => {
   // ballot misattributed
@@ -165,16 +167,27 @@ const { t } = useTranslator()
       v-if="!!(ballotContentVerifiedResult && verificationResult?.receipt)"
       prefix="domain.verification_step"
       :entry="VerificationSteps.STORE_RECEIPT"
-      :done="receiptDownloaded !== undefined"
-      :success="receiptDownloaded ? true : undefined"
+      :done="receiptChecked !== undefined"
+      :success="true"
     >
-      <DownloadReceipt :receipt="verificationResult.receipt" @downloaded="receiptDownloaded = $event" />
+      <CheckReceipt :receipt="verificationResult.receipt" @checked="receiptChecked = $event" />
     </StepView>
   </div>
 
-  <p class="alert alert-info my-5" v-if="receiptDownloaded !== undefined">
+  <p class="alert alert-success mt-2" v-if="receiptChecked !== undefined">
     {{ t('view.verify_app.verification_finished') }}
   </p>
+
+  <StepView
+    v-if="receiptChecked !== undefined && verificationResult?.receipt"
+    prefix="domain.verification_step"
+    :entry="VerificationSteps.DOWNLOAD_RECEIPT"
+    :done="receiptDownloaded !== undefined"
+    :success="receiptDownloaded"
+    :optional="true"
+  >
+    <DownloadReceipt :receipt="verificationResult.receipt" @downloaded="receiptDownloaded = $event" />
+  </StepView>
 
   <div class="my-5">
     <VerificationExplanation :verification-failed="verificationFailed" />
