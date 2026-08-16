@@ -22,8 +22,8 @@ const { t } = useTranslator()
     </p>
   </FAQAnswer>
 
-  <FAQAnswer :question="t('layout.verification_explanation.verification_fails.question')" :force-open="verificationFailed">
-    <p :class="{ 'bg-danger-subtle p-2': verificationFailed }">
+  <FAQAnswer :question="t('layout.verification_explanation.verification_fails.question')">
+    <p>
       {{ t('layout.verification_explanation.verification_fails.try_again_or_complain') }}
     </p>
   </FAQAnswer>
