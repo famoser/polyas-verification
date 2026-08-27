@@ -77,7 +77,6 @@ readonly class VerificationMock
      * @param array{
      * 'fingerprint': string,
      * 'signature': string,
-     * 'ballotVoterId': string,
      * }|null $validReceipt
      */
     public static function performMockVerification(array $payload, string $password, ?string &$failedCheck = null, ?array &$validReceipt = null, ?string &$hexBallot = null): bool

@@ -27,7 +27,6 @@ readonly class DownloadReceipt
      * @param array{
      * 'fingerprint': string,
      *  'signature': string,
-     *  'ballotVoterId': string,
      * } $receipt
      *
      * @phpstan-assert-if-false string $failedCheck

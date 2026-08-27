@@ -22,7 +22,6 @@ readonly class DownloadReceiptMock extends ReceiptMock
      * @param array{
      * 'fingerprint': string,
      * 'signature': string,
-     * 'ballotVoterId': string,
      * } $payload
      */
     public static function performMockDownloadReceipt(array $payload, ?string &$pdf = null, ?string &$failedCheck = null): bool

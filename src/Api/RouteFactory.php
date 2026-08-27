@@ -101,7 +101,6 @@ class RouteFactory
             /** @var array{
              *     'fingerprint': string,
              *     'signature': string,
-             *     'ballotVoterId': string,
              * } $payload
              */
             if (DownloadReceiptMock::isMockPayload($payload)) {

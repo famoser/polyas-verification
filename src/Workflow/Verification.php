@@ -15,7 +15,6 @@ use Famoser\PolyasVerification\Crypto\POLYAS\BallotAssociation;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDecode;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigest;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigestSignature;
-use Famoser\PolyasVerification\Crypto\POLYAS\BallotReceipt;
 use Famoser\PolyasVerification\Crypto\POLYAS\ChallengeCommit;
 use Famoser\PolyasVerification\Crypto\POLYAS\DeviceParameters;
 use Famoser\PolyasVerification\Crypto\POLYAS\QRCodeDecryption;
@@ -27,7 +26,6 @@ use GuzzleHttp\Exception\GuzzleException;
  * @phpstan-type ValidReceipt array{
  *     fingerprint: string,
  *     signature: string,
- *     ballotVoterId: string,
  * }
  */
 readonly class Verification
@@ -119,8 +117,7 @@ readonly class Verification
             return false;
         }
 
-        $ballotReceipt = new BallotReceipt($ballotDigestSignature, $loginResponse['ballotVoterId']);
-        $validReceipt = $ballotReceipt->export();
+        $validReceipt = $ballotDigestSignature->export();
 
         $challengePayload = ['challenge' => $challengeCommit->getEString(), 'challengeRandomCoin' => $challengeCommit->getRString()];
         try {
