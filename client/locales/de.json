@@ -31,9 +31,9 @@
       "failed": "Der Stimmzettel ist nicht Ihnen zugeordnet. Bitte nehmen Sie umgehend Kontakt mit den Wahlorganisatoren (wahlbeobachtung@gi.de) auf."
     },
     "check_receipt": {
-      "info": "Wie speichern nun Ihre Wahlquittung, und speisen diese in die universellen Verifikation ein.",
+      "info": "Wir speichern nun Ihre Wahlquittung, und speisen diese in die universellen Verifikation ein.",
       "store_receipt": "Wir können damit sicherstellen, dass Ihre Stimmabgabe im Wahlresultat berücksichtigt wird. Das Stimmgeheimnis bleibt dadurch gewahrt.",
-      "receipt_popover": "Die Wahlquittung enthält eine Referenz Ihrer verschlüsselten Stimme, sowie eine kryptographische Signatur davon vom Wahlserver. Damit kann bewiesen werden, dass der Wahlserver Ihre Stimme erhalten hat. Ihr Stimmzettel kann damit aber nicht entschlüsselt werden.",
+      "receipt_popover": "Die Wahlquittung enthält eine Referenz Ihrer verschlüsselten Stimme, sowie eine kryptographische Signatur davon vom Wahlserver. Damit kann bewiesen werden, dass der Wahlserver Ihre Stimme erhalten hat, und diese daher beim Auszählen berücksichtigt werden muss. Ihr Stimmzettel kann damit aber nicht entschlüsselt werden.",
       "continue": "Weiter",
       "download": "Wahlquittung herunterladen",
       "errors": {
