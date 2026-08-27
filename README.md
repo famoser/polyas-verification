@@ -85,7 +85,7 @@ This project also allows to verify that signature; thereby proving that the voti
     </tbody>
 </table>
 
-You can test this UI with the receipt in `assets/test_vote_receipt.pdf`. You can download all receipts from the server with `/api/export/receipts.zip` (needs a valid `api_key` in production as a GET parameter).
+You can test this UI with the receipt in `assets/test_vote_receipt.pdf`. You can download all receipts from the server with `/api/export/receipts.zip` (needs a valid `apiKey` in production as a GET parameter).
 
 ## Develop
 
@@ -107,13 +107,5 @@ You need access to the config repository specified in `agnes.yml`. Then:
 - create a new release (here `v1.0`) of `main` branch with `./vendor/bin/agnes release v1.0 main`
 - deploy release to `prod` environment with `./vendor/bin/agnes deploy *:*:prod v1.0`
 
-The server needs to fulfil requirements specified in `composer.json`.
-
-## Future functionality
-
-TODO until election:
-- Discuss receipt workflow
-- Get access to test election
-- v is predictable; issue for commitment?
-- need to device how receipts are treated
+The server needs to fulfill requirements specified in `composer.json`.
 
