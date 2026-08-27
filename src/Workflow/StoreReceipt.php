@@ -11,17 +11,13 @@
 
 namespace Famoser\PolyasVerification\Workflow;
 
-use Famoser\PolyasVerification\Crypto\PEM\Decoder;
-use Famoser\PolyasVerification\Crypto\PEM\Payload;
 use Famoser\PolyasVerification\Crypto\POLYAS\BallotDigestSignature;
-use Famoser\PolyasVerification\Crypto\POLYAS\BallotReceipt;
 use Famoser\PolyasVerification\Storage;
 
 /**
  * @phpstan-type ValidReceipt array{
  *     fingerprint: string,
  *     signature: string,
- *     ballotVoterId: string,
  * }
  */
 readonly class StoreReceipt
@@ -51,8 +47,7 @@ readonly class StoreReceipt
             return false;
         }
 
-        $ballotReceipt = new BallotReceipt($ballotSignature, $validReceipt['ballotVoterId']);
-        $validReceipt = $ballotReceipt->export();
+        $validReceipt = $ballotSignature->export();
         // only store if it does not exist yet
         if (!Storage::checkReceiptExists($validReceipt) && !Storage::storeReceipt($validReceipt, $this->polyasElection)) {
             $failedCheck = self::RECEIPT_STORED;

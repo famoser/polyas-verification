@@ -8,5 +8,4 @@ export type Status = {
 export type Receipt = {
   fingerprint: string
   signature: string
-  ballotVoterId: string
 }

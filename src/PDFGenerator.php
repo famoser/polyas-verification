@@ -57,7 +57,6 @@ readonly class PDFGenerator
      * @param array{
      *  'fingerprint': string,
      *   'signature': string,
-     *   'ballotVoterId': string,
      *  } $receipt
      *
      * @phpstan-assert-if-true string $pdf
@@ -66,7 +65,6 @@ readonly class PDFGenerator
     {
         $fingerprint = Encoder::encodeRaw('FINGERPRINT', $receipt['fingerprint']);
         $signature = Encoder::encodeRaw('SIGNATURE', $receipt['signature']);
-        $ballotVoterId = $receipt['ballotVoterId'];
 
         try {
             $document = new Document([mm2p(210), mm2p(297)], [mm2p(15), mm2p(15), mm2p(15), mm2p(15)]);
@@ -74,7 +72,7 @@ readonly class PDFGenerator
 
             $this->addIntroduction($flow);
             $this->addFingerprintAndSignature($flow, $fingerprint, $signature);
-            $this->addMeta($flow, $ballotVoterId, $polyasElection);
+            $this->addMeta($flow, $polyasElection);
 
             $document->add($flow);
             $pdf = $document->save();
@@ -115,19 +113,14 @@ readonly class PDFGenerator
         $flow->add($paragraph);
     }
 
-    private function addMeta(Flow $flow, string $ballotVoterId, ?string $polyasElection): void
+    private function addMeta(Flow $flow, ?string $polyasElection): void
     {
-        if (!$ballotVoterId && !$polyasElection) {
+        if (!$polyasElection) {
             return;
         }
 
         $paragraph = new Text();
-        if ($ballotVoterId) {
-            $paragraph->addSpan('Wahl-ID: ' . $ballotVoterId . "\n", $this->codeText, $this->metaFontSize);
-        }
-        if ($polyasElection) {
-            $paragraph->addSpan('Wahl: ' . $polyasElection, $this->codeText, $this->metaFontSize);
-        }
+        $paragraph->addSpan('Wahl: ' . $polyasElection, $this->codeText, $this->metaFontSize);
         $paragraph->setMargin([0, $this->normalFontSize * 2, 0, 0]);
 
         $flow->add($paragraph);

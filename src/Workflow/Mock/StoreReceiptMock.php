@@ -23,7 +23,6 @@ readonly class StoreReceiptMock extends ReceiptMock
      * @param array{
      * 'fingerprint': string,
      * 'signature': string,
-     * 'ballotVoterId': string,
      * } $payload
      */
     public static function performMockStoreReceipt(array $payload, ?string &$failedCheck = null): bool

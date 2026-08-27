@@ -81,17 +81,15 @@ class Storage
      * @param array{
      *  'fingerprint': string,
      *  'signature': string,
-     *  'ballotVoterId': string,
      * } $payload
      */
     public static function storeReceipt(array $payload, string $electionId): bool
     {
         $db = self::getDatabaseConnection();
 
-        $smt = $db->prepare('INSERT INTO receipts (fingerprint, signature, ballot_voter_id, election_id) VALUES (:fingerprint, :signature, :ballot_voter_id, :election_id)');
+        $smt = $db->prepare('INSERT INTO receipts (fingerprint, signature, election_id) VALUES (:fingerprint, :signature, :election_id)');
         $smt->bindValue(':fingerprint', $payload['fingerprint']);
         $smt->bindValue(':signature', $payload['signature']);
-        $smt->bindValue(':ballot_voter_id', $payload['ballotVoterId']);
         $smt->bindValue(':election_id', $electionId);
 
         return $smt->execute();
@@ -101,7 +99,6 @@ class Storage
      * @return array{array{
      *  'fingerprint': string,
      *   'signature': string,
-     *   'ballotVoterId': string,
      *   'electionId': string
      *  }}
      */
@@ -109,7 +106,7 @@ class Storage
     {
         $db = self::getDatabaseConnection();
 
-        $smt = $db->prepare('SELECT fingerprint, signature, ballot_voter_id as ballotVoterId, election_id as electionId FROM receipts WHERE election_id = :election_id');
+        $smt = $db->prepare('SELECT fingerprint, signature, election_id as electionId FROM receipts WHERE election_id = :election_id');
         $smt->bindValue(':election_id', $electionId);
         $smt->execute();
 
@@ -126,7 +123,7 @@ class Storage
 
             self::$pdo = new \PDO('sqlite:' . self::DB_PATH);
             if (!$dbExists || '' === $version) {
-                self::$pdo->exec('CREATE TABLE receipts (fingerprint TEXT NOT NULL, signature TEXT NOT NULL, ballot_voter_id TEXT NOT NULL, election_id TEXT NOT NULL, UNIQUE(fingerprint,signature))');
+                self::$pdo->exec('CREATE TABLE receipts (fingerprint TEXT NOT NULL, signature TEXT NOT NULL, election_id TEXT NOT NULL, UNIQUE(fingerprint,signature))');
             }
 
             // if you need to migrate the DB
