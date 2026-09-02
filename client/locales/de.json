@@ -16,13 +16,13 @@
       "scan_qr_code": "QR Code scannen",
       "or_paste_link": "oder Link einfügen",
       "full_verification": "Ihr Stimmzettel wird erneut unverschlüsselt angezeigt.",
-      "full_verification_help": "Mit dem Link und dem Einmalpasswort wird es ermöglicht, Ihren Stimmzettel erneut anzuzeigen. Sie können aber damit einer Drittperson Ihr Wahlverhalten nicht beweisen: Entschlüsselt wird nicht Ihren tatsächlichen Stimmzettel, sondern lediglich eine daraus abgeleitete Form.",
+      "full_verification_help": "Mit dem Link und dem Einmal-Code wird es ermöglicht, Ihren Stimmzettel erneut anzuzeigen. Sie können aber damit einer Drittperson Ihr Wahlverhalten nicht beweisen: Entschlüsselt wird nicht Ihren tatsächlichen Stimmzettel, sondern lediglich eine daraus abgeleitete Form.",
       "link_invalid": "Der Link ist invalid.",
       "reset": "zurücksetzen"
     },
     "set_password": {
-      "set_password": "Einmalpasswort",
-      "one_time_password": "Das Einmalpasswort wird auf dem Wahlgerät angezeigt."
+      "set_password": "Einmal-Code",
+      "one_time_password": "Das Einmal-Code wird auf dem Wahlgerät angezeigt."
     },
     "verify_ballot_owner": {
       "set_ballot_owner": "Stimmberechtigung",
@@ -132,8 +132,8 @@
         "done": "Zuordnung überprüft"
       },
       "ENTER_PASSWORD": {
-        "title": "Einmalpasswort eingeben",
-        "done": "Einmalpasswort eingegeben"
+        "title": "Einmal-Code eingeben",
+        "done": "Einmal-Code eingegeben"
       },
       "RECOVER_BALLOT": {
         "title": "Stimmzettel wiederherstellen",
