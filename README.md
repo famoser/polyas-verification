@@ -19,11 +19,11 @@ After voting in the main voting system, the voter is presented with a QR code. U
     <tbody>
         <tr>
             <td>Start</td>
-            <td>Enter password</td>
+            <td>Enter voter id (to verify own ballot is processed)</td>
         </tr>
         <tr>
             <td><img src="assets/1_verify_0_index.png?raw=true" alt="Screenshot verification start"></td>
-            <td><img src="assets/1_verify_1_password.png?raw=true" alt="Screenshot password enter"></td>
+            <td><img src="assets/1_verify_1_enter_voter_id.png?raw=true" alt="Screenshot password enter"></td>
         </tr>
     </tbody>
 </table>
@@ -31,19 +31,28 @@ After voting in the main voting system, the voter is presented with a QR code. U
 <table>
     <tbody>
         <tr>
-            <td>Verify ballot voter id (to check indeed verifying own vote)</td>
-            <td>Verify ballot content (to check cast correctly)</td>
+            <td>Enter TOTP (to download ballot from server)</td>
+            <td>Verify ballot content (to verify ballot cast as intended)</td>
         </tr>
         <tr>
-            <td><img src="assets/1_verify_2_ballot_voter_id.png?raw=true" alt="Screenshot ballot voter id verification"></td>
-            <td><img src="assets/1_verify_3_ballot_content.png?raw=true" alt="Screenshot ballot content verification"></td>
+            <td><img src="assets/1_verify_2_enter_TOTP.png?raw=true" alt="Screenshot ballot voter id verification"></td>
+            <td><img src="assets/1_verify_3_verify_vote.png?raw=true" alt="Screenshot ballot content verification"></td>
         </tr>
     </tbody>
 </table>
 
-After successful vote validation, there is an option to download the receipt or skip the step. An example of such a receipt is in `assets/generated_receipt.pdf`.
-
-<img src="assets/1_verify_4_receipt_store.png?raw=true" alt="Screenshot store receipt" width="50%">
+<table>
+    <tbody>
+        <tr>
+            <td>Confirm receipt storage (to verify ballot included in tally)</td>
+            <td>Finished. Optionally, download receipt to directly send it to universal verifiers.</td>
+        </tr>
+        <tr>
+            <td><img src="assets/1_verify_4_confirm_receipt_storage.png?raw=true" alt="Screenshot ballot voter id verification"></td>
+            <td><img src="assets/1_verify_5_finished_verification.png?raw=true" alt="Screenshot ballot content verification"></td>
+        </tr>
+    </tbody>
+</table>
 
 You can test this UI with the link as follows:
 - Enter the following link: http://localhost:5173/verify?c=J8kdvzMZHPQBHbVoNx%2BJrstXlgbhOqDIikjbOGOL9HvWVdRPWuw%2FXbvq%2FnKS%2FmqH%2Fh2FJjCYbozkJiq7&d=%2FEhRgDjIA%2BscXsSyfSXvqPCHsvbf%2FUozQicLbNd4bjkps8aP4ZXdo3R%2BKuvYX%2FZM8NeAJcGrZbeb3wm8fgnby1gQJGqJwMY%2BeN6qXN83b0i5pNaej1WrMglE4KIXpDc8Bn00stxsvy0qlw%3D%3D&vid=voter7&nonce=e552502592f5bec54e4750c769ae9a3ec913c69a7cd828ce0226201476a2f833
