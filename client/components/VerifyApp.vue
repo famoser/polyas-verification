@@ -131,29 +131,28 @@ const { t } = useTranslator()
       <SetLink />
     </StepView>
 
-    <StepView v-if="urlPayload" prefix="domain.verification_step" :entry="VerificationSteps.VERIFY_BALLOT_OWNER" :done="!!ballotOwner" :success="ballotOwner === urlPayload.vid">
+    <StepView v-if="urlPayload" prefix="domain.verification_step" :entry="VerificationSteps.ENTER_PASSWORD" :done="!!password" :success="true" :force-closed-when-done="true">
+      <SetPassword @changed="password = $event" />
+    </StepView>
+
+    <StepView v-if="urlPayload && password" prefix="domain.verification_step" :entry="VerificationSteps.VERIFY_BALLOT_OWNER" :done="!!ballotOwner" :success="ballotOwner === urlPayload.vid">
       <VerifyBallotOwner @entered="ballotOwner = $event" :expectedOwnerId="urlPayload.vid" :enteredOwnerId="ballotOwner" />
     </StepView>
 
     <StepView
-      v-if="urlPayload && ballotOwner === urlPayload.vid"
+      v-if="urlPayload && password && ballotOwner === urlPayload.vid"
       prefix="domain.verification_step"
-      :entry="VerificationSteps.ENTER_PASSWORD"
-      :done="!!password"
-      :success="true"
-      :force-closed-when-done="true"
+      :entry="VerificationSteps.RECOVER_BALLOT"
+      :done="!!verificationResult"
+      :success="!!verificationResult?.status"
     >
-      <SetPassword @changed="password = $event" />
-    </StepView>
-
-    <StepView v-if="urlPayload && password" prefix="domain.verification_step" :entry="VerificationSteps.RECOVER_BALLOT" :done="!!verificationResult" :success="!!verificationResult?.status">
       <div class="row g-2">
         <ChecksView prefix="domain.verification_status" :result="verificationResult" :error-order="errorOrder" :fallback-error="VerificationErrors.UNKNOWN" />
       </div>
     </StepView>
 
     <StepView
-      v-if="!!verificationResult?.result"
+      v-if="urlPayload && password && ballotOwner === urlPayload.vid && !!verificationResult?.result"
       prefix="domain.verification_step"
       :entry="VerificationSteps.VERIFY_BALLOT_CONTENT"
       :done="ballotContentVerifiedResult !== undefined"
