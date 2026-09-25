@@ -172,8 +172,12 @@ const { t } = useTranslator()
     </StepView>
   </div>
 
-  <p class="alert alert-success mt-2 mb-5" v-if="receiptChecked !== undefined">
+  <p class="alert alert-success mt-2 mb-2" v-if="receiptChecked !== undefined">
     {{ t('view.verify_app.verification_finished') }}
+  </p>
+  <p class="alert alert-info mt-2 mb-5" v-if="receiptChecked !== undefined">
+    {{ t('view.verify_app.survey') }}
+    <a href="https://soscisurvey.scc.kit.edu/Umfrage_zur_Nutzbarkeit/?u=Famoser" target="_blank">{{ t('view.verify_app.survey_link') }}</a>
   </p>
 
   <StepView

@@ -97,7 +97,9 @@
     "verify_app": {
       "title": "Stimmabgabe überprüfen",
       "description": "Mit dem QR Code, der nach der Wahl angezeigt wird, können Sie den Inhalt Ihres Stimmzettels überprüfen.",
-      "verification_finished": "Stimmabgabe erfolgreich verifiziert. Sie können dieses Fenster nun schliessen."
+      "verification_finished": "Stimmabgabe erfolgreich verifiziert. Sie können dieses Fenster nun schliessen.",
+      "survey": "Möchten Sie zur Verbesserung von Verifikationstools beitragen?",
+      "survey_link": "Nehmen Sie an der KIT Studie teil."
     },
     "receipt_app": {
       "title": "Wahl-Quittung überprüfen",
