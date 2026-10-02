@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Candidate } from '@/components/domain/POLYAS'
+import { formatTranslation } from '@/components/view/Ballot/formatter'
 
 defineProps<{
   candidate: Candidate
@@ -11,7 +12,7 @@ defineProps<{
   <div class="form-check">
     <input class="form-check-input" type="checkbox" :checked="votes > 0" :id="candidate.id" />
     <label class="form-check-label" :for="candidate.id">
-      {{ candidate.columns.map((column) => column.value.default).join(', ') }}
+      {{ candidate.columns.map((column) => formatTranslation(column.value)).join(', ') }}
     </label>
   </div>
 </template>
