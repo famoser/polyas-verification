@@ -35,6 +35,7 @@ const { t } = useTranslator()
       :placeholder="t('action.verify_ballot_owner.set_ballot_owner')"
       v-model="owner"
       :disabled="enteredOwnerId !== undefined"
+      @keyup.enter="confirm()"
       :class="{ 'is-invalid': enteredOwnerId && enteredOwnerId !== expectedOwnerId }"
     />
     <div class="form-text">
