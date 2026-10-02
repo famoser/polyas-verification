@@ -25,8 +25,8 @@
       "one_time_password": "Das Einmal-Code wird auf dem Wahlgerät angezeigt."
     },
     "verify_ballot_owner": {
-      "set_ballot_owner": "Wahl-ID",
-      "ballot_owner_source": "Geben Sie Ihre Wahl-ID für diese Wahl ein. Dies ist die GI-Mitgliedernummer, ohne Präfix oder führende Nullen.",
+      "set_ballot_owner": "GI-Nummer",
+      "ballot_owner_source": "Geben Sie Ihre GI-Nummer ein, ohne Präfix oder führende Nullen.",
       "successful": "Sie überprüfen den Stimmzettel, der Ihnen zugeordnet ist.",
       "failed": "Der Stimmzettel ist nicht Ihnen zugeordnet. Bitte nehmen Sie umgehend Kontakt mit den Wahlorganisatoren (wahlbeobachtung@gi.de) auf."
     },
