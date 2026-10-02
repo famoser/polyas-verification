@@ -4,6 +4,7 @@ import type { Ballot } from '@/components/domain/POLYAS'
 import ListView from '@/components/view/Ballot/ListView.vue'
 import BallotContentView from '@/components/view/Ballot/BallotContentView.vue'
 import { useTranslator } from '@/locales/translator'
+import { formatTranslation } from '@/components/view/Ballot/formatter'
 
 const props = defineProps<{
   choice: string
@@ -29,7 +30,7 @@ const { t } = useTranslator()
 <template>
   <div>
     <h4>
-      {{ ballot.title['default'] }}
+      {{ formatTranslation(ballot.title) }}
     </h4>
     <p v-if="ballot.contentAbove?.value['default']">
       <BallotContentView :content="ballot.contentAbove.value['default']" />
