@@ -13,9 +13,18 @@ namespace Famoser\PolyasVerification\Crypto\RSA;
 
 class KeyFactory
 {
+    // observed errors on CI
+    /**
+     * @phpstan-ignore classConstant.unused
+     */
     private const string ERROR_RANDOM_NUMBER_GENERATOR_NOT_FOUND = 'error:12000079:random number generator::Cannot open file';
 
-    public static function generateRSAKey(int $keyBits, bool $allowUnsafeRandomness): \OpenSSLAsymmetricKey
+    /**
+     * @phpstan-ignore classConstant.unused
+     */
+    private const string ERROR_SYSTEMS_LIBRARY = 'error:FFFFFFFF80000002:system library::No such file or directory';
+
+    public static function generateRSAKey(int $keyBits, bool $allowUncheckedErrors): \OpenSSLAsymmetricKey
     {
         $options = [
             'private_key_bits' => $keyBits,
@@ -25,7 +34,9 @@ class KeyFactory
         if (!$pkey) {
             throw OpenSSLException::createWithErrors('key generation failed');
         }
-        OpenSSLException::throwIfErrors($allowUnsafeRandomness ? self::ERROR_RANDOM_NUMBER_GENERATOR_NOT_FOUND : '');
+        if (!$allowUncheckedErrors) {
+            OpenSSLException::throwIfErrors();
+        }
 
         return $pkey;
     }
