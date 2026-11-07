@@ -34,7 +34,10 @@ class KeyFactory
         if (!$pkey) {
             throw OpenSSLException::createWithErrors('key generation failed');
         }
-        if (!$allowUncheckedErrors) {
+
+        if ($allowUncheckedErrors) {
+            OpenSSLException::skipErrors();
+        } else {
             OpenSSLException::throwIfErrors();
         }
 

@@ -29,6 +29,11 @@ class OpenSSLException extends \RuntimeException
         }
     }
 
+    public static function skipErrors(): void
+    {
+        self::readErrors([]);
+    }
+
     public static function createWithErrors(string $message, string ...$whitelist): OpenSSLException
     {
         $errors = self::readErrors($whitelist);
